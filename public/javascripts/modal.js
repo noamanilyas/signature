@@ -1,0 +1,64 @@
+var a = {
+  textField: ["text", "background", "visibility", "alignment", "border", "padding", "size", "render"],
+  group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
+  socialIcon: [
+    "hyperlink",
+    "visibility",
+    "alignment",
+    "border",
+    "padding",
+    "size",
+    "render",
+    "orientation",
+    "socialMediaIcon",
+  ],
+  legalCompliance: [
+    "hyperlink",
+    "text",
+    "background",
+    "visibility",
+    "alignment",
+    "border",
+    "padding",
+    "size",
+  ],
+  image: ["imageSource", "hyperlink", "background", "visibility", "alignment", "border", "padding", "size"],
+  banner: ["imageSource", "hyperlink", "background", "visibility", "alignment", "border", "padding", "size"],
+  userPhoto: ["hyperlink", "text", "background", "visibility", "alignment", "border", "padding", "size"],
+  icons: ["labelIcon", "hyperlink", "visibility", "alignment", "border", "padding"],
+};
+function renderModel(e) {
+  let category = e.target.getAttribute("category");
+  let id = e.target.getAttribute("id");
+  if (a[category]) {
+    // console.log(e.target);
+    $("#propertiesModel").modal("show");
+
+    // Remove unwanted tabs
+    $("#tabListUL li a").each(function (index, item) {
+      let key = item.id.split("-")[1];
+      if (a[category].indexOf(key) === -1) {
+        $(`#${item.id}`)[0].style.display = "none";
+      } else {
+        $(`#${item.id}`)[0].style.display = "block";
+      }
+      // Remove active classes
+      $(`#v-${key}-side`).removeClass("active");
+      $(`#v-${key}-body`).removeClass("show active");
+    });
+
+    // Make first item active
+    $(`#v-${a[category][0]}-side`).addClass("active");
+    $(`#v-${a[category][0]}-body`).addClass("show active");
+
+    // Render TextJS
+    renderTextTab(id);
+    // Render ImageJS
+    renderImageTab(id);
+    // Render BackgroundJS
+    renderBackgroundTab(id);
+    // Render SizeJS
+    renderSizeTab(id);
+    console.log("here");
+  }
+}

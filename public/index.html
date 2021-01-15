@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>jQuery UI Droppable</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+
+    <!-- <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script> -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+    <style type="text/css">
+      body {
+        background-color: darkcyan;
+      }
+    </style>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="./stylesheets/style.css" />
+  </head>
+  <body>
+    <!-- <center> -->
+    <h1 align="center">POC for Rocky</h1>
+
+    <div class="panel"></div>
+
+    <div class="centered">
+      <div style="display: table-row">
+        <div style="display: table-cell">
+          <div id="drop" class="drop"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panelPreview"></div>
+
+    <div class="modal" id="propertiesModel" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="propertiesModelLabel">Properties</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <section id="propTabs">
+              <div class="row">
+                <div class="col-2">
+                  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                    <ul id="tabListUL" class="nav nav-tabs" style="overflow-y: auto">
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-labelIcon-side"
+                          data-toggle="pill"
+                          href="#v-labelIcon-body"
+                          role="tab"
+                          aria-controls="v-labelIcon-body"
+                          aria-expanded="true"
+                          >Label Icon</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link active"
+                          id="v-imageSource-side"
+                          data-toggle="pill"
+                          href="#v-imageSource-body"
+                          role="tab"
+                          aria-controls="v-imageSource-body"
+                          aria-expanded="true"
+                          >Image Source</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-hyperlink-side"
+                          data-toggle="pill"
+                          href="#v-hyperlink-body"
+                          role="tab"
+                          aria-controls="v-hyperlink-body"
+                          aria-expanded="true"
+                          >Hyperlink</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-text-side"
+                          data-toggle="pill"
+                          href="#v-text-body"
+                          role="tab"
+                          aria-controls="v-text-body"
+                          aria-expanded="true"
+                          >Text Props</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-background-side"
+                          data-toggle="pill"
+                          href="#v-background-body"
+                          role="tab"
+                          aria-controls="v-background-body"
+                          aria-expanded="true"
+                          >Background</a
+                        >
+                      </li>
+                      <!-- <li>
+                        <a
+                          class="nav-link"
+                          id="v-visibility-side"
+                          data-toggle="pill"
+                          href="#v-visibility-body"
+                          role="tab"
+                          aria-controls="v-visibility-body"
+                          aria-expanded="true"
+                          >Visibility</a
+                        >
+                      </li> -->
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-alignment-side"
+                          data-toggle="pill"
+                          href="#v-alignment-body"
+                          role="tab"
+                          aria-controls="v-alignment-body"
+                          aria-expanded="true"
+                          >Alignment</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-border-side"
+                          data-toggle="pill"
+                          href="#v-border-body"
+                          role="tab"
+                          aria-controls="v-border-body"
+                          aria-expanded="true"
+                          >Border</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-padding-side"
+                          data-toggle="pill"
+                          href="#v-padding-body"
+                          role="tab"
+                          aria-controls="v-padding-body"
+                          aria-expanded="true"
+                          >Padding</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-size-side"
+                          data-toggle="pill"
+                          href="#v-size-body"
+                          role="tab"
+                          aria-controls="v-size-body"
+                          aria-expanded="true"
+                          >Element Size</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-render-side"
+                          data-toggle="pill"
+                          href="#v-render-body"
+                          role="tab"
+                          aria-controls="v-render-body"
+                          aria-expanded="true"
+                          >Render</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-orientation-side"
+                          data-toggle="pill"
+                          href="#v-orientation-body"
+                          role="tab"
+                          aria-controls="v-orientation-body"
+                          aria-expanded="true"
+                          >Orientation</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-socialMediaIcon-side"
+                          data-toggle="pill"
+                          href="#v-socialMediaIcon-body"
+                          role="tab"
+                          aria-controls="v-socialMediaIcon-body"
+                          aria-expanded="true"
+                          >Social Media Icon</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-10" style="overflow: auto; max-height: 240px">
+                  <div class="tab-content" id="v-pills-tabContent">
+                    <div
+                      class="tab-pane fade"
+                      id="v-labelIcon-body"
+                      role="tabpanel"
+                      aria-labelledby="v-labelIcon-side"
+                    >
+                      <!-- Here is a content for tab labelIcon. -->
+                      <form>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Background</label>
+                          <input type="text" class="form-control" placeholder="#000000" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Foreground</label>
+                          <input type="text" class="form-control" placeholder="#000000" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Width</label>
+                          <input type="text" class="form-control" placeholder="0 px" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Height</label>
+                          <input type="text" class="form-control" placeholder="0 px" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Corner Radius</label>
+                          <input type="text" class="form-control" placeholder="0 px" />
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      class="tab-pane fade imageSource"
+                      id="v-imageSource-body"
+                      role="tabpanel"
+                      aria-labelledby="v-imageSource-side"
+                    >
+                      <!-- Here is a content for tab imageSource. -->
+                    </div>
+                    <div
+                      class="tab-pane fade hyperlink"
+                      id="v-hyperlink-body"
+                      role="tabpanel"
+                      aria-labelledby="v-hyperlink-side"
+                    >
+                      <!-- Here is a content for tab hyperlink. -->
+                    </div>
+                    <div
+                      class="tab-pane fade text"
+                      id="v-text-body"
+                      role="tabpanel"
+                      aria-labelledby="v-text-side"
+                    >
+                      <!-- Here is a content for tab text. -->
+                    </div>
+                    <div
+                      class="tab-pane fade background"
+                      id="v-background-body"
+                      role="tabpanel"
+                      aria-labelledby="v-background-side"
+                    >
+                      <!-- Here is a content for tab background. -->
+                    </div>
+                    <div
+                      class="tab-pane fade visibility"
+                      id="v-visibility-body"
+                      role="tabpanel"
+                      aria-labelledby="v-visibility-side"
+                    >
+                      <!-- Here is a content for tab visibility. -->
+                    </div>
+                    <div
+                      class="tab-pane fade alignment"
+                      id="v-alignment-body"
+                      role="tabpanel"
+                      aria-labelledby="v-alignment-side"
+                    >
+                      <!-- Here is a content for tab alignment. -->
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="v-border-body"
+                      role="tabpanel"
+                      aria-labelledby="v-border-side"
+                    >
+                      <!-- Here is a content for tab border. -->
+                      <form>
+                        <label for="formGroupExampleInput">All</label>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <select class="form-control">
+                                <option>Solid</option>
+                                <option>Dashed</option>
+                                <option>Dotted</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Size"
+                              />
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Color"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck" />
+                            <label class="form-check-label" for="gridCheck">Same for all</label>
+                          </div>
+                        </div>
+                        <label for="formGroupExampleInput">Left</label>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <select class="form-control">
+                                <option>Solid</option>
+                                <option>Dashed</option>
+                                <option>Dotted</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Size"
+                              />
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Color"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <label for="formGroupExampleInput">Right</label>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <select class="form-control">
+                                <option>Solid</option>
+                                <option>Dashed</option>
+                                <option>Dotted</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Size"
+                              />
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Color"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <label for="formGroupExampleInput">Top</label>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <select class="form-control">
+                                <option>Solid</option>
+                                <option>Dashed</option>
+                                <option>Dotted</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Size"
+                              />
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Color"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <label for="formGroupExampleInput">Bottom</label>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <select class="form-control">
+                                <option>Solid</option>
+                                <option>Dashed</option>
+                                <option>Dotted</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Size"
+                              />
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder="Color"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="v-padding-body"
+                      role="tabpanel"
+                      aria-labelledby="v-padding-side"
+                    >
+                      <!-- Here is a content for tab padding. -->
+                      <form>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">All</label>
+                          <input type="number" class="form-control" placeholder="0 px" />
+                        </div>
+                        <div class="form-group">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck" />
+                            <label class="form-check-label" for="gridCheck">Same for all</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Left</label>
+                          <input type="number" class="form-control" placeholder="0 px" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Right</label>
+                          <input type="number" class="form-control" placeholder="0 px" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Top</label>
+                          <input type="number" class="form-control" placeholder="0 px" />
+                        </div>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput2">Bottom</label>
+                          <input type="number" class="form-control" placeholder="0 px" />
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      class="tab-pane fade size"
+                      id="v-size-body"
+                      role="tabpanel"
+                      aria-labelledby="v-size-side"
+                    >
+                      <!-- Here is a content for tab size. -->
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="v-render-body"
+                      role="tabpanel"
+                      aria-labelledby="v-render-side"
+                    >
+                      Here is a content for tab render.
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="v-orientation-body"
+                      role="tabpanel"
+                      aria-labelledby="v-orientation-side"
+                    >
+                      <!-- Here is a content for tab orientation. -->
+                      <form>
+                        <div class="form-group">
+                          <label for="formGroupExampleInput">Orientation</label>
+                          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                              <button type="button" class="btn btn-secondary">Vertical</button>
+                              <button type="button" class="btn btn-secondary">Horizontal</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="v-socialMediaIcon-body"
+                      role="tabpanel"
+                      aria-labelledby="v-socialMediaIcon-side"
+                    >
+                      Here is a content for tab socialMediaIcon.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- </center> -->
+    <script type="text/javascript" src="./javascripts/fetchHTML.js"></script>
+    <script type="text/javascript" src="./javascripts/tabsJs/size.js"></script>
+    <script type="text/javascript" src="./javascripts/tabsJs/background.js"></script>
+    <script type="text/javascript" src="./javascripts/tabsJs/text.js"></script>
+    <script type="text/javascript" src="./javascripts/tabsJs/image.js"></script>
+    <script type="text/javascript" src="./javascripts/mouseEvents.js"></script>
+    <script type="text/javascript" src="./javascripts/modal.js"></script>
+
+    <script type="text/javascript" src="./javascripts/script.js"></script>
+  </body>
+</html>
