@@ -26,6 +26,7 @@ function renderImageTab(id) {
       $(`#${id}`).attr("src", defaultSRC);
     }
     $(`#${"image-url"}`).attr("checked", true);
+    converToTableFunc();
   });
 
   // check existing image
@@ -35,6 +36,7 @@ function renderImageTab(id) {
   $(`#${fileInput}`).on("change", function () {
     $(`#${"image-upload"}`).attr("checked", true);
     importFileandPreview();
+    converToTableFunc();
   });
 
   function importFileandPreview() {
@@ -69,6 +71,7 @@ function renderImageTab(id) {
       $(`#${inputElem}`).val("");
       $(`#${id}`).attr("src", defaultSRC);
     }
+    converToTableFunc();
   });
 }
 

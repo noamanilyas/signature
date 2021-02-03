@@ -33,6 +33,7 @@ function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
     console.log(obj);
     console.log(`#${id}`);
     $(`#${id}`).css(obj);
+    converToTableFunc();
   });
 }
 

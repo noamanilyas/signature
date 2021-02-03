@@ -56,3 +56,19 @@ fetch("./tabs/size.html")
   .then((data) => {
     document.querySelector(".size").innerHTML = data;
   });
+
+fetch("./tabs/border.html")
+  .then((response) => {
+    return response.text();
+  })
+  .then((data) => {
+    document.querySelector(".borderDiv").innerHTML = data;
+  });
+
+fetch("./tabs/padding.html")
+  .then((response) => {
+    return response.text();
+  })
+  .then((data) => {
+    document.querySelector(".paddingDiv").innerHTML = data;
+  });

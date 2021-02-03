@@ -27,6 +27,7 @@ function renderBackgroundTab(id) {
       $(`#${id}`).parent().attr("backGValSet", false);
     }
     $(`#${"background-color"}`).attr("checked", true);
+    converToTableFunc();
   });
 
   // check existing image
@@ -36,6 +37,7 @@ function renderBackgroundTab(id) {
   $(`#${fileInput}`).on("change", function () {
     $(`#${"background-imagefile"}`).attr("checked", true);
     importFileandPreview();
+    converToTableFunc();
   });
 
   function importFileandPreview() {
@@ -72,6 +74,7 @@ function renderBackgroundTab(id) {
       $(`#${inputElem}`).val("");
       $(`#${id}`).attr("src", defaultSRC);
     }
+    converToTableFunc();
   });
 }
 

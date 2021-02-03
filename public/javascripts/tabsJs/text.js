@@ -103,6 +103,7 @@ function textTextValue(id) {
   $("#text-text").val(currentText);
   $("#text-text").on("change", function () {
     $(`#${id}`).text(this.value);
+    converToTableFunc();
   });
 }
 function fillAndFormat(id, item) {
@@ -142,6 +143,7 @@ function fillAndFormat(id, item) {
       $(`#${id}`).css(obj);
       $(`#${inputElem}`).addClass("active");
     }
+    converToTableFunc();
   });
 }
 // Remove css property & active class from elem
@@ -165,6 +167,7 @@ function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
     console.log(obj);
     console.log(`#${id}`);
     $(`#${id}`).css(obj);
+    converToTableFunc();
   });
 }
 

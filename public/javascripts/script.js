@@ -6,8 +6,19 @@ $(document).ready(function () {
    * "padding", "size", "render", "orientation", "socialMediaIcon"]
    */
 
+  var personalData = {
+    firstName: "Noaman",
+    lastName: "Ilyas",
+    email: "noaman.ilyas@gmail.com",
+    address: "House No. 169-POF, WahCantt",
+  };
+
   const itemIds = {
     btnText: `<span category="textField">Your text here!</span>`,
+    btnFN: `<span category="textField">${personalData.firstName}</span>`,
+    btnLN: `<span category="textField">${personalData.lastName}</span>`,
+    btnEM: `<span category="textField">${personalData.email}</span>`,
+    btnAD: `<span category="textField">${personalData.address}</span>`,
     // btnText: `<div category="textField"><span>Your text here!</span></div>`,
     btnImage: `<img
         alt="Fax"
@@ -25,9 +36,9 @@ $(document).ready(function () {
   setTimeout(function () {
     addMouseEvents();
 
-    $("#convertToTable").on("click", function () {
-      converToTableFunc();
-    });
+    // $("#convertToTable").on("click", function () {
+    //   converToTableFunc();
+    // });
 
     $(".drag").draggable({
       cancel: false,
@@ -88,6 +99,7 @@ $(document).ready(function () {
               $canvas.animate(pos, 200, "linear");
             },
           });
+          converToTableFunc();
         }
       },
     });
@@ -281,6 +293,7 @@ $(document).ready(function () {
               $canvas.animate(pos, 200, "linear");
             },
           });
+          converToTableFunc();
         }
       },
     });
@@ -488,38 +501,6 @@ $(document).ready(function () {
 
     return container;
   }
-
-  function converToTableFunc() {
-    const mainItems = $("#drop > .drag.vertical.ph-table-row");
-    $(".mainTable").remove();
-    let tbody = $("<tbody>");
-    let table = $("<table>");
-    table.addClass("mainTable");
-    $.each(mainItems, function (index, value) {
-      // const item = value;
-      // console.log(item);
-      if ($(this).hasClass("ph-table-row")) {
-        let tr = $("<tr>");
-        let td = $("<td>");
-
-        if ($(this).hasClass("dataItem")) {
-          let dataItem = $(this).find(".data").children().eq(0).clone();
-          td.append(dataItem);
-        } else if ($(this).hasClass("group2")) {
-          let table = getSubItemsForgroup2($(this));
-          td.append(table);
-        } else if ($(this).hasClass("group3")) {
-          let table = getSubItemsForgroup3($(this));
-          td.append(table);
-        }
-        tr.append(td);
-        tbody.append(tr);
-      }
-    });
-    table.append(tbody);
-    $(".panelPreview").append(table);
-    console.log(table);
-  }
 });
 
 function getSubItemsForgroup2(item) {
@@ -533,6 +514,10 @@ function getSubItemsForgroup2(item) {
     console.log($(this));
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
+      let vAlign = $(this).find(".data").css("vertical-align");
+      if (vAlign) {
+        td.css("vertical-align", vAlign);
+      }
       td.append(dataItem);
     } else if ($(this).hasClass("group2")) {
       let table = getSubItemsForgroup2($(this));
@@ -559,6 +544,10 @@ function getSubItemsForgroup3(item) {
     console.log($(this));
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
+      let vAlign = $(this).find(".data").css("vertical-align");
+      if (vAlign) {
+        td.css("vertical-align", vAlign);
+      }
       td.append(dataItem);
     } else if ($(this).hasClass("group2")) {
       let table = getSubItemsForgroup2($(this));

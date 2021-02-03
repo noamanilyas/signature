@@ -59,6 +59,11 @@ function renderModel(e) {
     renderBackgroundTab(id);
     // Render SizeJS
     renderSizeTab(id);
-    console.log("here");
+    // Render AlignmentJS
+    renderAlignmentTab(id);
+    // Render BorderJS
+    renderBorderTab(id);
+    // Render PaddingJS
+    renderPaddingTab(id);
   }
 }
