@@ -6,32 +6,50 @@ $(document).ready(function () {
    * "padding", "size", "render", "orientation", "socialMediaIcon"]
    */
 
-  var personalData = {
-    firstName: "Noaman",
-    lastName: "Ilyas",
-    email: "noaman.ilyas@gmail.com",
-    address: "House No. 169-POF, WahCantt",
-  };
+  function droppableDrop(event, ui) {
+    var $canvas = $(this);
+    if (!ui.draggable.hasClass("canvas-element")) {
+      var $canvasElement = ui.draggable.clone();
+      $canvasElement.addClass("canvas-element");
 
-  const itemIds = {
-    btnText: `<span category="textField">Your text here!</span>`,
-    btnFN: `<span category="textField">${personalData.firstName}</span>`,
-    btnLN: `<span category="textField">${personalData.lastName}</span>`,
-    btnEM: `<span category="textField">${personalData.email}</span>`,
-    btnAD: `<span category="textField">${personalData.address}</span>`,
-    // btnText: `<div category="textField"><span>Your text here!</span></div>`,
-    btnImage: `<img
-        alt="Fax"
-        category="image"
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAA7DAAAOwwHHb6hkAAADeElEQVR4Xu2Yi27iMBBFDX1BW+j//yQSlL4LVCfy1Y68Djixl7Kyj2SNA3nMXM/YTiar1ergKmbqbbU0AbytliaAt9XSBPC2WpoA3lZLE8DbamkCeFstTQBvq6UJ4O3Fs9vt3OfnZ9dKUvyL0H6/dx8fH246nXbt6uqqs6lwPY2AbbM8PDy4m5sbf5RHcQG22637/v72R3+wYtgWBno4nHbn7u7Ozedzf5RHcQHW63VSEKkgmtr7+3t37+vra/f4+OjPyKPoHIBzCp4Uvb+/d7PZzN3e3nYBTCaT7r+hcE/KQteHJZHD6AzAqTB9cVICkKKkaoiC0fm2r2tTUUlhedYYgUcJ8PX15V5eXvxRnDETlUQNhUkRp0/wU4wSgFqkWRgJwFlYLBbdyJRCQqghjgQCyo1SG8qoOUDBAjX+9PTklstlNzmJMHgcfX197TJnzFrOM7k/QfJMMgwrrE9DGHVVGJxqT6MRc4blkcApH4TA5kIGiLMLEJuR1Q+dsakqSuzodE98OasAoAcqaCYpTVRhhsSc63OYoFJXg2MZl8roKxWkHLYjHDrECNmdG9fa+hXchzmCrXQKfRk3hGwBAEfkDMQcYonSZMkKEVuzCZ77IMCpLLCChxk3hGICpDh0rFaZGPUOQfCnsuBYxg3hnwgw1CH2FOGkaLOA/8L/f10AO5q2BIY6Q2DhpgoInt+1bOr+wh7/igCgLGA0NCI2MxTE8/Nz95ZIo6/NkILrg3O05Q4F0PNylkAoIgCBKl3lDMdsfhAA53UOfQWu4PrQPaFPgJzgoYgAFjn09vb2l9M5IIate937YgVgneejhd7SeDPMdVZBx4QYS/YXofALEC8rvLQQrFoIAdBwPuwfA1FpLJeUl2B/EdtXpJAtQN83QKFJikbG2H7M6T5haGQRb4EskZSYyHn1zhYAR1K3riESxwpzShz+t8/kPHaXsfNTyBaApUpLGTWPg7HRoz+EmDjq8zxWktzgIVsAAmNth9hnKf5Xw2nEKAWCkP45ZAvABMhECEx+1KkNOgUCUYMwg/pgwuVTWA7ZAsBms0kaWVLVBmuDPoYVQ32EJ+PsZ7gxFBGAmgxfVhScalf9S6OIAIwKAtiJKmdiOidFBPifubycPDNNAG+rpQngbbU0AbytliaAt9XSBPC2WpoA3lZLE8DbaqlcAOd+ALQ27cXvtzg+AAAAAElFTkSuQmCC"
-      />`,
-    btnIcon: `<img
-        alt="Fax"
-        category="icons"
-        class="icon-list drag"
-        src=""
-      />`,
-  };
+      let draggedItem = $canvasElement;
+      draggedItem = initDraggedItem(draggedItem);
+
+      // Mouse events
+      // addMouseEvents($canvasElement.find(".ns"), $canvasElement.find(".we"));
+      // // Dropaable
+
+      // addDropEvent($canvasElement.find(".ns"), true);
+      // addDropEvent($canvasElement.find(".we"), true);
+
+      // Draggable
+      // $canvasElement.draggable({
+      // 	containment: '#container',
+      // 	cursor: 'move',
+      // 	start: function (event, ui) {
+      // 		$(this).draggable('instance').offset.click = {
+      // 			left: 0,
+      // 			top: 0,
+      // 		};
+      // 	},
+      // });
+
+      $canvas.append(draggedItem);
+      $canvas.droppable("disable");
+      console.log($canvas);
+      // $canvas.droppable("option", "disabled", true);
+      // $canvas.css({ "min-width": "0px" });
+      $canvasElement.css({
+        my: "center",
+        at: "center",
+        of: $canvas,
+        using: function (pos) {
+          $canvas.animate(pos, 200, "linear");
+        },
+      });
+      converToTableFunc();
+    }
+  }
 
   setTimeout(function () {
     addMouseEvents();
@@ -51,6 +69,48 @@ $(document).ready(function () {
           left: 0,
           top: 0,
         };
+      },
+    });
+    $(".delDrop").droppable({
+      bubbles: false,
+      greedy: false,
+      tolerance: "pointer",
+      drop: function (event, ui) {
+        let canvas = $(this);
+
+        let itemId = ui.draggable.attr("id");
+        // console.log(itemId);
+        // console.log($("#" + itemId));
+        // $(".drop").droppable();
+        // console.log($("#drop").children().length);
+
+        console.log(ui.draggable);
+        let canvasParent = ui.draggable.parent();
+        console.log(canvasParent);
+        console.log(canvasParent.children().length);
+        $("#" + itemId).remove();
+
+        if (canvasParent.hasClass("data2")) {
+        } else if (canvasParent.hasClass("data2")) {
+        }
+        if ($("#drop").children().length === 1) {
+          $(".drop")
+            .droppable({
+              // accept: function (item) {
+              // 	return $(this).data('color') == item.data('color');
+              // },
+              bubbles: false,
+              greedy: true,
+              tolerance: "pointer",
+              drop: droppableDrop,
+            })
+            .droppable("enable");
+        }
+        // $(".drop").droppable().droppable("enable");
+        // $(".drop").droppable().droppable("option", "disabled", false);
+        setTimeout(function () {
+          converToTableFunc();
+        }, 200);
       },
     });
     $(".drop").droppable({
@@ -90,7 +150,9 @@ $(document).ready(function () {
 
           $canvas.append(draggedItem);
           $canvas.droppable("disable");
-          $canvas.css({ "min-width": "0px" });
+          console.log($canvas);
+          // $canvas.droppable("option", "disabled", true);
+          // $canvas.css({ "min-width": "0px" });
           $canvasElement.css({
             my: "center",
             at: "center",
@@ -103,7 +165,7 @@ $(document).ready(function () {
         }
       },
     });
-  }, 500);
+  }, 1500);
 
   function addDropEvent(el, greedy) {
     $(el).droppable({
@@ -116,12 +178,64 @@ $(document).ready(function () {
         var $canvas = $(this);
         if (!ui.draggable.hasClass("canvas-element")) {
           var $canvasElement = ui.draggable.clone();
-          $canvasElement.addClass("canvas-element");
 
+          console.log("Id", $canvasElement.attr("id"));
+          // if (!$canvasElement.attr("id")) {
+          $canvasElement.addClass("canvas-element");
           let draggedItem = $canvasElement;
           draggedItem = initDraggedItem(draggedItem);
 
           $canvasElement = draggedItem;
+          console.log("$canvasElement", $canvasElement);
+          // } else {
+          //   // $canvasElement.addClass("canvas-element");
+          //   let draggedItem = $canvasElement.find("");
+          //   draggedItem = initDraggedItem(draggedItem);
+
+          //   $canvasElement = draggedItem;
+          //   console.log("$canvasElement", $canvasElement);
+          // }
+          // else {
+          //   console.log($("#" + $canvasElement.attr("id")).parent());
+          //   // Single child case only
+          //   if (
+          //     $("#" + $canvasElement.attr("id"))
+          //       .parent()
+          //       .children().length === 3
+          //   ) {
+          //     const childrenData = $("#" + $canvasElement.attr("id"))
+          //       .parent()
+          //       .children();
+          //     // console.log("childrenData", childrenData);
+          //     let childLeft;
+          //     $.each(childrenData, function (key, value) {
+          //       console.log("childrenData", $(this));
+          //       if ($(this).attr("id") !== $canvasElement.attr("id")) {
+          //         childLeft = $(this);
+          //       }
+          //     });
+
+          //     // childLeft = addMissingNorthSouth(childLeft);
+          //     // childLeft = addMissingEastWest(childLeft);
+
+          //     if (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3")) {
+          //       childLeft = compareAddRemNSEW(childLeft.parent(), childLeft);
+          //       const parentId = childLeft.parent().closest("div.drag.vertical").replaceWith(childLeft);
+          //     }
+          //     // $("div.second").replaceWith("<h2>New heading</h2>");
+
+          //     console.log("childLeft", childLeft);
+          //   }
+          //   // Mouse events
+          //   addMouseEvents($canvasElement.find(".ns"), $canvasElement.find(".we"));
+
+          //   //Drop events
+          //   addDropEvent($canvasElement.find(".ns"), true);
+          //   addDropEvent($canvasElement.find(".we"), true);
+          //   addMouseOverEvents($canvasElement.find(".data"));
+          //   addModalClick($canvasElement.find(".data"));
+          //   $("#" + $canvasElement.attr("id")).remove();
+          // }
 
           // Mouse events
           // addMouseEvents($canvasElement.find(".ns"), $canvasElement.find(".we"));
@@ -285,7 +399,7 @@ $(document).ready(function () {
 
           // $canvas.remove();
           // $canvas.append($canvasElement);
-          $canvasElement.css({
+          $canvasElement?.css({
             my: "center",
             at: "center",
             of: $canvas,
@@ -293,11 +407,30 @@ $(document).ready(function () {
               $canvas.animate(pos, 200, "linear");
             },
           });
-          converToTableFunc();
+          setTimeout(function () {
+            converToTableFunc();
+          }, 1000);
+          // converToTableFunc();
         }
       },
     });
   }
+
+  // function compareAddRemNSEW(elem1, elem2) {
+  //   let existingItemNorth = elem1.find("div.noso:first > div > div.north");
+  //   let existingItemSouth = elem1.find("div.noso:first > div > div.south");
+  //   // console.log("existingItem", existingItem);
+
+  //   // console.log("existingItemNorth", existingItemNorth);
+  //   // console.log("existingItemSouth", existingItemSouth);
+  //   if (existingItemNorth.length && !existingItemSouth.length) {
+  //     elem2.find("div.south").parent().remove();
+  //   } else if (existingItemSouth.length && !existingItemNorth.length) {
+  //     elem2.find("div.north").parent().remove();
+  //   }
+
+  //   return elem2;
+  // }
 
   function addModalClick(item) {
     $(item).click(function (e) {
@@ -306,13 +439,60 @@ $(document).ready(function () {
     });
   }
 
+  function removeItemWithParent(itemId) {
+    let childLeft = $("#" + itemId);
+    let siblings = childLeft.parent().children();
+    console.log(siblings);
+    if (
+      siblings.length === 2 &&
+      (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
+    ) {
+      childLeft.parent().closest("div.drag.vertical").remove();
+    }
+    // else if (
+    //   siblings.length === 3 &&
+    //   (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
+    // ) {
+    //   childLeft.remove();
+    //   childLeft = addMissingNorthSouth(childLeft);
+    //   childLeft = addMissingEastWest(childLeft);
+    // }
+    else {
+      childLeft.remove();
+    }
+  }
+
   function initDraggedItem(draggedItem) {
     let container = getNewContainer();
+    container.draggable({
+      cancel: false,
+      helper: function (e) {
+        return $(this).clone();
+      },
+      cursor: "move",
+      start: function (event, ui) {
+        $(this).draggable("instance").offset.click = {
+          left: 0,
+          top: 0,
+        };
+      },
+    });
+
+    if (draggedItem.attr("id")) {
+      removeItemWithParent(draggedItem.attr("id"));
+      container.attr("id", draggedItem.attr("id"));
+      container.find(".data").replaceWith(draggedItem.find(".data"));
+      return container;
+    }
+
+    let UUID = `item-${Date.now()}`;
+    container.attr("id", "container-" + UUID);
     let dataDiv = container.find(".data");
+
     if (draggedItem.attr("item") && itemIds.hasOwnProperty(draggedItem.attr("item"))) {
       let item = $(itemIds[draggedItem.attr("item")]);
       addModalClick(item);
-      let UUID = `item-${Date.now()}`;
+
       item.attr("id", UUID);
       if (draggedItem.attr("item") === "btnIcon") {
         item.attr("src", draggedItem.attr("src"));
@@ -321,6 +501,7 @@ $(document).ready(function () {
       // addModalClick(draggedItem);
       return container;
     }
+
     // dataDiv.append(draggedItem);
     // return container;
   }
@@ -458,6 +639,21 @@ $(document).ready(function () {
     addDropEvent(container.find(".we"), true);
     addMouseOverEvents(container.find(".data3"));
     addModalClick(container.find(".data3"));
+    container.draggable({
+      cancel: false,
+      helper: function (e) {
+        return $(this).clone();
+      },
+      cursor: "move",
+      start: function (event, ui) {
+        $(this).draggable("instance").offset.click = {
+          left: 0,
+          top: 0,
+        };
+      },
+    });
+    let UUID = `item-${Date.now()}`;
+    container.attr("id", "container-" + UUID);
     return container;
   }
 
@@ -498,67 +694,81 @@ $(document).ready(function () {
     addDropEvent(container.find(".we"), true);
     addMouseOverEvents(container.find(".data2"));
     addModalClick(container.find(".data2"));
-
+    container.draggable({
+      cancel: false,
+      helper: function (e) {
+        return $(this).clone();
+      },
+      cursor: "move",
+      start: function (event, ui) {
+        $(this).draggable("instance").offset.click = {
+          left: 0,
+          top: 0,
+        };
+      },
+    });
+    let UUID = `item-${Date.now()}`;
+    container.attr("id", "container-" + UUID);
     return container;
   }
 });
 
-function getSubItemsForgroup2(item) {
-  let group = $(item).find(".data2:first").children();
-  let tbody = $("<tbody>");
-  let table = $("<table>");
-  let tr = $("<tr>");
-  console.log(group);
-  $.each(group, function (index, value) {
-    let td = $("<td>");
-    console.log($(this));
-    if ($(this).hasClass("dataItem")) {
-      let dataItem = $(this).find(".data").children().eq(0).clone();
-      let vAlign = $(this).find(".data").css("vertical-align");
-      if (vAlign) {
-        td.css("vertical-align", vAlign);
-      }
-      td.append(dataItem);
-    } else if ($(this).hasClass("group2")) {
-      let table = getSubItemsForgroup2($(this));
-      td.append(table);
-    } else if ($(this).hasClass("group3")) {
-      let table = getSubItemsForgroup3($(this));
-      td.append(table);
-    }
-    tr.append(td);
-  });
-  tbody.append(tr);
-  table.append(tbody);
-  return table;
-}
+// function getSubItemsForgroup2(item) {
+//   let group = $(item).find(".data2:first").children();
+//   let tbody = $("<tbody>");
+//   let table = $("<table>");
+//   let tr = $("<tr>");
+//   console.log(group);
+//   $.each(group, function (index, value) {
+//     let td = $("<td>");
+//     console.log($(this));
+//     if ($(this).hasClass("dataItem")) {
+//       let dataItem = $(this).find(".data").children().eq(0).clone();
+//       let vAlign = $(this).find(".data").css("vertical-align");
+//       if (vAlign) {
+//         td.css("vertical-align", vAlign);
+//       }
+//       td.append(dataItem);
+//     } else if ($(this).hasClass("group2")) {
+//       let table = getSubItemsForgroup2($(this));
+//       td.append(table);
+//     } else if ($(this).hasClass("group3")) {
+//       let table = getSubItemsForgroup3($(this));
+//       td.append(table);
+//     }
+//     tr.append(td);
+//   });
+//   tbody.append(tr);
+//   table.append(tbody);
+//   return table;
+// }
 
-function getSubItemsForgroup3(item) {
-  let group = $(item).find(".data3:first").children();
-  let tbody = $("<tbody>");
-  let table = $("<table>");
-  console.log(group);
-  $.each(group, function (index, value) {
-    let tr = $("<tr>");
-    let td = $("<td>");
-    console.log($(this));
-    if ($(this).hasClass("dataItem")) {
-      let dataItem = $(this).find(".data").children().eq(0).clone();
-      let vAlign = $(this).find(".data").css("vertical-align");
-      if (vAlign) {
-        td.css("vertical-align", vAlign);
-      }
-      td.append(dataItem);
-    } else if ($(this).hasClass("group2")) {
-      let table = getSubItemsForgroup2($(this));
-      td.append(table);
-    } else if ($(this).hasClass("group3")) {
-      let table = getSubItemsForgroup3($(this));
-      td.append(table);
-    }
-    tr.append(td);
-    tbody.append(tr);
-  });
-  table.append(tbody);
-  return table;
-}
+// function getSubItemsForgroup3(item) {
+//   let group = $(item).find(".data3:first").children();
+//   let tbody = $("<tbody>");
+//   let table = $("<table>");
+//   console.log(group);
+//   $.each(group, function (index, value) {
+//     let tr = $("<tr>");
+//     let td = $("<td>");
+//     console.log($(this));
+//     if ($(this).hasClass("dataItem")) {
+//       let dataItem = $(this).find(".data").children().eq(0).clone();
+//       let vAlign = $(this).find(".data").css("vertical-align");
+//       if (vAlign) {
+//         td.css("vertical-align", vAlign);
+//       }
+//       td.append(dataItem);
+//     } else if ($(this).hasClass("group2")) {
+//       let table = getSubItemsForgroup2($(this));
+//       td.append(table);
+//     } else if ($(this).hasClass("group3")) {
+//       let table = getSubItemsForgroup3($(this));
+//       td.append(table);
+//     }
+//     tr.append(td);
+//     tbody.append(tr);
+//   });
+//   table.append(tbody);
+//   return table;
+// }

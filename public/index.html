@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>jQuery UI Droppable</title>
+    <title>Signature Designer</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -39,19 +39,20 @@
   </head>
   <body>
     <!-- <center> -->
-    <h1 align="center">POC for Rocky</h1>
+    <h1 align="center">Signature Designer</h1>
+    <div class="delDrop">
+      <div class="panel"></div>
 
-    <div class="panel"></div>
-
-    <div class="centered">
-      <div style="display: table-row">
-        <div style="display: table-cell">
-          <div id="drop" class="drop"></div>
+      <div class="centered">
+        <div style="display: table-row">
+          <div style="display: table-cell">
+            <div id="drop" class="drop"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="panelPreview"></div>
+      <div class="panelPreview"></div>
+    </div>
 
     <div class="modal" id="propertiesModel" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
@@ -387,6 +388,7 @@
     <script type="text/javascript" src="./javascripts/tabsJs/image.js"></script>
     <script type="text/javascript" src="./javascripts/mouseEvents.js"></script>
     <script type="text/javascript" src="./javascripts/modal.js"></script>
+    <script type="text/javascript" src="./javascripts/buildPanel.js"></script>
 
     <script type="text/javascript" src="./javascripts/script.js"></script>
   </body>

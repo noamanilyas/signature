@@ -18,8 +18,7 @@ function converToTableFunc() {
           td.css("vertical-align", vAlign);
         }
         let PaddingTabAll = $(this).find(".data").children().eq(0).attr("padding");
-        console.log($(this).find(".data"));
-        console.log(PaddingTabAll);
+
         if (PaddingTabAll) {
           td.css("padding", PaddingTabAll);
         }
@@ -54,7 +53,6 @@ function converToTableFunc() {
   });
   table.append(tbody);
   $(".panelPreview").append(table);
-  console.log(table);
 }
 
 function getSubItemsForgroup2(item) {
@@ -62,10 +60,8 @@ function getSubItemsForgroup2(item) {
   let tbody = $("<tbody>");
   let table = $("<table>");
   let tr = $("<tr>");
-  console.log(group);
   $.each(group, function (index, value) {
     let td = $("<td>");
-    console.log($(this));
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
       let vAlign = $(this).find(".data").css("vertical-align");
@@ -73,8 +69,7 @@ function getSubItemsForgroup2(item) {
         td.css("vertical-align", vAlign);
       }
       let PaddingTabAll = $(this).find(".data").children().eq(0).attr("padding");
-      console.log($(this).find(".data"));
-      console.log(PaddingTabAll);
+
       if (PaddingTabAll) {
         td.css("padding", PaddingTabAll);
       }
@@ -113,11 +108,9 @@ function getSubItemsForgroup3(item) {
   let group = $(item).find(".data3:first").children();
   let tbody = $("<tbody>");
   let table = $("<table>");
-  console.log(group);
   $.each(group, function (index, value) {
     let tr = $("<tr>");
     let td = $("<td>");
-    console.log($(this));
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
       let vAlign = $(this).find(".data").css("vertical-align");
@@ -125,8 +118,7 @@ function getSubItemsForgroup3(item) {
         td.css("vertical-align", vAlign);
       }
       let PaddingTabAll = $(this).find(".data").children().eq(0).attr("padding");
-      console.log($(this).find(".data"));
-      console.log(PaddingTabAll);
+
       if (PaddingTabAll) {
         td.css("padding", PaddingTabAll);
       }
