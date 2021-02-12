@@ -73,6 +73,9 @@ $(document).ready(function () {
     });
     $(".delDrop").droppable({
       bubbles: false,
+      classes: {
+        "ui-droppable-hover": "delDropHover",
+      },
       greedy: false,
       tolerance: "pointer",
       drop: function (event, ui) {
