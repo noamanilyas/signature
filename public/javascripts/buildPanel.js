@@ -63,10 +63,7 @@ function appendNewTabs(tabs) {
     $.each(val.TabFields, function (i, item) {
       const rowItem = getRowItem(item);
       newTab.find("tbody").append(rowItem);
-      console.log("rowItem", rowItem);
     });
-
-    console.log("newTab", newTab);
 
     $("#panelContainer").append(newTab);
   });

@@ -86,7 +86,7 @@
       } */
 
 .ns {
-  height: 3px;
+  height: 5px;
   width: 100%;
   z-index: 100;
   /* margin: 0px 1px 0px 1px; */
@@ -95,7 +95,7 @@
 }
 .we {
   height: 100%;
-  width: 3px;
+  width: 5px;
   z-index: 100;
   /* margin: 0px 1px 0px 1px; */
   /* margin: 1px 0px 1px 0px; */
@@ -162,4 +162,10 @@
 
 .ui-state-hover {
   background-color: deepskyblue !important;
+}
+
+.ui-mouse-enter {
+  background-color: deepskyblue !important;
+  height: 30px !important;
+  width: 30px !important;
 }

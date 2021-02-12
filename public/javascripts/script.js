@@ -52,7 +52,7 @@ $(document).ready(function () {
   }
 
   setTimeout(function () {
-    addMouseEvents();
+    // addMouseEvents();
 
     // $("#convertToTable").on("click", function () {
     //   converToTableFunc();
@@ -79,28 +79,16 @@ $(document).ready(function () {
         let canvas = $(this);
 
         let itemId = ui.draggable.attr("id");
-        // console.log(itemId);
-        // console.log($("#" + itemId));
-        // $(".drop").droppable();
-        // console.log($("#drop").children().length);
 
-        console.log(ui.draggable);
         let canvasParent = ui.draggable.parent();
-        console.log(canvasParent);
-        console.log(canvasParent.children().length);
         $("#" + itemId).remove();
         if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
           canvasParent.remove();
         }
-        // if (canvasParent.hasClass("data2")) {
-        // } else if (canvasParent.hasClass("data2")) {
-        // }
+
         if ($("#drop").children().length === 1) {
           $(".drop")
             .droppable({
-              // accept: function (item) {
-              // 	return $(this).data('color') == item.data('color');
-              // },
               bubbles: false,
               greedy: true,
               tolerance: "pointer",
@@ -108,8 +96,7 @@ $(document).ready(function () {
             })
             .droppable("enable");
         }
-        // $(".drop").droppable().droppable("enable");
-        // $(".drop").droppable().droppable("option", "disabled", false);
+
         setTimeout(function () {
           converToTableFunc();
         }, 200);
@@ -155,7 +142,6 @@ $(document).ready(function () {
 
           $canvas.append(draggedItem);
           $canvas.droppable("disable");
-          console.log($canvas);
           // $canvas.droppable("option", "disabled", true);
           // $canvas.css({ "min-width": "0px" });
           $canvasElement.css({
@@ -174,6 +160,9 @@ $(document).ready(function () {
 
   function addDropEvent(el, greedy) {
     $(el).droppable({
+      classes: {
+        "ui-droppable-hover": "ui-mouse-enter",
+      },
       bubbles: false,
       greedy: greedy,
       tolerance: "pointer",
@@ -184,14 +173,16 @@ $(document).ready(function () {
         if (!ui.draggable.hasClass("canvas-element")) {
           var $canvasElement = ui.draggable.clone();
 
-          console.log("Id", $canvasElement.attr("id"));
+          let itemEdited = false;
+          if ($canvasElement.attr("id")) {
+            itemEdited = true;
+          }
           // if (!$canvasElement.attr("id")) {
           $canvasElement.addClass("canvas-element");
           let draggedItem = $canvasElement;
           draggedItem = initDraggedItem(draggedItem);
 
           $canvasElement = draggedItem;
-          console.log("$canvasElement", $canvasElement);
           // } else {
           //   // $canvasElement.addClass("canvas-element");
           //   let draggedItem = $canvasElement.find("");
@@ -310,12 +301,15 @@ $(document).ready(function () {
               let existingItemSouth = existingItem.find("div.noso:first > div > div.south");
               // console.log("existingItem", existingItem);
 
-              // console.log("existingItemNorth", existingItemNorth);
-              // console.log("existingItemSouth", existingItemSouth);
-              if (existingItemNorth.length && !existingItemSouth.length) {
-                container.find("div.south").parent().remove();
-              } else if (existingItemSouth.length && !existingItemNorth.length) {
-                container.find("div.north").parent().remove();
+              console.log("Edited", itemEdited);
+              console.log("Parent item count", existingItem.parent().children().length);
+
+              if (!itemEdited) {
+                if (existingItemNorth.length && !existingItemSouth.length) {
+                  container.find("div.south").parent().remove();
+                } else if (existingItemSouth.length && !existingItemNorth.length) {
+                  container.find("div.north").parent().remove();
+                }
               }
 
               existingItem = addMissingNorthSouth(existingItem);
@@ -364,10 +358,12 @@ $(document).ready(function () {
 
               let existingItemEast = existingItem.find("div.eowo:first > div.east");
               let existingItemWest = existingItem.find("div.eowo:first > div.west");
-              if (existingItemEast.length && !existingItemWest.length) {
-                container.find("div.west").remove();
-              } else if (existingItemWest.length && !existingItemEast.length) {
-                container.find("div.east").remove();
+              if (!itemEdited) {
+                if (existingItemEast.length && !existingItemWest.length) {
+                  container.find("div.west").remove();
+                } else if (existingItemWest.length && !existingItemEast.length) {
+                  container.find("div.east").remove();
+                }
               }
 
               if ($canvas.hasClass("north")) {
@@ -447,22 +443,44 @@ $(document).ready(function () {
   function removeItemWithParent(itemId) {
     let childLeft = $("#" + itemId);
     let siblings = childLeft.parent().children();
-    console.log(siblings);
+    // If siblings are 3 then it means there will be only 1 item left in group 2 or group 3.
     if (
+      siblings.length === 3 &&
+      (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
+    ) {
+      // If first item is the one which is left out
+      // then replace the data of left out item with data of the group2 or group3
+      // Remove group2 or group3 class
+      // Add dataItem class so it show ups in preview
+
+      console.log("siblings", siblings);
+      console.log("itemId", itemId);
+      let index = 0;
+      $.each(siblings, function (i, item) {
+        if (siblings.eq(0).attr("id") !== itemId) {
+          index = i;
+        }
+      });
+
+      // if (siblings.eq(0).attr("id") !== itemId) {
+      // console.log("hrer1");
+      childLeft.parent().closest("div.drag.vertical").removeClass("group2");
+      childLeft.parent().closest("div.drag.vertical").removeClass("group3");
+      childLeft.parent().closest("div.drag.vertical").addClass("dataItem");
+      childLeft.parent().replaceWith(siblings.eq(index).find(".data:first"));
+      // } else if (siblings.eq(2).attr("id") !== itemId) {
+      //   console.log("hrer2");
+      //   childLeft.parent().closest("div.drag.vertical").removeClass("group2");
+      //   childLeft.parent().closest("div.drag.vertical").removeClass("group3");
+      //   childLeft.parent().closest("div.drag.vertical").addClass("dataItem");
+      //   childLeft.parent().replaceWith(siblings.eq(2).find(".data:first"));
+      // }
+    } else if (
       siblings.length === 2 &&
       (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
     ) {
       childLeft.parent().closest("div.drag.vertical").remove();
-    }
-    // else if (
-    //   siblings.length === 3 &&
-    //   (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
-    // ) {
-    //   childLeft.remove();
-    //   childLeft = addMissingNorthSouth(childLeft);
-    //   childLeft = addMissingEastWest(childLeft);
-    // }
-    else {
+    } else {
       childLeft.remove();
     }
   }
@@ -482,6 +500,8 @@ $(document).ready(function () {
         };
       },
     });
+
+    // If existing item is dragged for editing then do belwo tasks
 
     if (draggedItem.attr("id")) {
       removeItemWithParent(draggedItem.attr("id"));
@@ -537,7 +557,7 @@ $(document).ready(function () {
     let container = $(containerHTML);
 
     // Mouse events
-    addMouseEvents(container.find(".ns"), container.find(".we"));
+    // addMouseEvents(container.find(".ns"), container.find(".we"));
 
     //Drop events
     addDropEvent(container.find(".ns"), true);
@@ -562,7 +582,7 @@ $(document).ready(function () {
       divnoso.append(n);
       //Drop events
       addDropEvent(n.find("div"), true);
-      addMouseEvents(n.find("div"), null);
+      // addMouseEvents(n.find("div"), null);
       return existingItem;
     } else if (!firstChild.length) {
       let n = $(`<div class="ph-table-row">
@@ -571,7 +591,7 @@ $(document).ready(function () {
       divnoso.prepend(n);
       //Drop events
       addDropEvent(n.find("div"), true);
-      addMouseEvents(n.find("div"), null);
+      // addMouseEvents(n.find("div"), null);
       return existingItem;
     } else {
       return existingItem;
@@ -592,7 +612,7 @@ $(document).ready(function () {
       let n = $(`<div class="ph-table-cell west drop we s"></div>`);
       //Drop events
       addDropEvent(n, true);
-      addMouseEvents(null, n);
+      // addMouseEvents(null, n);
 
       diveowo.prepend(n);
       return existingItem;
@@ -600,7 +620,7 @@ $(document).ready(function () {
       let n = $(`<div class="ph-table-cell east drop we s"></div>`);
       //Drop events
       addDropEvent(n, true);
-      addMouseEvents(null, n);
+      // addMouseEvents(null, n);
 
       diveowo.append(n);
       return existingItem;
@@ -637,7 +657,7 @@ $(document).ready(function () {
     let container = $(containerHTML);
 
     // Mouse events
-    addMouseEvents(container.find(".ns"), container.find(".we"));
+    // addMouseEvents(container.find(".ns"), container.find(".we"));
 
     //Drop events
     addDropEvent(container.find(".ns"), true);
@@ -692,7 +712,7 @@ $(document).ready(function () {
     let container = $(containerHTML);
 
     // Mouse events
-    addMouseEvents(container.find(".ns"), container.find(".we"));
+    // addMouseEvents(container.find(".ns"), container.find(".we"));
 
     //Drop events
     addDropEvent(container.find(".ns"), true);
