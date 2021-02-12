@@ -89,10 +89,12 @@ $(document).ready(function () {
         console.log(canvasParent);
         console.log(canvasParent.children().length);
         $("#" + itemId).remove();
-
-        if (canvasParent.hasClass("data2")) {
-        } else if (canvasParent.hasClass("data2")) {
+        if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
+          canvasParent.remove();
         }
+        // if (canvasParent.hasClass("data2")) {
+        // } else if (canvasParent.hasClass("data2")) {
+        // }
         if ($("#drop").children().length === 1) {
           $(".drop")
             .droppable({
@@ -117,6 +119,9 @@ $(document).ready(function () {
       // accept: function (item) {
       // 	return $(this).data('color') == item.data('color');
       // },
+      classes: {
+        "ui-droppable-hover": "ui-state-hover",
+      },
       bubbles: false,
       greedy: true,
       tolerance: "pointer",

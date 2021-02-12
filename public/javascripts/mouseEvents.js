@@ -8,7 +8,7 @@ $(document)
     isDown = false; // When mouse goes up, set isDown to false
   });
 const colors = {
-  mouseEnt: "#00bcd466",
+  mouseEnt: "deepskyblue",
   mouseLve: "#f1f1f1;",
 };
 

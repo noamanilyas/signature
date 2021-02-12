@@ -115,16 +115,22 @@
 }
 .panelPreview {
   width: 350px;
-  height: 250px;
+  height: 380px;
   display: table;
   float: right;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
   background-color: whitesmoke;
+  padding: 10px;
 }
 .panel {
   width: 150px;
   height: 300px;
   display: table;
+  padding: 10px;
   float: left;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
   background-color: whitesmoke;
 }
 
@@ -151,5 +157,9 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: darkcyan;
+  background: 61a733;
+}
+
+.ui-state-hover {
+  background-color: deepskyblue !important;
 }

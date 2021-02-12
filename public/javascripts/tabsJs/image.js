@@ -36,7 +36,7 @@ function renderImageTab(id) {
   $(`#${fileInput}`).on("change", function () {
     $(`#${"image-upload"}`).attr("checked", true);
     importFileandPreview();
-    converToTableFunc();
+    // converToTableFunc();
   });
 
   function importFileandPreview() {
@@ -56,6 +56,7 @@ function renderImageTab(id) {
       "load",
       function () {
         preview.src = reader.result;
+        converToTableFunc();
       },
       false
     );
