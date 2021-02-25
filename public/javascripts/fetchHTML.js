@@ -72,3 +72,11 @@ fetch("./tabs/padding.html")
   .then((data) => {
     document.querySelector(".paddingDiv").innerHTML = data;
   });
+
+fetch("./tabs/tableProps.html")
+  .then((response) => {
+    return response.text();
+  })
+  .then((data) => {
+    document.querySelector(".tableProps").innerHTML = data;
+  });

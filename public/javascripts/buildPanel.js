@@ -19,6 +19,26 @@ const itemIds = {
         class="icon-list drag"
         src=""
       />`,
+  btnTable: `<table class="editor-table">
+
+    <tr class="editor-tr">
+      <td category="table" class="editor-td">
+        <div class="ph-table-cell tableDrop drop">C</div>
+      </td>
+      <td category="table" class="editor-td">
+        <div class="ph-table-cell tableDrop drop">C</div>
+      </td>
+    </tr>
+     <tr class="editor-tr">
+      <td category="table" class="editor-td">
+        <div class="ph-table-cell tableDrop drop">C</div>
+      </td>
+      <td category="table" class="editor-td">
+        <div class="ph-table-cell tableDrop drop">C</div>
+      </td>
+    </tr>
+
+    </table>`,
 };
 
 function appendNewTabs(tabs) {

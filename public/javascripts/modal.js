@@ -1,5 +1,6 @@
 var a = {
-  textField: ["text", "background", "visibility", "alignment", "border", "padding", "size", "render"],
+  textField: ["text", "background", "visibility", "alignment", "border", "tableProps"],
+  table: ["text", "background", "visibility", "alignment", "border", "padding", "size", "tableProps"],
   group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
   socialIcon: [
     "hyperlink",
@@ -30,6 +31,8 @@ var a = {
 function renderModel(e) {
   let category = e.target.getAttribute("category");
   let id = e.target.getAttribute("id");
+  console.log(category);
+  console.log(id);
   if (a[category]) {
     // console.log(e.target);
     $("#propertiesModel").modal("show");
@@ -65,5 +68,7 @@ function renderModel(e) {
     renderBorderTab(id);
     // Render PaddingJS
     renderPaddingTab(id);
+    // Render TableJS
+    renderTableTab(id);
   }
 }

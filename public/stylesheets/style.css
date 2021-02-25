@@ -178,3 +178,28 @@
   height: 30px !important;
   width: 30px !important;
 }
+
+/* Tables */
+
+.editor-table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  min-width: 50px;
+  min-height: 50px;
+  border: 1px dotted blue;
+}
+
+.editor-td,
+.editor-th {
+  border-collapse: separate;
+  border: 1px dotted blue;
+  text-align: left;
+}
+
+.editor-tr {
+  border-collapse: separate;
+  border: 1px dashed blue;
+}
+
+.tableDrop {
+}

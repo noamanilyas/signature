@@ -227,6 +227,18 @@
                           >Social Media Icon</a
                         >
                       </li>
+                      <li>
+                        <a
+                          class="nav-link"
+                          id="v-tableProps-side"
+                          data-toggle="pill"
+                          href="#v-tableProps-body"
+                          role="tab"
+                          aria-controls="v-tableProps-body"
+                          aria-expanded="true"
+                          >Table Props</a
+                        >
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -340,7 +352,7 @@
                       role="tabpanel"
                       aria-labelledby="v-render-side"
                     >
-                      Here is a content for tab render.
+                      <!-- Here is a content for tab render. -->
                     </div>
                     <div
                       class="tab-pane fade"
@@ -367,7 +379,15 @@
                       role="tabpanel"
                       aria-labelledby="v-socialMediaIcon-side"
                     >
-                      Here is a content for tab socialMediaIcon.
+                      <!-- Here is a content for tab socialMediaIcon. -->
+                    </div>
+                    <div
+                      class="tab-pane fade tableProps"
+                      id="v-tableProps-body"
+                      role="tabpanel"
+                      aria-labelledby="v-tableProps-side"
+                    >
+                      <!-- Here is a content for tab tableProps. -->
                     </div>
                   </div>
                 </div>
@@ -378,9 +398,36 @@
       </div>
     </div>
 
+    <div class="modal" id="tableModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tableModal">Table Modal</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <form id="tableRC-form">
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Cols</label>
+                  <input id="tableRC-cols" type="text" class="form-control" placeholder="0 px" />
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Rows</label>
+                  <input id="tableRC-rows" type="text" class="form-control" placeholder="0 px" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- </center> -->
     <script type="text/javascript" src="./javascripts/fetchHTML.js"></script>
     <script type="text/javascript" src="./javascripts/convertToTable.js"></script>
+    <script type="text/javascript" src="./javascripts/tabsJs/tableProps.js"></script>
     <script type="text/javascript" src="./javascripts/tabsJs/padding.js"></script>
     <script type="text/javascript" src="./javascripts/tabsJs/border.js"></script>
     <script type="text/javascript" src="./javascripts/tabsJs/alignment.js"></script>

@@ -399,6 +399,10 @@ $(document).ready(function () {
                 $canvas.parent().remove();
               }
             }
+          } else if ($canvas.hasClass("tableDrop")) {
+            console.log($canvas);
+            $canvas.append(draggedItem);
+            $canvas.droppable("disable");
           }
 
           // $canvas.remove();
@@ -520,8 +524,16 @@ $(document).ready(function () {
     if (draggedItem.attr("item") && itemIds.hasOwnProperty(draggedItem.attr("item"))) {
       let item = $(itemIds[draggedItem.attr("item")]);
       addModalClick(item);
-
-      item.attr("id", UUID);
+      if (draggedItem.attr("item") === "btnTable") {
+        let tds = item.find(".editor-td");
+        tds.each(function (index) {
+          let UUID2 = `item-${Date.now() + index}`;
+          $(this).attr("id", "editorTD-" + UUID2);
+          addDropEvent($(this).children().eq(0), true);
+        });
+      } else {
+        item.attr("id", UUID);
+      }
       if (draggedItem.attr("item") === "btnIcon") {
         item.attr("src", draggedItem.attr("src"));
       }
