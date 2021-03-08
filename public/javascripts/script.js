@@ -6,6 +6,103 @@ $(document).ready(function () {
    * "padding", "size", "render", "orientation", "socialMediaIcon"]
    */
 
+  Swal.fire({
+    // position: "top-end",
+    onBeforeOpen: () => {
+      Swal.showLoading();
+    },
+    icon: "Loading!",
+    title: "Loading Signature",
+    showConfirmButton: false,
+    // timer: 1500,
+  });
+  (async () => {
+    let url_string = window.location.href;
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+    if (id > 0) {
+      const rawResponse = await fetch("http://localhost:8000/getSignatureById?id=" + id, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const content = await rawResponse.json();
+
+      // Set name
+      $("#signatureName").val(content.recordset[0].Name);
+      let HTMLString = content.recordset[0].HTML;
+      let HTMLObj = $(HTMLString);
+      setTimeout(function () {
+        addDropEvent(HTMLObj.find(".ns"), false);
+        addDropEvent(HTMLObj.find(".we"), false);
+        addModalClick(HTMLObj.find(".data"));
+        addMouseOverEvents(HTMLObj.find(".data"));
+        // $("#drop").droppable("option", "disabled", true);
+      }, 500);
+      $("#drop").append(HTMLObj);
+      converToTableFunc();
+    }
+    setTimeout(function () {
+      Swal.close();
+    }, 1500);
+  })();
+
+  // Save signature
+  $("#saveSignature").click(function (e) {
+    let url_string = window.location.href;
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+    if (id > 0) {
+      console.log("Save signature");
+      (async () => {
+        let name = $("#signatureName").val();
+        let html = $("#drop").html();
+        let signatureHTML = $(".panelPreview").html();
+        const rawResponse = await fetch("http://localhost:8000/updateHTML", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, html, signatureHTML, id }),
+        });
+        const content = await rawResponse.json();
+        Swal.fire({
+          // position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })();
+    } else {
+      console.log("Save signature");
+      (async () => {
+        let name = $("#signatureName").val();
+        let html = $("#drop").html();
+        let signatureHTML = $(".panelPreview").html();
+        const rawResponse = await fetch("http://localhost:8000/saveHTML", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, html, signatureHTML }),
+        });
+        const content = await rawResponse.json();
+        Swal.fire({
+          // position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })();
+    }
+  });
+
   function droppableDrop(event, ui) {
     var $canvas = $(this);
     if (!ui.draggable.hasClass("canvas-element")) {
@@ -170,8 +267,8 @@ $(document).ready(function () {
       greedy: greedy,
       tolerance: "pointer",
       drop: function (event, ui) {
-        // console.log(ui);
-        // console.log(event);
+        console.log(ui);
+        console.log(event);
         var $canvas = $(this);
         if (!ui.draggable.hasClass("canvas-element")) {
           var $canvasElement = ui.draggable.clone();

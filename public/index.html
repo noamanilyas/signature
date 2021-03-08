@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <title>Signature Designer</title>
+    <meta charset="utf-8" />
+    <title>Green Signature</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="icon" type="image/png" href="images/favicon.png" />
@@ -27,418 +28,42 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
-
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
-    <style type="text/css">
-      body {
-        background-color: #61a733;
-      }
-      .title {
-        color: #ffffff;
-      }
-    </style>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="./stylesheets/style.css" />
+    <link rel="stylesheet" href="./stylesheets/indexstyle.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   </head>
   <body>
-    <!-- <center> -->
-    <h1 align="center" class="title">Signature Designer</h1>
-    <div class="panel"></div>
+    <nav class="navbar navbar-dark bg-dark nav-right">
+      <a class="navbar-brand" href="#">
+        <img src="/images/logo.png" height="45" alt="" />
+      </a>
+      <!-- <button type="button" class="n-item btn btn-success">New Signature</button> -->
+      <a href="editor.html" class="n-item btn btn-success">New Signature</a>
+      <!-- <a href="editor.html" class="n-item btn btn-info editor-btn">Editor</a> -->
+    </nav>
 
-    <div class="centered">
-      <div style="display: table-row">
-        <div style="display: table-cell">
-          <div id="drop" class="drop"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panelPreview"></div>
-    <div class="delDrop"><h4 align="center" class="title">Delete Item</h4></div>
-
-    <div class="modal" id="propertiesModel" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="propertiesModelLabel">Properties</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <section id="propTabs">
-              <div class="row">
-                <div class="col-2">
-                  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-                    <ul id="tabListUL" class="nav nav-tabs" style="overflow-y: auto">
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-labelIcon-side"
-                          data-toggle="pill"
-                          href="#v-labelIcon-body"
-                          role="tab"
-                          aria-controls="v-labelIcon-body"
-                          aria-expanded="true"
-                          >Label Icon</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link active"
-                          id="v-imageSource-side"
-                          data-toggle="pill"
-                          href="#v-imageSource-body"
-                          role="tab"
-                          aria-controls="v-imageSource-body"
-                          aria-expanded="true"
-                          >Image Source</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-hyperlink-side"
-                          data-toggle="pill"
-                          href="#v-hyperlink-body"
-                          role="tab"
-                          aria-controls="v-hyperlink-body"
-                          aria-expanded="true"
-                          >Hyperlink</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-text-side"
-                          data-toggle="pill"
-                          href="#v-text-body"
-                          role="tab"
-                          aria-controls="v-text-body"
-                          aria-expanded="true"
-                          >Text Props</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-background-side"
-                          data-toggle="pill"
-                          href="#v-background-body"
-                          role="tab"
-                          aria-controls="v-background-body"
-                          aria-expanded="true"
-                          >Background</a
-                        >
-                      </li>
-                      <!-- <li>
-                        <a
-                          class="nav-link"
-                          id="v-visibility-side"
-                          data-toggle="pill"
-                          href="#v-visibility-body"
-                          role="tab"
-                          aria-controls="v-visibility-body"
-                          aria-expanded="true"
-                          >Visibility</a
-                        >
-                      </li> -->
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-alignment-side"
-                          data-toggle="pill"
-                          href="#v-alignment-body"
-                          role="tab"
-                          aria-controls="v-alignment-body"
-                          aria-expanded="true"
-                          >Alignment</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-border-side"
-                          data-toggle="pill"
-                          href="#v-border-body"
-                          role="tab"
-                          aria-controls="v-border-body"
-                          aria-expanded="true"
-                          >Border</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-padding-side"
-                          data-toggle="pill"
-                          href="#v-padding-body"
-                          role="tab"
-                          aria-controls="v-padding-body"
-                          aria-expanded="true"
-                          >Padding</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-size-side"
-                          data-toggle="pill"
-                          href="#v-size-body"
-                          role="tab"
-                          aria-controls="v-size-body"
-                          aria-expanded="true"
-                          >Element Size</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-render-side"
-                          data-toggle="pill"
-                          href="#v-render-body"
-                          role="tab"
-                          aria-controls="v-render-body"
-                          aria-expanded="true"
-                          >Render</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-orientation-side"
-                          data-toggle="pill"
-                          href="#v-orientation-body"
-                          role="tab"
-                          aria-controls="v-orientation-body"
-                          aria-expanded="true"
-                          >Orientation</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-socialMediaIcon-side"
-                          data-toggle="pill"
-                          href="#v-socialMediaIcon-body"
-                          role="tab"
-                          aria-controls="v-socialMediaIcon-body"
-                          aria-expanded="true"
-                          >Social Media Icon</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="nav-link"
-                          id="v-tableProps-side"
-                          data-toggle="pill"
-                          href="#v-tableProps-body"
-                          role="tab"
-                          aria-controls="v-tableProps-body"
-                          aria-expanded="true"
-                          >Table Props</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-10" style="overflow: auto; max-height: 240px">
-                  <div class="tab-content" id="v-pills-tabContent">
-                    <div
-                      class="tab-pane fade"
-                      id="v-labelIcon-body"
-                      role="tabpanel"
-                      aria-labelledby="v-labelIcon-side"
-                    >
-                      <!-- Here is a content for tab labelIcon. -->
-                      <form>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Background</label>
-                          <input type="text" class="form-control" placeholder="#000000" />
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Foreground</label>
-                          <input type="text" class="form-control" placeholder="#000000" />
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Width</label>
-                          <input type="text" class="form-control" placeholder="0 px" />
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Height</label>
-                          <input type="text" class="form-control" placeholder="0 px" />
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Corner Radius</label>
-                          <input type="text" class="form-control" placeholder="0 px" />
-                        </div>
-                      </form>
-                    </div>
-                    <div
-                      class="tab-pane fade imageSource"
-                      id="v-imageSource-body"
-                      role="tabpanel"
-                      aria-labelledby="v-imageSource-side"
-                    >
-                      <!-- Here is a content for tab imageSource. -->
-                    </div>
-                    <div
-                      class="tab-pane fade hyperlink"
-                      id="v-hyperlink-body"
-                      role="tabpanel"
-                      aria-labelledby="v-hyperlink-side"
-                    >
-                      <!-- Here is a content for tab hyperlink. -->
-                    </div>
-                    <div
-                      class="tab-pane fade text"
-                      id="v-text-body"
-                      role="tabpanel"
-                      aria-labelledby="v-text-side"
-                    >
-                      <!-- Here is a content for tab text. -->
-                    </div>
-                    <div
-                      class="tab-pane fade background"
-                      id="v-background-body"
-                      role="tabpanel"
-                      aria-labelledby="v-background-side"
-                    >
-                      <!-- Here is a content for tab background. -->
-                    </div>
-                    <div
-                      class="tab-pane fade visibility"
-                      id="v-visibility-body"
-                      role="tabpanel"
-                      aria-labelledby="v-visibility-side"
-                    >
-                      <!-- Here is a content for tab visibility. -->
-                    </div>
-                    <div
-                      class="tab-pane fade alignment"
-                      id="v-alignment-body"
-                      role="tabpanel"
-                      aria-labelledby="v-alignment-side"
-                    >
-                      <!-- Here is a content for tab alignment. -->
-                    </div>
-                    <div
-                      class="tab-pane fade borderDiv"
-                      id="v-border-body"
-                      role="tabpanel"
-                      aria-labelledby="v-border-side"
-                    >
-                      <!-- Here is a content for tab border. -->
-                    </div>
-                    <div
-                      class="tab-pane fade paddingDiv"
-                      id="v-padding-body"
-                      role="tabpanel"
-                      aria-labelledby="v-padding-side"
-                    >
-                      <!-- Here is a content for tab padding. -->
-                    </div>
-                    <div
-                      class="tab-pane fade size"
-                      id="v-size-body"
-                      role="tabpanel"
-                      aria-labelledby="v-size-side"
-                    >
-                      <!-- Here is a content for tab size. -->
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="v-render-body"
-                      role="tabpanel"
-                      aria-labelledby="v-render-side"
-                    >
-                      <!-- Here is a content for tab render. -->
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="v-orientation-body"
-                      role="tabpanel"
-                      aria-labelledby="v-orientation-side"
-                    >
-                      <!-- Here is a content for tab orientation. -->
-                      <form>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput">Orientation</label>
-                          <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                              <button type="button" class="btn btn-secondary">Vertical</button>
-                              <button type="button" class="btn btn-secondary">Horizontal</button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="v-socialMediaIcon-body"
-                      role="tabpanel"
-                      aria-labelledby="v-socialMediaIcon-side"
-                    >
-                      <!-- Here is a content for tab socialMediaIcon. -->
-                    </div>
-                    <div
-                      class="tab-pane fade tableProps"
-                      id="v-tableProps-body"
-                      role="tabpanel"
-                      aria-labelledby="v-tableProps-side"
-                    >
-                      <!-- Here is a content for tab tableProps. -->
-                    </div>
-                  </div>
-                </div>
+    <div class="sig-list" id="list_sig">
+      <!-- <div class="container bcontent">
+        <div class="card">
+          <div class="row no-gutters">
+            <div class="col-sm-3">
+              <img
+                class="card-img card-img-main"
+                src="/images/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png"
+                alt="Microsoft Card"
+              />
+            </div>
+            <div class="col-sm-9">
+              <div class="card-body">
+                <h5 class="card-title">Microsoft</h5>
+                <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p>
+                <a href="editor.html" class="btn btn-success">Launch Editor</a>
               </div>
-            </section>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="tableModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="tableModal">Table Modal</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <form id="tableRC-form">
-                <div class="form-group">
-                  <label for="formGroupExampleInput2">Cols</label>
-                  <input id="tableRC-cols" type="text" class="form-control" placeholder="0 px" />
-                </div>
-                <div class="form-group">
-                  <label for="formGroupExampleInput2">Rows</label>
-                  <input id="tableRC-rows" type="text" class="form-control" placeholder="0 px" />
-                </div>
-              </form>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
-    <!-- </center> -->
-    <script type="text/javascript" src="./javascripts/fetchHTML.js"></script>
-    <script type="text/javascript" src="./javascripts/convertToTable.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/tableProps.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/padding.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/border.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/alignment.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/size.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/background.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/text.js"></script>
-    <script type="text/javascript" src="./javascripts/tabsJs/image.js"></script>
-    <script type="text/javascript" src="./javascripts/mouseEvents.js"></script>
-    <script type="text/javascript" src="./javascripts/modal.js"></script>
-    <script type="text/javascript" src="./javascripts/buildPanel.js"></script>
-
-    <script type="text/javascript" src="./javascripts/script.js"></script>
+    <script type="text/javascript" src="./javascripts/index.js"></script>
   </body>
 </html>

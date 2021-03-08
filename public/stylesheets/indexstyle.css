@@ -1,0 +1,22 @@
+/* Home.html */
+.sig-list {
+  margin: 5%;
+}
+.bcontent {
+  margin-top: 10px;
+}
+.card-img-main {
+  margin: 2%;
+}
+.nav-right {
+  justify-content: start !important;
+}
+body {
+  background-color: #61a733;
+}
+.editor-btn {
+  float: right;
+}
+.n-item {
+  margin-right: 1rem;
+}
