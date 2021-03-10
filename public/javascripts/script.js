@@ -11,7 +11,7 @@ $(document).ready(function () {
     onBeforeOpen: () => {
       Swal.showLoading();
     },
-    icon: "Loading!",
+    icon: "info",
     title: "Loading Signature",
     showConfirmButton: false,
     // timer: 1500,
@@ -35,10 +35,12 @@ $(document).ready(function () {
       let HTMLString = content.recordset[0].HTML;
       let HTMLObj = $(HTMLString);
       setTimeout(function () {
+        console.log(HTMLObj.find(".we"));
         addDropEvent(HTMLObj.find(".ns"), false);
         addDropEvent(HTMLObj.find(".we"), false);
         addModalClick(HTMLObj.find(".data"));
         addMouseOverEvents(HTMLObj.find(".data"));
+        $("#drop").droppable("destroy");
         // $("#drop").droppable("option", "disabled", true);
       }, 500);
       $("#drop").append(HTMLObj);
@@ -103,49 +105,63 @@ $(document).ready(function () {
     }
   });
 
-  function droppableDrop(event, ui) {
-    var $canvas = $(this);
-    if (!ui.draggable.hasClass("canvas-element")) {
-      var $canvasElement = ui.draggable.clone();
-      $canvasElement.addClass("canvas-element");
+  function droppableDrop() {
+    $("#drop").droppable({
+      // accept: function (item) {
+      // 	return $(this).data('color') == item.data('color');
+      // },
+      classes: {
+        "ui-droppable-hover": "ui-state-hover",
+      },
+      bubbles: false,
+      greedy: true,
+      tolerance: "pointer",
+      drop: function (event, ui) {
+        console.log("I am i #drop");
+        var $canvas = $(this);
+        if (!ui.draggable.hasClass("canvas-element")) {
+          var $canvasElement = ui.draggable.clone();
+          $canvasElement.addClass("canvas-element");
 
-      let draggedItem = $canvasElement;
-      draggedItem = initDraggedItem(draggedItem);
+          let draggedItem = $canvasElement;
+          draggedItem = initDraggedItem(draggedItem);
 
-      // Mouse events
-      // addMouseEvents($canvasElement.find(".ns"), $canvasElement.find(".we"));
-      // // Dropaable
+          // Mouse events
+          // addMouseEvents($canvasElement.find(".ns"), $canvasElement.find(".we"));
+          // // Dropaable
 
-      // addDropEvent($canvasElement.find(".ns"), true);
-      // addDropEvent($canvasElement.find(".we"), true);
+          // addDropEvent($canvasElement.find(".ns"), true);
+          // addDropEvent($canvasElement.find(".we"), true);
 
-      // Draggable
-      // $canvasElement.draggable({
-      // 	containment: '#container',
-      // 	cursor: 'move',
-      // 	start: function (event, ui) {
-      // 		$(this).draggable('instance').offset.click = {
-      // 			left: 0,
-      // 			top: 0,
-      // 		};
-      // 	},
-      // });
+          // Draggable
+          // $canvasElement.draggable({
+          // 	containment: '#container',
+          // 	cursor: 'move',
+          // 	start: function (event, ui) {
+          // 		$(this).draggable('instance').offset.click = {
+          // 			left: 0,
+          // 			top: 0,
+          // 		};
+          // 	},
+          // });
 
-      $canvas.append(draggedItem);
-      $canvas.droppable("disable");
-      console.log($canvas);
-      // $canvas.droppable("option", "disabled", true);
-      // $canvas.css({ "min-width": "0px" });
-      $canvasElement.css({
-        my: "center",
-        at: "center",
-        of: $canvas,
-        using: function (pos) {
-          $canvas.animate(pos, 200, "linear");
-        },
-      });
-      converToTableFunc();
-    }
+          $canvas.append(draggedItem);
+          // $canvas.droppable("disable");
+          $("#drop").droppable("destroy");
+          // $canvas.droppable("option", "disabled", true);
+          // $canvas.css({ "min-width": "0px" });
+          $canvasElement.css({
+            my: "center",
+            at: "center",
+            of: $canvas,
+            using: function (pos) {
+              $canvas.animate(pos, 200, "linear");
+            },
+          });
+          converToTableFunc();
+        }
+      },
+    });
   }
 
   setTimeout(function () {
@@ -187,14 +203,15 @@ $(document).ready(function () {
         }
 
         if ($("#drop").children().length === 1) {
-          $(".drop")
-            .droppable({
-              bubbles: false,
-              greedy: true,
-              tolerance: "pointer",
-              drop: droppableDrop,
-            })
-            .droppable("enable");
+          droppableDrop();
+          // $(".drop")
+          //   .droppable({
+          //     bubbles: false,
+          //     greedy: true,
+          //     tolerance: "pointer",
+          //     drop: droppableDrop,
+          //   })
+          //   .droppable("enable");
         }
 
         setTimeout(function () {
@@ -202,7 +219,7 @@ $(document).ready(function () {
         }, 200);
       },
     });
-    $(".drop").droppable({
+    $("#drop").droppable({
       // accept: function (item) {
       // 	return $(this).data('color') == item.data('color');
       // },
@@ -213,6 +230,7 @@ $(document).ready(function () {
       greedy: true,
       tolerance: "pointer",
       drop: function (event, ui) {
+        console.log("I am i #drop");
         var $canvas = $(this);
         if (!ui.draggable.hasClass("canvas-element")) {
           var $canvasElement = ui.draggable.clone();
@@ -241,7 +259,8 @@ $(document).ready(function () {
           // });
 
           $canvas.append(draggedItem);
-          $canvas.droppable("disable");
+          // $canvas.droppable("disable");
+          $("#drop").droppable("destroy");
           // $canvas.droppable("option", "disabled", true);
           // $canvas.css({ "min-width": "0px" });
           $canvasElement.css({
@@ -256,9 +275,10 @@ $(document).ready(function () {
         }
       },
     });
-  }, 1500);
+  }, 500);
 
   function addDropEvent(el, greedy) {
+    el.removeClass("ui-droppable");
     $(el).droppable({
       classes: {
         "ui-droppable-hover": "ui-mouse-enter",
@@ -267,8 +287,8 @@ $(document).ready(function () {
       greedy: greedy,
       tolerance: "pointer",
       drop: function (event, ui) {
-        console.log(ui);
-        console.log(event);
+        console.log("I am in el");
+
         var $canvas = $(this);
         if (!ui.draggable.hasClass("canvas-element")) {
           var $canvasElement = ui.draggable.clone();
@@ -363,7 +383,7 @@ $(document).ready(function () {
             // console.log("data2Parent+++", data2Parent);
             let existingItemParent = $canvas.closest("div.drag.vertical").parent();
 
-            // console.log("existingItemParent", existingItemParent);
+            console.log("existingItemParent", existingItemParent);
             if (existingItemParent.hasClass("data2")) {
               let existingItem = $canvas.closest("div.drag.vertical");
               // Change from table row to table cell
