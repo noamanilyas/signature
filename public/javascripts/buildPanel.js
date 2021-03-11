@@ -400,4 +400,4 @@ var tabs = {
 
 setTimeout(function () {
   appendNewTabs(tabs);
-}, 1000);
+}, 500);
