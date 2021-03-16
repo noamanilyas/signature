@@ -103,7 +103,8 @@ router.get("/getSignatures", function (req, res, next) {
             ,[HTML]
             ,[SigHTML]
             ,[Name]
-        FROM [dbo].[signatures]`;
+        FROM [dbo].[signatures]
+        ORDER BY SigOrder`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
@@ -139,6 +140,45 @@ router.get("/getSignatureById", function (req, res, next) {
             ,[SigHTML]
             ,[Name]
         FROM [dbo].[signatures] WHERE [dbo].[signatures].[Id] = ` + req.query.id;
+
+    // query to the database and get the records
+    request.query(queryText, function (err, recordset) {
+      if (err) console.log(err);
+
+      // send records as a response
+      res.send(recordset);
+    });
+  });
+});
+
+router.post("/updateOrder", function (req, res, next) {
+  console.log("Body", req.body);
+
+  // config for your database
+  var config = {
+    user: "sa",
+    password: "qwerty1234",
+    server: "localhost",
+    database: "greenSignature",
+    port: 1433,
+  };
+
+  // connect to your database
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    let newOrder = req.body.newOrder;
+    var queryText = "";
+
+    for (let i = 0; i < newOrder.length; i++) {
+      queryText +=
+        `UPDATE [dbo].[signatures]
+          SET [SigOrder] = '${i + 1}'
+        WHERE [dbo].[signatures].[Id] = ` + newOrder[i];
+    }
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {

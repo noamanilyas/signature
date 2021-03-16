@@ -31,6 +31,15 @@
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
     <link rel="stylesheet" href="./stylesheets/indexstyle.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+      .card {
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark nav-right">
@@ -38,13 +47,13 @@
         <img src="/images/logo.png" height="45" alt="" />
       </a>
       <!-- <button type="button" class="n-item btn btn-success">New Signature</button> -->
-      <a href="editor.html" class="n-item btn btn-success">New Signature</a>
-      <!-- <button type="button" class="n-item btn btn-danger">Reorder</button> -->
-      <a href="reorder.html" class="n-item btn btn-danger">Reorder</a>
-      <!-- <a href="editor.html" class="n-item btn btn-info editor-btn">Editor</a> -->
+      <!-- <a href="editor.html" class="n-item btn btn-success">New Signature</a> -->
+      <!-- <a href="reorder.html" class="n-item btn btn-danger">Reorder</a> -->
+      <a href="index.html" class="n-item btn btn-danger">Back</a>
+      <button type="button" id="saveorder" class="n-item btn btn-success">Save</button>
     </nav>
 
-    <div class="sig-list" id="list_sig">
+    <ul class="sig-list sortable" id="list_sig">
       <!-- <div class="container bcontent">
         <div class="card">
           <div class="row no-gutters">
@@ -65,7 +74,7 @@
           </div>
         </div>
       </div> -->
-    </div>
-    <script type="text/javascript" src="./javascripts/index.js"></script>
+    </ul>
+    <script type="text/javascript" src="./javascripts/reorder.js"></script>
   </body>
 </html>
