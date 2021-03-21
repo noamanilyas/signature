@@ -46,9 +46,9 @@ $(document).ready(function () {
       $("#drop").append(HTMLObj);
       converToTableFunc();
     }
-    setTimeout(function () {
-      Swal.close();
-    }, 1500);
+    // setTimeout(function () {
+    Swal.close();
+    // }, 1500);
   })();
 
   // Save signature
@@ -567,17 +567,15 @@ $(document).ready(function () {
   function removeItemWithParent(itemId) {
     let childLeft = $("#" + itemId);
     let siblings = childLeft.parent().children();
+
+    console.log("siblings", siblings.length);
     // If siblings are 3 then it means there will be only 1 item left in group 2 or group 3.
-    if (
-      siblings.length === 3 &&
-      (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
-    ) {
+    if (siblings.length === 3 && (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))) {
       // If first item is the one which is left out
       // then replace the data of left out item with data of the group2 or group3
       // Remove group2 or group3 class
       // Add dataItem class so it show ups in preview
 
-      console.log("siblings", siblings);
       console.log("itemId", itemId);
       let index = 0;
       $.each(siblings, function (i, item) {
@@ -599,13 +597,23 @@ $(document).ready(function () {
       //   childLeft.parent().closest("div.drag.vertical").addClass("dataItem");
       //   childLeft.parent().replaceWith(siblings.eq(2).find(".data:first"));
       // }
-    } else if (
-      siblings.length === 2 &&
-      (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))
-    ) {
+    } else if (siblings.length === 2 && (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))) {
       childLeft.parent().closest("div.drag.vertical").remove();
     } else {
       childLeft.remove();
+    }
+  }
+
+  function removeExitingItem(itemId) {
+    // console.log();
+
+    let oldItem = $(`#${itemId}`);
+    let siblings = oldItem.parent().children();
+
+    if (siblings.length === 2 && (oldItem.parent().hasClass("data2") || oldItem.parent().hasClass("data3"))) {
+      oldItem.parent().closest("div.drag.vertical").remove();
+    } else {
+      oldItem.remove();
     }
   }
 
@@ -628,7 +636,8 @@ $(document).ready(function () {
     // If existing item is dragged for editing then do belwo tasks
 
     if (draggedItem.attr("id")) {
-      removeItemWithParent(draggedItem.attr("id"));
+      // removeItemWithParent(draggedItem.attr("id"));
+      removeExitingItem(draggedItem.attr("id"));
       container.attr("id", draggedItem.attr("id"));
       container.find(".data").replaceWith(draggedItem.find(".data"));
       return container;
