@@ -11,7 +11,8 @@ $(document).ready(function () {
     onBeforeOpen: () => {
       Swal.showLoading();
     },
-    icon: "info",
+    // icon: "info",
+    iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
     title: "Loading Signature",
     showConfirmButton: false,
     // timer: 1500,
@@ -46,9 +47,9 @@ $(document).ready(function () {
       $("#drop").append(HTMLObj);
       converToTableFunc();
     }
-    // setTimeout(function () {
-    Swal.close();
-    // }, 1500);
+    setTimeout(function () {
+      Swal.close();
+    }, 1500);
   })();
 
   // Save signature

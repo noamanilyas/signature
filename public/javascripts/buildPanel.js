@@ -47,7 +47,7 @@ function appendNewTabs(tabs) {
 
     let newTab = $(`
       <button
-        class="btn button-list"
+        class="btn button-list mainmenu"
         type="button"
         data-toggle="collapse"
         data-target="#collapse${tabName.split(" ").join("_")}"
@@ -68,7 +68,7 @@ function appendNewTabs(tabs) {
       let rowItem = $(`
         <tr>
           <td>
-            <button item="btn${item.Name.split(" ").join("_")}" class="btn button-list drag">
+            <button item="btn${item.Name.split(" ").join("_")}" class="btn button-list drag submenu">
               ${item.Name}
             </button>
           </td>

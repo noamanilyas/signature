@@ -226,3 +226,8 @@ body {
 .n-item {
   margin-right: 1rem;
 }
+
+.submenu {
+  background-color: #61a733;
+  color: white;
+}

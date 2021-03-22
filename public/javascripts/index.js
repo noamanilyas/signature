@@ -5,7 +5,8 @@ $(document).ready(function () {
     onBeforeOpen: () => {
       Swal.showLoading();
     },
-    icon: "info",
+    // icon: "info",
+    iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
     title: "Signatures are loading",
     showConfirmButton: false,
     // timer: 1500,
