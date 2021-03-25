@@ -1,5 +1,7 @@
 $(document).ready(function () {
   // Swal.showLoading();
+
+  let signatureData = [];
   Swal.fire({
     // position: "top-end",
     onBeforeOpen: () => {
@@ -21,6 +23,8 @@ $(document).ready(function () {
     });
     const content = await rawResponse.json();
 
+    signatureData = content.recordset;
+
     for (const signature of content.recordset) {
       let sigHTML = `
       <div>
@@ -39,6 +43,9 @@ $(document).ready(function () {
                 <h5 class="card-title">${signature.Name}</h5>
                 <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                 <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a>
+                <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
+        signature.Name
+      }.txt"  class="btn btn-warning export">Export</a>
               </div>
             </div>
           </div>
@@ -51,7 +58,40 @@ $(document).ready(function () {
     }
 
     setTimeout(function () {
+      // $(".export").on("click", function () {
+      //   console.log($(this).attr("id"));
+      // });
       Swal.close();
-    }, 1500);
+    }, 500);
   })();
 });
+
+function exportFile() {
+  var textFile = null,
+    makeTextFile = function (text) {
+      var data = new Blob([text], { type: "text/plain" });
+
+      // If we are replacing a previously generated file we need to
+      // manually revoke the object URL to avoid memory leaks.
+      if (textFile !== null) {
+        window.URL.revokeObjectURL(textFile);
+      }
+
+      textFile = window.URL.createObjectURL(data);
+
+      return textFile;
+    };
+
+  var create = document.getElementById("create"),
+    textbox = document.getElementById("textbox");
+
+  create.addEventListener(
+    "click",
+    function () {
+      var link = document.getElementById("downloadlink");
+      link.href = makeTextFile(textbox.value);
+      link.style.display = "block";
+    },
+    false
+  );
+}
