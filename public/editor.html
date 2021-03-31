@@ -63,6 +63,10 @@
       />
       <button type="button" id="saveSignature" class="n-item btn btn-success">Save</button>
       <a href="index.html" class="n-item btn btn-danger">Back</a>
+      <!-- <button type="button" class="n-item btn btn-warning">Import</button> -->
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#importModal" data-whatever="@mdo">
+        Import
+      </button>
     </nav>
     <h1 align="center" class="title">Signature Designer</h1>
     <div class="panel"></div>
@@ -266,12 +270,7 @@
                 </div>
                 <div class="col-10" style="overflow: auto; max-height: 240px">
                   <div class="tab-content" id="v-pills-tabContent">
-                    <div
-                      class="tab-pane fade"
-                      id="v-labelIcon-body"
-                      role="tabpanel"
-                      aria-labelledby="v-labelIcon-side"
-                    >
+                    <div class="tab-pane fade" id="v-labelIcon-body" role="tabpanel" aria-labelledby="v-labelIcon-side">
                       <!-- Here is a content for tab labelIcon. -->
                       <form>
                         <div class="form-group">
@@ -312,12 +311,7 @@
                     >
                       <!-- Here is a content for tab hyperlink. -->
                     </div>
-                    <div
-                      class="tab-pane fade text"
-                      id="v-text-body"
-                      role="tabpanel"
-                      aria-labelledby="v-text-side"
-                    >
+                    <div class="tab-pane fade text" id="v-text-body" role="tabpanel" aria-labelledby="v-text-side">
                       <!-- Here is a content for tab text. -->
                     </div>
                     <div
@@ -344,12 +338,7 @@
                     >
                       <!-- Here is a content for tab alignment. -->
                     </div>
-                    <div
-                      class="tab-pane fade borderDiv"
-                      id="v-border-body"
-                      role="tabpanel"
-                      aria-labelledby="v-border-side"
-                    >
+                    <div class="tab-pane fade borderDiv" id="v-border-body" role="tabpanel" aria-labelledby="v-border-side">
                       <!-- Here is a content for tab border. -->
                     </div>
                     <div
@@ -360,28 +349,13 @@
                     >
                       <!-- Here is a content for tab padding. -->
                     </div>
-                    <div
-                      class="tab-pane fade size"
-                      id="v-size-body"
-                      role="tabpanel"
-                      aria-labelledby="v-size-side"
-                    >
+                    <div class="tab-pane fade size" id="v-size-body" role="tabpanel" aria-labelledby="v-size-side">
                       <!-- Here is a content for tab size. -->
                     </div>
-                    <div
-                      class="tab-pane fade"
-                      id="v-render-body"
-                      role="tabpanel"
-                      aria-labelledby="v-render-side"
-                    >
+                    <div class="tab-pane fade" id="v-render-body" role="tabpanel" aria-labelledby="v-render-side">
                       <!-- Here is a content for tab render. -->
                     </div>
-                    <div
-                      class="tab-pane fade"
-                      id="v-orientation-body"
-                      role="tabpanel"
-                      aria-labelledby="v-orientation-side"
-                    >
+                    <div class="tab-pane fade" id="v-orientation-body" role="tabpanel" aria-labelledby="v-orientation-side">
                       <!-- Here is a content for tab orientation. -->
                       <form>
                         <div class="form-group">
@@ -442,6 +416,42 @@
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="importModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="importModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="importModalLabel">Signature Source</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <!-- <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                <input type="text" class="form-control" id="recipient-name" />
+              </div> -->
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Table HTML</label>
+                <textarea class="form-control" id="htmlText"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="importSource">Import</button>
           </div>
         </div>
       </div>

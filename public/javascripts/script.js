@@ -49,8 +49,147 @@ $(document).ready(function () {
     }
     setTimeout(function () {
       Swal.close();
-    }, 1500);
+    }, 500);
   })();
+
+  function css2json(css) {
+    var s = {};
+    if (!css) return s;
+    if (css instanceof CSSStyleDeclaration) {
+      for (var i in css) {
+        if (css[i].toLowerCase) {
+          s[css[i].toLowerCase()] = css[css[i]];
+        }
+      }
+    } else if (typeof css == "string") {
+      css = css.split("; ");
+      for (var i in css) {
+        var l = css[i].split(": ");
+        s[l[0].toLowerCase()] = l[1];
+      }
+    }
+    return s;
+  }
+
+  function css(a) {
+    var sheets = document.styleSheets,
+      o = {};
+    for (var i in sheets) {
+      var rules = sheets[i].rules || sheets[i].cssRules;
+      for (var r in rules) {
+        if (a.is(rules[r].selectorText)) {
+          o = $.extend(o, css2json(rules[r].style), css2json(a.attr("style")));
+        }
+      }
+    }
+    return o;
+  }
+
+  function processElementsToAppend(currItem, index, type = "none") {
+    var style = css(currItem);
+
+    console.log(currItem.text().trim());
+    // let elemChildren = currItem.children().eq(index).children();
+    let elemChildren;
+    // if (type === "group2") {
+    elemChildren = currItem.children();
+    // console.log("elemChildren: ", elemChildren);
+    // }
+
+    console.log("tagName: ", elemChildren.prop("tagName"));
+    if (elemChildren.eq(0).prop("tagName") === "IMG") {
+      let imageElem = elemChildren.eq(0);
+      imageElem.attr("category", "image");
+      let draggedItem = initDraggedItem(elemChildren.eq(0));
+      if (draggedItem.hasClass("ph-table-row") && type === "group2") {
+        draggedItem.removeClass("ph-table-row");
+        draggedItem.addClass("ph-table-cell");
+      }
+      return draggedItem;
+    } else if (
+      elemChildren.eq(0).prop("tagName") === "SPAN" ||
+      elemChildren.eq(0).prop("tagName") === "BR" ||
+      elemChildren.length === 0
+    ) {
+      let textSpan = $(`<span category="textField">${currItem.text().trim()}</span>`);
+      textSpan.css(style);
+      // console.log(textSpan);
+      let draggedItem = initDraggedItem(textSpan);
+      if (draggedItem.hasClass("ph-table-row") && type === "group2") {
+        draggedItem.removeClass("ph-table-row");
+        draggedItem.addClass("ph-table-cell");
+      }
+      return draggedItem;
+    } else if (elemChildren.eq(0).prop("tagName") === "TABLE") {
+      let tableElemTR = elemChildren.eq(0).find("tbody:first").children();
+      // console.log("tableElemTR", tableElemTR);
+      // console.log("tableElemTD", tableElemTR.eq(0).children());
+      // Group 2
+      if (tableElemTR.length === 1 && tableElemTR.eq(0).children().length > 1) {
+        // console.log("Group 2");
+        let group2 = tableElemTR.eq(0).children();
+        let group2HTML = setGroup2SubItems(group2);
+        if (group2HTML.hasClass("ph-table-row") && type === "group2") {
+          group2HTML.removeClass("ph-table-row");
+          group2HTML.addClass("ph-table-cell");
+        }
+        return group2HTML;
+      } else if (tableElemTR.length > 1) {
+        // Group 3
+        console.log("Group 3");
+        let group3 = tableElemTR;
+        let group3HTML = setGroup3SubItems(group3);
+        return group3HTML;
+      }
+    }
+  }
+
+  function setGroup2SubItems(group2) {
+    let container = getNewContainerWE();
+    let data2 = container.find("div.data2:first");
+    group2.each(function (index) {
+      const newItem = processElementsToAppend($(this), index, "group2");
+      data2.append(newItem);
+    });
+
+    return container;
+  }
+
+  function setGroup3SubItems(group3) {
+    let container = getNewContainerNS();
+    let data3 = container.find("div.data3:first");
+    group3.each(function (index) {
+      console.log("Group 3", $(this));
+      const newItem = processElementsToAppend($(this).children(), index, "group3");
+      data3.append(newItem);
+    });
+
+    return container;
+  }
+
+  function reverseParseTableHTML(htmlText) {
+    // htmlText = `<table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;line-height:normal;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;line-height:normal;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADqSURBVDhP1dOh0kFBGMbxM0YQBOELgiAILkFwAV8QBJooCILoHgQXILgIUaQJgiAIzAiiIAr8H2ffmZ2Tlh3BM/ObXcJzzq5X8u0U0cbo9SkyeSzxcPqISgdWJhfojT/ODH6hTPBWcm5Vam7103BrcPzCk1sta3TT7WdpwY56QwHROcBK9SNFZwArvKKKqOiYG1jpCprPqJShGbTSBUrwU0cv3YZF43KHlZ7RhKLxsgfqBMGj9Q/do5XqAXMcve/MFEHR0fbIFmTtEBz9n/Vm/hVkjfF2dHc6mu7TirYYInoSKvhLt7+VJHkCw5tJ40GOkRMAAAAASUVORK5CYII=" width="20" border="0" alt="" style="width:20px;min-width:20px;max-width:20px;font-size:0;"></td></tr><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADqSURBVDhP1dOh0kFBGMbxM0YQBOELgiAILkFwAV8QBJooCILoHgQXILgIUaQJgiAIzAiiIAr8H2ffmZ2Tlh3BM/ObXcJzzq5X8u0U0cbo9SkyeSzxcPqISgdWJhfojT/ODH6hTPBWcm5Vam7103BrcPzCk1sta3TT7WdpwY56QwHROcBK9SNFZwArvKKKqOiYG1jpCprPqJShGbTSBUrwU0cv3YZF43KHlZ7RhKLxsgfqBMGj9Q/do5XqAXMcve/MFEHR0fbIFmTtEBz9n/Vm/hVkjfF2dHc6mu7TirYYInoSKvhLt7+VJHkCw5tJ40GOkRMAAAAASUVORK5CYII=" width="20" border="0" alt="" style="width:20px;min-width:20px;max-width:20px;font-size:0;"></td></tr></tbody></table></td><td align="left" style="vertical-align:top;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFPSURBVDhP1dO/K0VhHMfx68dokAwGg7IYDIrRYLBbjZTB4A8w2g2S0YDJbDZQlJJisIhisAhZFEXxfp/zPHrOueced+RTr763557zPc+Pcxr/OmN4xFeFF6yhB21nDicYqmAzGx+h0LQz1FZ5x12FB5hJrOY/83SFagawgCncw5m47B2Uc4NneN001tGUA8Q9uoZLdqwuPvw2/5knneF2qKYPe/CGK5T3MHIFs3C2pygkzi5yhuWxVjz1LL8dinnCIV5xDPfvEmeI6Q21kPJT4wy3YFZCdTwuOb0+S0eo5mcwZB42u4D7ORPqODzdTywhJu2VJX2a4gx3YTbRjUVMYATp9Vna2UP3x9O2+iIPYxQ2bUo7Df203C8bWvsxGNQmnb7KhxI/McddbuWhpPFdin9+wBc2vaHOPpqyjDfYbAMu9RxVDVI2q9zPv5hG4xuycnyLdkX9ywAAAABJRU5ErkJggg==" width="20" border="0" alt="" style="width:20px;min-width:20px;max-width:20px;font-size:0;"></td></tr></tbody></table></td></tr></tbody></table>`;
+    html = $(htmlText);
+    htmlMainTRs = html.find("tbody:first").children();
+
+    htmlMainTRs.each(function (index) {
+      console.log($(this));
+
+      const getTD = $(this).children();
+      const newItem = processElementsToAppend(getTD, index, "none");
+      $("#drop").append(newItem);
+    });
+    converToTableFunc();
+  }
+
+  //Import event listener
+  $("#importSource").click(function (e) {
+    let importedHTMLText = $("#htmlText").val();
+
+    reverseParseTableHTML(importedHTMLText);
+    $("#importModal").modal("hide");
+    $("#importModal").trigger("reset");
+  });
 
   // Save signature
   $("#saveSignature").click(function (e) {
@@ -666,6 +805,12 @@ $(document).ready(function () {
       }
       dataDiv.append(item);
       // addModalClick(draggedItem);
+      return container;
+    } else if (draggedItem.attr("category") === "image" || draggedItem.attr("category") === "textField") {
+      // console.log(draggedItem);
+      let item = draggedItem;
+      item.attr("id", UUID);
+      dataDiv.append(item);
       return container;
     }
 
