@@ -122,11 +122,20 @@ $(document).ready(function () {
       return draggedItem;
     } else if (elemChildren.eq(0).prop("tagName") === "TABLE") {
       let tableElemTR = elemChildren.eq(0).find("tbody:first").children();
-      // console.log("tableElemTR", tableElemTR);
-      // console.log("tableElemTD", tableElemTR.eq(0).children());
-      // Group 2
-      if (tableElemTR.length === 1 && tableElemTR.eq(0).children().length > 1) {
-        // console.log("Group 2");
+      let tdCountMax = 0;
+      tableElemTR.each(function () {
+        let tdCount = $(this).eq(0).children().length;
+        if (tdCountMax < tdCount) {
+          tdCountMax = tdCount;
+        }
+      });
+
+      if (tableElemTR.length > 1 && tdCountMax > 1) {
+        // Table
+        console.log("table");
+        return elemChildren.eq(0);
+      } else if (tableElemTR.length === 1 && tableElemTR.eq(0).children().length > 1) {
+        // Group 2
         let group2 = tableElemTR.eq(0).children();
         let group2HTML = setGroup2SubItems(group2);
         if (group2HTML.hasClass("ph-table-row") && type === "group2") {
@@ -142,6 +151,17 @@ $(document).ready(function () {
         return group3HTML;
       }
     }
+  }
+
+  function setTableSubItems(group2) {
+    let container = getNewContainerWE();
+    let data2 = container.find("div.data2:first");
+    group2.each(function (index) {
+      const newItem = processElementsToAppend($(this), index, "group2");
+      data2.append(newItem);
+    });
+
+    return container;
   }
 
   function setGroup2SubItems(group2) {
@@ -168,7 +188,7 @@ $(document).ready(function () {
   }
 
   function reverseParseTableHTML(htmlText) {
-    // htmlText = `<table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;line-height:normal;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;line-height:normal;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADqSURBVDhP1dOh0kFBGMbxM0YQBOELgiAILkFwAV8QBJooCILoHgQXILgIUaQJgiAIzAiiIAr8H2ffmZ2Tlh3BM/ObXcJzzq5X8u0U0cbo9SkyeSzxcPqISgdWJhfojT/ODH6hTPBWcm5Vam7103BrcPzCk1sta3TT7WdpwY56QwHROcBK9SNFZwArvKKKqOiYG1jpCprPqJShGbTSBUrwU0cv3YZF43KHlZ7RhKLxsgfqBMGj9Q/do5XqAXMcve/MFEHR0fbIFmTtEBz9n/Vm/hVkjfF2dHc6mu7TirYYInoSKvhLt7+VJHkCw5tJ40GOkRMAAAAASUVORK5CYII=" width="20" border="0" alt="" style="width:20px;min-width:20px;max-width:20px;font-size:0;"></td></tr><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADqSURBVDhP1dOh0kFBGMbxM0YQBOELgiAILkFwAV8QBJooCILoHgQXILgIUaQJgiAIzAiiIAr8H2ffmZ2Tlh3BM/ObXcJzzq5X8u0U0cbo9SkyeSzxcPqISgdWJhfojT/ODH6hTPBWcm5Vam7103BrcPzCk1sta3TT7WdpwY56QwHROcBK9SNFZwArvKKKqOiYG1jpCprPqJShGbTSBUrwU0cv3YZF43KHlZ7RhKLxsgfqBMGj9Q/do5XqAXMcve/MFEHR0fbIFmTtEBz9n/Vm/hVkjfF2dHc6mu7TirYYInoSKvhLt7+VJHkCw5tJ40GOkRMAAAAASUVORK5CYII=" width="20" border="0" alt="" style="width:20px;min-width:20px;max-width:20px;font-size:0;"></td></tr></tbody></table></td><td align="left" style="vertical-align:top;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFPSURBVDhP1dO/K0VhHMfx68dokAwGg7IYDIrRYLBbjZTB4A8w2g2S0YDJbDZQlJJisIhisAhZFEXxfp/zPHrOueced+RTr763557zPc+Pcxr/OmN4xFeFF6yhB21nDicYqmAzGx+h0LQz1FZ5x12FB5hJrOY/83SFagawgCncw5m47B2Uc4NneN001tGUA8Q9uoZLdqwuPvw2/5knneF2qKYPe/CGK5T3MHIFs3C2pygkzi5yhuWxVjz1LL8dinnCIV5xDPfvEmeI6Q21kPJT4wy3YFZCdTwuOb0+S0eo5mcwZB42u4D7ORPqODzdTywhJu2VJX2a4gx3YTbRjUVMYATp9Vna2UP3x9O2+iIPYxQ2bUo7Df203C8bWvsxGNQmnb7KhxI/McddbuWhpPFdin9+wBc2vaHOPpqyjDfYbAMu9RxVDVI2q9zPv5hG4xuycnyLdkX9ywAAAABJRU5ErkJggg==" width="20" border="0" alt="" style="width:20px;min-width:20px;max-width:20px;font-size:0;"></td></tr></tbody></table></td></tr></tbody></table>`;
+    // htmlText = ``;
     html = $(htmlText);
     htmlMainTRs = html.find("tbody:first").children();
 
@@ -338,20 +358,23 @@ $(document).ready(function () {
 
         let canvasParent = ui.draggable.parent();
         $("#" + itemId).remove();
-        if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
-          canvasParent.remove();
-        }
 
-        if ($("#drop").children().length === 1) {
-          droppableDrop();
-          // $(".drop")
-          //   .droppable({
-          //     bubbles: false,
-          //     greedy: true,
-          //     tolerance: "pointer",
-          //     drop: droppableDrop,
-          //   })
-          //   .droppable("enable");
+        if (canvasParent.hasClass("tableDrop") && canvasParent.children().length === 1) {
+          canvasParent.html("&nbsp;");
+          addDropEvent(canvasParent);
+        } else if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
+          canvasParent.remove();
+          if ($("#drop").children().length === 1) {
+            droppableDrop();
+            // $(".drop")
+            //   .droppable({
+            //     bubbles: false,
+            //     greedy: true,
+            //     tolerance: "pointer",
+            //     drop: droppableDrop,
+            //   })
+            //   .droppable("enable");
+          }
         }
 
         setTimeout(function () {
@@ -658,8 +681,10 @@ $(document).ready(function () {
             }
           } else if ($canvas.hasClass("tableDrop")) {
             console.log($canvas);
+            $canvas.html("");
             $canvas.append(draggedItem);
-            $canvas.droppable("disable");
+            $canvas.droppable("destroy");
+            // $canvas.droppable("disable");
           }
 
           // $canvas.remove();
@@ -696,13 +721,6 @@ $(document).ready(function () {
 
   //   return elem2;
   // }
-
-  function addModalClick(item) {
-    $(item).click(function (e) {
-      e.stopPropagation();
-      renderModel(e);
-    });
-  }
 
   function removeItemWithParent(itemId) {
     let childLeft = $("#" + itemId);
@@ -789,13 +807,15 @@ $(document).ready(function () {
 
     if (draggedItem.attr("item") && itemIds.hasOwnProperty(draggedItem.attr("item"))) {
       let item = $(itemIds[draggedItem.attr("item")]);
-      addModalClick(item);
+      // addModalClick(item);
       if (draggedItem.attr("item") === "btnTable") {
-        let tds = item.find(".editor-td");
+        let tds = item.find("div.editor-td-div");
         tds.each(function (index) {
           let UUID2 = `item-${Date.now() + index}`;
           $(this).attr("id", "editorTD-" + UUID2);
-          addDropEvent($(this).children().eq(0), true);
+          addDropEvent($(this).children().children().eq(0), true);
+          addModalClick($(this));
+          addMouseOverEvents($(this));
         });
       } else {
         item.attr("id", UUID);
@@ -1023,6 +1043,8 @@ $(document).ready(function () {
     container.attr("id", "container-" + UUID);
     return container;
   }
+
+  // Table functions
 });
 
 // function getSubItemsForgroup2(item) {

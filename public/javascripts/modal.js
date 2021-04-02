@@ -1,6 +1,6 @@
 var a = {
   textField: ["text", "background", "visibility", "alignment", "border", "tableProps"],
-  table: ["text", "background", "visibility", "alignment", "border", "padding", "size", "tableProps"],
+  table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
   socialIcon: [
     "hyperlink",
@@ -13,22 +13,14 @@ var a = {
     "orientation",
     "socialMediaIcon",
   ],
-  legalCompliance: [
-    "hyperlink",
-    "text",
-    "background",
-    "visibility",
-    "alignment",
-    "border",
-    "padding",
-    "size",
-  ],
+  legalCompliance: ["hyperlink", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   image: ["imageSource", "hyperlink", "background", "visibility", "alignment", "border", "padding", "size"],
   banner: ["imageSource", "hyperlink", "background", "visibility", "alignment", "border", "padding", "size"],
   userPhoto: ["hyperlink", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   icons: ["labelIcon", "hyperlink", "visibility", "alignment", "border", "padding"],
 };
 function renderModel(e) {
+  console.log(e.target);
   let category = e.target.getAttribute("category");
   let id = e.target.getAttribute("id");
   console.log(category);
@@ -71,4 +63,11 @@ function renderModel(e) {
     // Render TableJS
     renderTableTab(id);
   }
+}
+
+function addModalClick(item) {
+  $(item).click(function (e) {
+    e.stopPropagation();
+    renderModel(e);
+  });
 }

@@ -22,19 +22,35 @@ const itemIds = {
   btnTable: `<table class="editor-table">
 
     <tr class="editor-tr">
-      <td category="table" class="editor-td">
-        <div class="ph-table-cell tableDrop drop">C</div>
+      <td width="30%" class="editor-td">
+        <div class="ph-table" style="width:100%;">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+            &nbsp;
+          </div>
+        </div>
       </td>
-      <td category="table" class="editor-td">
-        <div class="ph-table-cell tableDrop drop">C</div>
+      <td width="30%" class="editor-td">
+        <div class="ph-table" style="width:100%;">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+            &nbsp;
+          </div>
+        </div>
       </td>
     </tr>
      <tr class="editor-tr">
-      <td category="table" class="editor-td">
-        <div class="ph-table-cell tableDrop drop">C</div>
+      <td width="30%" class="editor-td">
+        <div class="ph-table" style="width:100%;">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+            &nbsp;
+          </div>
+        </div>
       </td>
-      <td category="table" class="editor-td">
-        <div class="ph-table-cell tableDrop drop">C</div>
+      <td width="30%" class="editor-td">
+        <div class="ph-table" style="width:100%;">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+            &nbsp;
+          </div>
+        </div>
       </td>
     </tr>
 
