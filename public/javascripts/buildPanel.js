@@ -19,35 +19,36 @@ const itemIds = {
         class="icon-list drag"
         src=""
       />`,
+  // change in tableprops also
   btnTable: `<table class="editor-table">
 
     <tr class="editor-tr">
-      <td width="30%" class="editor-td">
-        <div class="ph-table" style="width:100%;">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+      <td class="editor-td">
+        <div class="ph-table wh100">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
       </td>
-      <td width="30%" class="editor-td">
-        <div class="ph-table" style="width:100%;">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+      <td class="editor-td">
+        <div class="ph-table wh100">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
       </td>
     </tr>
      <tr class="editor-tr">
-      <td width="30%" class="editor-td">
-        <div class="ph-table" style="width:100%;">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+      <td class="editor-td">
+        <div class="ph-table wh100">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
       </td>
-      <td width="30%" class="editor-td">
-        <div class="ph-table" style="width:100%;">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div" category="table">
+      <td class="editor-td">
+        <div class="ph-table wh100">
+          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
