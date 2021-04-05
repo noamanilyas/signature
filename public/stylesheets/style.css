@@ -194,6 +194,7 @@
   border-collapse: separate;
   border: 1px dotted blue;
   text-align: left;
+  padding: 4px;
 }
 
 .editor-tr {

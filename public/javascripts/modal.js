@@ -1,6 +1,7 @@
 var a = {
   textField: ["text", "background", "visibility", "alignment", "border", "tableProps"],
-  table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
+  // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
+  table: ["tableProps", "background", "alignment", "border", "padding", "size"],
   group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
   socialIcon: [
     "hyperlink",
@@ -23,6 +24,12 @@ function renderModel(e) {
   console.log(e.target);
   let category = e.target.getAttribute("category");
   let id = e.target.getAttribute("id");
+
+  if ($(e.target).hasClass("editor-td")) {
+    let cell = $(e.target).children().children().eq(0);
+    id = cell.attr("id");
+    category = cell.attr("category");
+  }
   console.log(category);
   console.log(id);
   if (a[category]) {

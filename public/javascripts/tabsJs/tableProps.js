@@ -212,6 +212,7 @@ const addRowColSpan = (rowSpan, colSpan, cellId) => {
     const cellTDIndex = cellTD.index();
     const cellTR = $(`#${cellId}`).parent().parent().parent();
     const cellTRIndex = cellTD.parent().index();
+    const trList = cellTR.parent().children();
 
     // Increase colSpan
     if (colSpan > currRowColSpanVal.colSpan) {
@@ -234,17 +235,43 @@ const addRowColSpan = (rowSpan, colSpan, cellId) => {
       // find current cell index
       const trTDs = cellTR.children();
       cellTD.attr("colspan", colSpan);
-      let colSpanDiff = currRowColSpanVal.colSpan - colSpan;
-      while (colSpanDiff > 0) {
-        trTDs.eq(cellTDIndex).after(createOneCol(cellTDIndex));
-        colSpanDiff--;
+
+      if (currRowColSpanVal.rowSpan === 1) {
+        let colSpanDiff = currRowColSpanVal.colSpan - colSpan;
+
+        while (colSpanDiff > 0) {
+          trTDs.eq(cellTDIndex).after(createOneCol(cellTDIndex));
+          colSpanDiff--;
+        }
+      } else if (currRowColSpanVal.rowSpan > 1) {
+        // let rowSpanDiff = currRowColSpanVal.rowSpan - rowSpan;
+        // let newIndexToStart = Number(cellTRIndex + currRowColSpanVal.rowSpan) - 1;
+        // trList.each(function (index) {
+        //   index = trList.length - index;
+        //   if (rowSpanDiff > 0 && index > cellTRIndex && index == newIndexToStart) {
+        //     // Remove td from each tr
+        //     // trList.eq(index).children().eq(cellTDIndex).remove();
+        //     if (currRowColSpanVal.colSpan === 1) {
+        //       trList.eq(index).children().eq(cellTDIndex).before(createOneCol(index));
+        //     } else if (currRowColSpanVal.colSpan > 1) {
+        //       let colSpanVal = Number(currRowColSpanVal.colSpan);
+        //       // let tds = trList.eq(index).children();
+        //       console.log(Array(colSpanVal));
+        //       $.each(Array(colSpanVal).fill(0), function (i, value) {
+        //         console.log(i);
+        //         trList.eq(index).children().eq(cellTDIndex).before(createOneCol(i));
+        //       });
+        //     }
+        //     rowSpanDiff--;
+        //     newIndexToStart--;
+        //   }
+        // });
       }
     }
 
     // Increase rowspan
     if (rowSpan > currRowColSpanVal.rowSpan) {
       // find current cell index
-      const trList = cellTR.parent().children();
 
       cellTD.attr("rowspan", rowSpan);
       let rowSpanDiff = rowSpan - currRowColSpanVal.rowSpan;
@@ -336,20 +363,42 @@ function fillAndAddEventTable(id, inputElem, cssProperty, valAppend) {
     min: 1,
   });
 
-  $(`#table-cols`).on("change", function (e) {
+  // $(`#table-cols`).on("change", function (e) {
+  //   e.preventDefault();
+  //   $("#table-colSpan").attr({
+  //     max: $(`#table-cols`).val(),
+  //     min: 1,
+  //   });
+  // });
+
+  // $(`#table-rows`).on("change", function (e) {
+  //   e.preventDefault();
+  //   $("#table-rowSpan").attr({
+  //     max: $(`#table-rows`).val(),
+  //     min: 1,
+  //   });
+  // });
+
+  $(`#table-rowSpan`).on("change", function (e) {
     e.preventDefault();
-    $("#table-colSpan").attr({
-      max: $(`#table-cols`).val(),
-      min: 1,
-    });
+    const colSpan = $(`#table-colSpan`).val();
+    const rowSpan = $(`#table-rowSpan`).val();
+
+    if (colSpan > 0 || rowSpan > 0) {
+      addRowColSpan(rowSpan, colSpan, id);
+    }
+    converToTableFunc();
   });
 
-  $(`#table-rows`).on("change", function (e) {
+  $(`#table-colSpan`).on("change", function (e) {
     e.preventDefault();
-    $("#table-rowSpan").attr({
-      max: $(`#table-rows`).val(),
-      min: 1,
-    });
+    const colSpan = $(`#table-colSpan`).val();
+    const rowSpan = $(`#table-rowSpan`).val();
+
+    if (colSpan > 0 || rowSpan > 0) {
+      addRowColSpan(rowSpan, colSpan, id);
+    }
+    converToTableFunc();
   });
 
   // Add event listeners
@@ -359,8 +408,8 @@ function fillAndAddEventTable(id, inputElem, cssProperty, valAppend) {
       e.preventDefault();
       const rows = $(`#table-rows`).val();
       const cols = $(`#table-cols`).val();
-      const colSpan = $(`#table-colSpan`).val();
-      const rowSpan = $(`#table-rowSpan`).val();
+      // const colSpan = $(`#table-colSpan`).val();
+      // const rowSpan = $(`#table-rowSpan`).val();
       // console.log("colSpan", colSpan);
       // console.log("rowSpan", rowSpan);
 
@@ -369,9 +418,48 @@ function fillAndAddEventTable(id, inputElem, cssProperty, valAppend) {
         console.log(tableHTML);
       }
 
-      if (colSpan > 0 || rowSpan > 0) {
-        addRowColSpan(rowSpan, colSpan, id);
+      // if (colSpan > 0 || rowSpan > 0) {
+      //   addRowColSpan(rowSpan, colSpan, id);
+      // }
+
+      $("#table-colSpan").attr({
+        max: getMaxNoOfColSpan(id),
+        min: 1,
+      });
+
+      $("#table-rowSpan").attr({
+        max: getMaxNoOfRowSpan(id),
+        min: 1,
+      });
+      converToTableFunc();
+    });
+
+  // Add event listeners
+  $(`#table-actions`)
+    .off()
+    .on("change", function () {
+      const action = $(this).val();
+      console.log(action);
+
+      const cellTD = $(`#${id}`).parent().parent();
+      const cellTDIndex = cellTD.index();
+      const cellTR = $(`#${id}`).parent().parent().parent();
+      const TRs = cellTR.parent().children();
+      if (action === "delCurrRow") {
+        cellTR.remove();
+        // Close props modal
+      } else if (action === "delCurrCol") {
+        TRs.each(function (index) {
+          TRs.eq(index).children().eq(cellTDIndex).remove();
+        });
+      } else if (action === "insertRowAbove") {
+      } else if (action === "insertRowBelow") {
+      } else if (action === "insertColLeft") {
+      } else if (action === "insertColRight") {
       }
+
+      $(this).val("");
+
       converToTableFunc();
     });
 }

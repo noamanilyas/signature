@@ -4,8 +4,6 @@ function removeExitingItem(itemId) {
   let oldItem = $(`#${itemId}`);
   let siblings = oldItem.parent().children();
 
-  console.log("oldItem.parent()", oldItem.parent());
-
   if (siblings.length === 2 && (oldItem.parent().hasClass("data2") || oldItem.parent().hasClass("data3"))) {
     oldItem.parent().closest("div.drag.vertical").remove();
   } else {
@@ -197,11 +195,11 @@ function addDropEvent(el, greedy) {
           // let existingItemParent = $canvas.closest("div.drag.vertical").parent();
 
           // console.log("existingItemParent", existingItemParent);
-          // console.log("canvasParent: ", canvasParent);
+          console.log("canvasParent: ", canvasParent);
           // console.log("existingItem: ", existingItem);
           // console.log(" $canvas: ", $canvas);
 
-          if (canvasParent.hasClass("data2")) {
+          if (canvasParent.hasClass("data2") || canvasParent.hasClass("editor-td-div")) {
             let container = getNewContainerNS();
 
             // console.log("New Container NS", container);
@@ -329,6 +327,8 @@ function initDraggedItem(draggedItem) {
         addModalClick($(this));
         addMouseOverEvents($(this));
       });
+
+      container.addClass("tableItem");
     } else {
       item.attr("id", UUID);
     }
