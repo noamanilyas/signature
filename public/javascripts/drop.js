@@ -286,6 +286,7 @@ function addDropEvent(el, greedy) {
 }
 
 function initDraggedItem(draggedItem) {
+  // sync changes in setTableSubItems
   let container = getNewContainer();
   container.draggable({
     cancel: false,

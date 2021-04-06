@@ -1,18 +1,17 @@
 function converToTableFunc() {
-  const mainItems = $("#drop > .drag.vertical.ph-table-row");
+  const mainItems = $("#drop > .drag.vertical");
   $(".mainTable").remove();
   let tbody = $("<tbody>");
   let table = $("<table>");
   table.addClass("mainTable");
   $.each(mainItems, async function (index, value) {
     // const item = value;
-    if ($(this).hasClass("ph-table-row")) {
+    if ($(this).hasClass("ph-table-row") || $(this).hasClass("ph-table-cell")) {
       let tr = $("<tr>");
       let td = $("<td>");
-
       if ($(this).hasClass("tableItem")) {
         let table = await getSubItemsForTableItem($(this));
-        console.log("Returned table", table);
+        // console.log("Returned table", table);
         td.append(table);
       } else if ($(this).hasClass("dataItem")) {
         let dataItem = $(this).find(".data").children().eq(0).clone();
@@ -54,7 +53,7 @@ function converToTableFunc() {
       tbody.append(tr);
     }
     if (mainItems.length - 1 === index) {
-      console.log("previewDone");
+      // console.log("previewDone");
       table.append(tbody);
       $(".panelPreview").append(table);
     }
@@ -67,12 +66,12 @@ function getSubItemsForTableItem(item) {
     let tbody = $("<tbody>");
     let table = $("<table>");
     let tblTR = tbl.children().children();
-    console.log("tblTR", tblTR);
+    // console.log("tblTR", tblTR);
     $.each(tblTR, function (index, value) {
       let tr = $("<tr>");
 
       let tbTD = tblTR.eq(index).children();
-      console.log("tbTD", tbTD);
+      // console.log("tbTD", tbTD);
       $.each(tbTD, function (index, value) {
         let td = $("<td>");
 
@@ -111,7 +110,7 @@ function getSubItemsForTableItem(item) {
           td.append(table);
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
-          console.log("dataItem", dataItem);
+          // console.log("dataItem", dataItem);
           let vAlign = actualItem.find(".data").css("vertical-align");
           if (vAlign) {
             td.css("vertical-align", vAlign);
@@ -150,7 +149,7 @@ function getSubItemsForTableItem(item) {
       tbody.append(tr);
       if (index === tblTR.length - 1) {
         table.append(tbody);
-        console.log("Returned table func", table);
+        // console.log("Returned table func", table);
         resolve(table);
         // return "table";
       }
