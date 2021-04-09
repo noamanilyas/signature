@@ -56,6 +56,39 @@ function converToTableFunc() {
       // console.log("previewDone");
       table.append(tbody);
       $(".panelPreview").append(table);
+
+      // setTimeout(function () {
+      //   getScreenshotOfElement($(".panelPreview"), 0, 0, 100, 100, function (data) {
+      //     // in the data variable there is the base64 image
+      //     // exmaple for displaying the image in an <img>
+      //     let img = $("img");
+      //     img.attr("src", "data:image/png;base64," + data);
+      //     console.log(img);
+      //     $(".panelPreview").append(img);
+      //   });
+      //   function getScreenshotOfElement(element, posX, posY, width, height, callback) {
+      //     html2canvas(element, {
+      //       onrendered: function (canvas) {
+      //         var context = canvas.getContext("2d");
+      //         var imageData = context.getImageData(posX, posY, width, height).data;
+      //         var outputCanvas = document.createElement("canvas");
+      //         var outputContext = outputCanvas.getContext("2d");
+      //         outputCanvas.width = width;
+      //         outputCanvas.height = height;
+
+      //         var idata = outputContext.createImageData(width, height);
+      //         idata.data.set(imageData);
+      //         outputContext.putImageData(idata, 0, 0);
+      //         callback(outputCanvas.toDataURL().replace("data:image/png;base64,", ""));
+      //       },
+      //       width: width,
+      //       height: height,
+      //       useCORS: true,
+      //       taintTest: false,
+      //       allowTaint: false,
+      //     });
+      //   }
+      // }, 1000);
     }
   });
 }

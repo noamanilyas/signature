@@ -1,5 +1,5 @@
 var a = {
-  textField: ["text", "background", "visibility", "alignment", "border", "tableProps"],
+  textField: ["text", "background", "visibility", "alignment", "border", "padding"],
   // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   table: ["tableProps", "background", "alignment", "border", "padding", "size"],
   group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
@@ -31,6 +31,7 @@ function renderModel(e) {
     category = cell.attr("category");
   }
   console.log(category);
+  console.log(a[category]);
   console.log(id);
   if (a[category]) {
     // console.log(e.target);
