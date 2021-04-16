@@ -2,7 +2,8 @@ var a = {
   textField: ["text", "background", "visibility", "alignment", "border", "padding"],
   // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   table: ["tableProps", "background", "alignment", "border", "padding", "size"],
-  group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
+  group: ["background", "visibility", "alignment", "border", "padding", "size"],
+  // group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
   socialIcon: [
     "hyperlink",
     "visibility",
@@ -21,7 +22,7 @@ var a = {
   icons: ["labelIcon", "hyperlink", "visibility", "alignment", "border", "padding"],
 };
 function renderModel(e) {
-  console.log(e.target);
+  console.log("e.target", e.target);
   let category = e.target.getAttribute("category");
   let id = e.target.getAttribute("id");
 
@@ -29,9 +30,32 @@ function renderModel(e) {
     let cell = $(e.target).children().children().eq(0);
     id = cell.attr("id");
     category = cell.attr("category");
+  } else if ($(e.target).hasClass("drag vertical")) {
+    // Get parent if data2 or data3
+    let existingItemParent = $(e.target).closest("div.drag.vertical").parent();
+    if (existingItemParent.hasClass("data2")) {
+      category = existingItemParent.attr("category");
+      id = existingItemParent.attr("id");
+    } else if (existingItemParent.hasClass("data3")) {
+      category = existingItemParent.attr("category");
+      id = existingItemParent.attr("id");
+    }
+  } else if ($(e.target).hasClass("we") || $(e.target).hasClass("ns")) {
+    // get parent drag
+    let existingItemParent = $(e.target).closest("div.drag.vertical").parent();
+    if (existingItemParent.hasClass("data2")) {
+      // const group2 = existingItemParent.closest("div.drag.vertical");
+      console.log("Group2", existingItemParent);
+      category = existingItemParent.attr("category");
+      id = existingItemParent.attr("id");
+    } else if (existingItemParent.hasClass("data3")) {
+      category = existingItemParent.attr("category");
+      id = existingItemParent.attr("id");
+      console.log("Group3", existingItemParent);
+    }
   }
-  console.log(category);
-  console.log(a[category]);
+  console.log("category", category);
+  console.log("a[category]", a[category]);
   console.log(id);
   if (a[category]) {
     // console.log(e.target);

@@ -499,6 +499,8 @@ function getNewContainerNS() {
   });
   let UUID = `item-${Date.now()}`;
   container.attr("id", "container-" + UUID);
+  container.find(".data3").attr("id", "container-group-" + UUID);
+
   return container;
 }
 
@@ -554,5 +556,6 @@ function getNewContainerWE() {
   });
   let UUID = `item-${Date.now()}`;
   container.attr("id", "container-" + UUID);
+  container.find(".data2").attr("id", "container-group-" + UUID);
   return container;
 }

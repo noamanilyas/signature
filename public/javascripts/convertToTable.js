@@ -15,38 +15,15 @@ function converToTableFunc() {
         td.append(table);
       } else if ($(this).hasClass("dataItem")) {
         let dataItem = $(this).find(".data").children().eq(0).clone();
-        let vAlign = $(this).find(".data").css("vertical-align");
-        if (vAlign) {
-          td.css("vertical-align", vAlign);
-        }
-        let PaddingTabAll = $(this).find(".data").children().eq(0).attr("padding");
-
-        if (PaddingTabAll) {
-          td.css("padding", PaddingTabAll);
-        }
-        let PaddingTabLeft = $(this).find(".data").children().eq(0).attr("padding-left");
-        if (PaddingTabLeft) {
-          td.css("padding-left", PaddingTabLeft);
-        }
-        let PaddingTabRight = $(this).find(".data").children().eq(0).attr("padding-right");
-        if (PaddingTabRight) {
-          td.css("padding-right", PaddingTabRight);
-        }
-        let PaddingTabTop = $(this).find(".data").children().eq(0).attr("padding-top");
-        if (PaddingTabTop) {
-          td.css("padding-top", PaddingTabTop);
-        }
-        let PaddingTabBottom = $(this).find(".data").children().eq(0).attr("padding-bottom");
-        if (PaddingTabBottom) {
-          td.css("padding-bottom", PaddingTabBottom);
-        }
-
+        applyCSS(td, $(this).find(".data").children().eq(0));
         td.append(dataItem);
       } else if ($(this).hasClass("group2")) {
         let table = getSubItemsForgroup2($(this));
+        applyCSS(td, $(this).find(".data2:first"), ["align"]);
         td.append(table);
       } else if ($(this).hasClass("group3")) {
         let table = getSubItemsForgroup3($(this));
+        applyCSS(td, $(this).find(".data3:first"), ["align"]);
         td.append(table);
       }
       tr.append(td);
@@ -109,32 +86,34 @@ function getSubItemsForTableItem(item) {
         let td = $("<td>");
 
         const cssItem = $(this).children().children();
-        //CSS for td
-        let vAlign = cssItem.find(".data").css("vertical-align");
-        if (vAlign) {
-          td.css("vertical-align", vAlign);
-        }
-        let PaddingTabAll = cssItem.attr("padding");
 
-        if (PaddingTabAll) {
-          td.css("padding", PaddingTabAll);
-        }
-        let PaddingTabLeft = cssItem.attr("padding-left");
-        if (PaddingTabLeft) {
-          td.css("padding-left", PaddingTabLeft);
-        }
-        let PaddingTabRight = cssItem.attr("padding-right");
-        if (PaddingTabRight) {
-          td.css("padding-right", PaddingTabRight);
-        }
-        let PaddingTabTop = cssItem.attr("padding-top");
-        if (PaddingTabTop) {
-          td.css("padding-top", PaddingTabTop);
-        }
-        let PaddingTabBottom = cssItem.attr("padding-bottom");
-        if (PaddingTabBottom) {
-          td.css("padding-bottom", PaddingTabBottom);
-        }
+        applyCSS(td, cssItem);
+        //CSS for td
+        // let vAlign = cssItem.find(".data").css("vertical-align");
+        // if (vAlign) {
+        //   td.css("vertical-align", vAlign);
+        // }
+        // let PaddingTabAll = cssItem.attr("padding");
+
+        // if (PaddingTabAll) {
+        //   td.css("padding", PaddingTabAll);
+        // }
+        // let PaddingTabLeft = cssItem.attr("padding-left");
+        // if (PaddingTabLeft) {
+        //   td.css("padding-left", PaddingTabLeft);
+        // }
+        // let PaddingTabRight = cssItem.attr("padding-right");
+        // if (PaddingTabRight) {
+        //   td.css("padding-right", PaddingTabRight);
+        // }
+        // let PaddingTabTop = cssItem.attr("padding-top");
+        // if (PaddingTabTop) {
+        //   td.css("padding-top", PaddingTabTop);
+        // }
+        // let PaddingTabBottom = cssItem.attr("padding-bottom");
+        // if (PaddingTabBottom) {
+        //   td.css("padding-bottom", PaddingTabBottom);
+        // }
 
         const actualItem = $(this).children().children().children();
 
@@ -144,37 +123,41 @@ function getSubItemsForTableItem(item) {
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
           // console.log("dataItem", dataItem);
-          let vAlign = actualItem.find(".data").css("vertical-align");
-          if (vAlign) {
-            td.css("vertical-align", vAlign);
-          }
-          let PaddingTabAll = actualItem.find(".data").children().eq(0).attr("padding");
+          applyCSS(td, actualItem.find(".data").children().eq(0));
 
-          if (PaddingTabAll) {
-            td.css("padding", PaddingTabAll);
-          }
-          let PaddingTabLeft = actualItem.find(".data").children().eq(0).attr("padding-left");
-          if (PaddingTabLeft) {
-            td.css("padding-left", PaddingTabLeft);
-          }
-          let PaddingTabRight = actualItem.find(".data").children().eq(0).attr("padding-right");
-          if (PaddingTabRight) {
-            td.css("padding-right", PaddingTabRight);
-          }
-          let PaddingTabTop = actualItem.find(".data").children().eq(0).attr("padding-top");
-          if (PaddingTabTop) {
-            td.css("padding-top", PaddingTabTop);
-          }
-          let PaddingTabBottom = actualItem.find(".data").children().eq(0).attr("padding-bottom");
-          if (PaddingTabBottom) {
-            td.css("padding-bottom", PaddingTabBottom);
-          }
+          // let vAlign = actualItem.find(".data").css("vertical-align");
+          // if (vAlign) {
+          //   td.css("vertical-align", vAlign);
+          // }
+          // let PaddingTabAll = actualItem.find(".data").children().eq(0).attr("padding");
+
+          // if (PaddingTabAll) {
+          //   td.css("padding", PaddingTabAll);
+          // }
+          // let PaddingTabLeft = actualItem.find(".data").children().eq(0).attr("padding-left");
+          // if (PaddingTabLeft) {
+          //   td.css("padding-left", PaddingTabLeft);
+          // }
+          // let PaddingTabRight = actualItem.find(".data").children().eq(0).attr("padding-right");
+          // if (PaddingTabRight) {
+          //   td.css("padding-right", PaddingTabRight);
+          // }
+          // let PaddingTabTop = actualItem.find(".data").children().eq(0).attr("padding-top");
+          // if (PaddingTabTop) {
+          //   td.css("padding-top", PaddingTabTop);
+          // }
+          // let PaddingTabBottom = actualItem.find(".data").children().eq(0).attr("padding-bottom");
+          // if (PaddingTabBottom) {
+          //   td.css("padding-bottom", PaddingTabBottom);
+          // }
           td.append(dataItem);
         } else if (actualItem.hasClass("group2")) {
           let table = getSubItemsForgroup2(actualItem);
+          applyCSS(td, actualItem.find(".data2:first"), ["align"]);
           td.append(table);
         } else if (actualItem.hasClass("group3")) {
           let table = getSubItemsForgroup3(actualItem);
+          applyCSS(td, actualItem.find(".data3:first"), ["align"]);
           td.append(table);
         }
         tr.append(td);
@@ -192,98 +175,110 @@ function getSubItemsForTableItem(item) {
 
 function getSubItemsForgroup2(item) {
   let group = $(item).find(".data2:first").children();
+
+  // Create table with single TR and TD for the group.
+  let tbody1 = $("<tbody>");
+  let table1 = $("<table>");
+  let tr1 = $("<tr>");
+  let td1 = $("<td>");
+  applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
+
+  tr1.append(td1);
+  tbody1.append(tr1);
+  table1.append(tbody1);
+
   let tbody = $("<tbody>");
   let table = $("<table>");
+
   let tr = $("<tr>");
   $.each(group, function (index, value) {
     let td = $("<td>");
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
-      let vAlign = $(this).find(".data").css("vertical-align");
-      if (vAlign) {
-        td.css("vertical-align", vAlign);
-      }
-      let PaddingTabAll = $(this).find(".data").children().eq(0).attr("padding");
-
-      if (PaddingTabAll) {
-        td.css("padding", PaddingTabAll);
-      }
-      let PaddingTabLeft = $(this).find(".data").children().eq(0).attr("padding-left");
-      if (PaddingTabLeft) {
-        td.css("padding-left", PaddingTabLeft);
-      }
-      let PaddingTabRight = $(this).find(".data").children().eq(0).attr("padding-right");
-      if (PaddingTabRight) {
-        td.css("padding-right", PaddingTabRight);
-      }
-      let PaddingTabTop = $(this).find(".data").children().eq(0).attr("padding-top");
-      if (PaddingTabTop) {
-        td.css("padding-top", PaddingTabTop);
-      }
-      let PaddingTabBottom = $(this).find(".data").children().eq(0).attr("padding-bottom");
-      if (PaddingTabBottom) {
-        td.css("padding-bottom", PaddingTabBottom);
-      }
+      applyCSS(td, $(this).find(".data").children());
       td.append(dataItem);
     } else if ($(this).hasClass("group2")) {
       let table = getSubItemsForgroup2($(this));
+      applyCSS(td, $(this).find(".data2:first"), ["align"]);
       td.append(table);
     } else if ($(this).hasClass("group3")) {
       let table = getSubItemsForgroup3($(this));
+      applyCSS(td, $(this).find(".data3:first"), ["align"]);
       td.append(table);
     }
     tr.append(td);
   });
   tbody.append(tr);
   table.append(tbody);
-  return table;
+  td1.append(table);
+  return table1;
 }
 
 function getSubItemsForgroup3(item) {
   let group = $(item).find(".data3:first").children();
+
+  // Create table with single TR and TD for the group.
+  let tbody1 = $("<tbody>");
+  let table1 = $("<table>");
+  let tr1 = $("<tr>");
+  let td1 = $("<td>");
+  applyCSS(td1, $(item).find(".data3:first"), ["border", "padding"]);
+
+  tr1.append(td1);
+  tbody1.append(tr1);
+  table1.append(tbody1);
+
   let tbody = $("<tbody>");
   let table = $("<table>");
+
   $.each(group, function (index, value) {
     let tr = $("<tr>");
     let td = $("<td>");
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
-      let vAlign = $(this).find(".data").css("vertical-align");
-      if (vAlign) {
-        td.css("vertical-align", vAlign);
-      }
-      let PaddingTabAll = $(this).find(".data").children().eq(0).attr("padding");
-
-      if (PaddingTabAll) {
-        td.css("padding", PaddingTabAll);
-      }
-      let PaddingTabLeft = $(this).find(".data").children().eq(0).attr("padding-left");
-      if (PaddingTabLeft) {
-        td.css("padding-left", PaddingTabLeft);
-      }
-      let PaddingTabRight = $(this).find(".data").children().eq(0).attr("padding-right");
-      if (PaddingTabRight) {
-        td.css("padding-right", PaddingTabRight);
-      }
-      let PaddingTabTop = $(this).find(".data").children().eq(0).attr("padding-top");
-      if (PaddingTabTop) {
-        td.css("padding-top", PaddingTabTop);
-      }
-      let PaddingTabBottom = $(this).find(".data").children().eq(0).attr("padding-bottom");
-      if (PaddingTabBottom) {
-        td.css("padding-bottom", PaddingTabBottom);
-      }
+      applyCSS(td, $(this).find(".data").children());
       td.append(dataItem);
     } else if ($(this).hasClass("group2")) {
       let table = getSubItemsForgroup2($(this));
+      applyCSS(td, $(this).find(".data2:first"), ["align"]);
       td.append(table);
     } else if ($(this).hasClass("group3")) {
       let table = getSubItemsForgroup3($(this));
+      applyCSS(td, $(this).find(".data3:first"), ["align"]);
       td.append(table);
     }
     tr.append(td);
     tbody.append(tr);
   });
   table.append(tbody);
-  return table;
+  td1.append(table);
+  return table1;
+}
+
+function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
+  //Test
+  const elemAttributes = getAttributes(applyFrom);
+  console.log("elemAttributes", elemAttributes);
+  console.log("type", type);
+
+  for (const attrib of Object.keys(elemAttributes)) {
+    if (attrib.indexOf("border") !== -1 && type.indexOf("border") !== -1) {
+      applyTo.css(attrib, elemAttributes[attrib]);
+    } else if (attrib.indexOf("align") !== -1 && type.indexOf("align") !== -1) {
+      applyTo.css(attrib, elemAttributes[attrib]);
+    } else if (attrib.indexOf("padding") !== -1 && type.indexOf("padding") !== -1) {
+      applyTo.css(attrib, elemAttributes[attrib]);
+    } else if (attrib.indexOf("background") !== -1) {
+      applyTo.css(attrib, elemAttributes[attrib]);
+    }
+  }
+}
+
+function getAttributes($node) {
+  var attrs = {};
+  $.each($node[0].attributes, function (index, attribute) {
+    attrs[attribute.name] = attribute.value;
+  });
+
+  return attrs;
 }

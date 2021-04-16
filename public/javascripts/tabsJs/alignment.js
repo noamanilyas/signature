@@ -23,7 +23,8 @@ function fillAndFormatAlign(id, item) {
     if (element && cssPropertyVal === element) {
       removeCSSClass(cssProperty, id, inputElem);
     } else {
-      $(`#${id}`).parent().css(cssProperty, cssPropertyVal);
+      $(`#${id}`).parent().closest(".drag").css(cssProperty, cssPropertyVal);
+      $(`#${id}`).attr(cssProperty, cssPropertyVal);
       $(`#${inputElem}`).addClass("active");
     }
     converToTableFunc();

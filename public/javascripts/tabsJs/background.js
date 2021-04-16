@@ -22,8 +22,10 @@ function renderBackgroundTab(id) {
       $(`#${"background-color"}`).attr("checked", true);
       $(`#${id}`).parent().css({ background: this.value });
       $(`#${id}`).parent().attr("backGValSet", true);
+      $(`#${id}`).attr("background", this.value);
     } else {
       $(`#${id}`).parent().css({ background: "" });
+      $(`#${id}`).attr("background", "");
       $(`#${id}`).parent().attr("backGValSet", false);
     }
     $(`#${"background-color"}`).attr("checked", true);
@@ -69,6 +71,7 @@ function renderBackgroundTab(id) {
   $(radioSelector).on("change", function () {
     if (this.value === "none") {
       $(`#${id}`).parent().css({ background: "" });
+      $(`#${id}`).attr("background", "");
       $(`#${id}`).parent().attr("backGValSet", false);
       $(`#${id}`).attr("link", false);
       $(`#${inputElem}`).val("");
