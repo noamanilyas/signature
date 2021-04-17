@@ -52,7 +52,7 @@ function addMouseEvents(ns, we) {
 function addMouseOverEvents(el) {
   $(el).hover(
     function () {
-      $(this).css("box-shadow", "0px 0px 0px 1px inset");
+      $(this).css("box-shadow", "0px 0px 3px 0px");
     },
     function () {
       $(this).css("box-shadow", "none");

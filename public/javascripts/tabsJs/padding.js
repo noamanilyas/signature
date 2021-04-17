@@ -9,8 +9,9 @@ function renderPaddingTab(id) {
 
 function fillAndAddEventPadding(id, inputElem, cssProperty, valAppend) {
   // Get existing value
-  const element = document.querySelector(`#${id}`).getAttribute(cssProperty);
+  let element = document.querySelector(`#${id}`).getAttribute(cssProperty);
   if (element) {
+    element = parseInt(element);
     $(`#${inputElem}`).val(element);
   }
   // Add event listeners
@@ -20,6 +21,7 @@ function fillAndAddEventPadding(id, inputElem, cssProperty, valAppend) {
     obj[cssProperty] = value;
     console.log(obj);
     // $(`#${id}`).parent().css(obj);
+    $(`#${id}`).css(cssProperty, value);
     $(`#${id}`).attr(cssProperty, value);
     converToTableFunc();
   });

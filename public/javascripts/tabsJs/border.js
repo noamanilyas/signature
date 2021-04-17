@@ -34,8 +34,11 @@ function renderBorderTab(id) {
 
 function fillAndAddEventBorder(id, inputElem, cssProperty, valAppend) {
   // Get existing value
-  const element = document.querySelector(`#${id}`).getAttribute(cssProperty);
+  let element = document.querySelector(`#${id}`).getAttribute(cssProperty);
   if (element) {
+    if (inputElem.indexOf("size") !== -1) {
+      element = parseInt(element);
+    }
     $(`#${inputElem}`).val(element);
   }
   // Add event listeners

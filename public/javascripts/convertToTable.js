@@ -15,7 +15,7 @@ function converToTableFunc() {
         td.append(table);
       } else if ($(this).hasClass("dataItem")) {
         let dataItem = $(this).find(".data").children().eq(0).clone();
-        applyCSS(td, $(this).find(".data").children().eq(0));
+        applyCSS(td, $(this).find(".data").children().eq(0), ["align"]);
         td.append(dataItem);
       } else if ($(this).hasClass("group2")) {
         let table = getSubItemsForgroup2($(this));
@@ -123,7 +123,7 @@ function getSubItemsForTableItem(item) {
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
           // console.log("dataItem", dataItem);
-          applyCSS(td, actualItem.find(".data").children().eq(0));
+          applyCSS(td, actualItem.find(".data").children().eq(0), ["align"]);
 
           // let vAlign = actualItem.find(".data").css("vertical-align");
           // if (vAlign) {
@@ -195,7 +195,7 @@ function getSubItemsForgroup2(item) {
     let td = $("<td>");
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
-      applyCSS(td, $(this).find(".data").children());
+      applyCSS(td, $(this).find(".data").children(), ["align"]);
       td.append(dataItem);
     } else if ($(this).hasClass("group2")) {
       let table = getSubItemsForgroup2($(this));
@@ -236,7 +236,7 @@ function getSubItemsForgroup3(item) {
     let td = $("<td>");
     if ($(this).hasClass("dataItem")) {
       let dataItem = $(this).find(".data").children().eq(0).clone();
-      applyCSS(td, $(this).find(".data").children());
+      applyCSS(td, $(this).find(".data").children(), ["align"]);
       td.append(dataItem);
     } else if ($(this).hasClass("group2")) {
       let table = getSubItemsForgroup2($(this));
