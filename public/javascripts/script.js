@@ -40,6 +40,8 @@ $(document).ready(function () {
         addDropEvent(HTMLObj.find(".ns"), false);
         addDropEvent(HTMLObj.find(".we"), false);
         addModalClick(HTMLObj.find(".data"));
+        addModalClick(HTMLObj.find(".data2"));
+        addModalClick(HTMLObj.find(".data3"));
         addMouseOverEvents(HTMLObj.find(".data"));
         $("#drop").droppable("destroy");
         // $("#drop").droppable("option", "disabled", true);
