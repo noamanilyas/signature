@@ -30,11 +30,13 @@ router.post("/saveHTML", function (req, res, next) {
     var queryText = `INSERT INTO [dbo].[signatures]
              ([HTML]
              ,[SigHTML]
-             ,[Name])
+             ,[Name]
+             ,[ImageData])
        VALUES
              ('${req.body.html}'
              , '${req.body.signatureHTML}'
-             , '${req.body.name}')`;
+             , '${req.body.name}'
+             , '${req.body.imgData}')`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
@@ -70,6 +72,7 @@ router.post("/updateHTML", function (req, res, next) {
         SET [HTML] = '${req.body.html}'
             ,[SigHTML] = '${req.body.signatureHTML}'
             ,[Name] = '${req.body.name}'
+            ,[ImageData] = '${req.body.imgData}'
       WHERE [dbo].[signatures].[Id] = ` + req.body.id;
 
     // query to the database and get the records
@@ -103,6 +106,7 @@ router.get("/getSignatures", function (req, res, next) {
             ,[HTML]
             ,[SigHTML]
             ,[Name]
+            ,[ImageData]
         FROM [dbo].[signatures]
         ORDER BY SigOrder`;
 
@@ -139,6 +143,7 @@ router.get("/getSignatureById", function (req, res, next) {
             ,[HTML]
             ,[SigHTML]
             ,[Name]
+            ,[ImageData]
         FROM [dbo].[signatures] WHERE [dbo].[signatures].[Id] = ` + req.query.id;
 
     // query to the database and get the records
