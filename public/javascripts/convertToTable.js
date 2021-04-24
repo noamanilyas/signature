@@ -32,7 +32,9 @@ function converToTableFunc() {
     if (mainItems.length - 1 === index) {
       // console.log("previewDone");
       table.append(tbody);
-      $(".panelPreview2").append(table);
+      // table.appendTo(".panelPreview2", ".panelPreview");
+      $(".panelPreview").append(table.clone());
+      $(".panelPreview2").append(table.clone());
     }
   });
 }
