@@ -26,10 +26,10 @@ $(document).ready(function () {
       <div class="container bcontent" data-id="${signature.Id}">
         <div class="card">
           <div class="row no-gutters">
-            <div class="col-sm-3">
+            <div class="col-sm-3 card-img-main-div">
               <img
-                class="card-img card-img-main"
-                src="/images/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png"
+                class="card-img-main"
+                src="${signature.ImageData}"
                 alt="Microsoft Card"
               />
             </div>

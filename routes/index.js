@@ -3,23 +3,21 @@ var router = express.Router();
 var path = require("path");
 var sql = require("mssql");
 
+// config for your database
+var config = {
+  user: "sa",
+  password: "qwerty1234",
+  server: "localhost",
+  database: "greenSignature",
+  port: 1433,
+};
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
 router.post("/saveHTML", function (req, res, next) {
-  console.log("Body", req.body);
-
-  // config for your database
-  var config = {
-    user: "sa",
-    password: "qwerty1234",
-    server: "localhost",
-    database: "greenSignature",
-    port: 1433,
-  };
-
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -49,17 +47,6 @@ router.post("/saveHTML", function (req, res, next) {
 });
 
 router.post("/updateHTML", function (req, res, next) {
-  console.log("Body", req.body);
-
-  // config for your database
-  var config = {
-    user: "sa",
-    password: "qwerty1234",
-    server: "localhost",
-    database: "greenSignature",
-    port: 1433,
-  };
-
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -86,16 +73,6 @@ router.post("/updateHTML", function (req, res, next) {
 });
 
 router.get("/getSignatures", function (req, res, next) {
-  // config for your database
-  var config = {
-    user: "sa",
-    password: "qwerty1234",
-    server: "localhost",
-    database: "greenSignature",
-    port: 1433,
-  };
-
-  // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
@@ -121,15 +98,6 @@ router.get("/getSignatures", function (req, res, next) {
 });
 
 router.get("/getSignatureById", function (req, res, next) {
-  // config for your database
-  var config = {
-    user: "sa",
-    password: "qwerty1234",
-    server: "localhost",
-    database: "greenSignature",
-    port: 1433,
-  };
-
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -157,17 +125,6 @@ router.get("/getSignatureById", function (req, res, next) {
 });
 
 router.post("/updateOrder", function (req, res, next) {
-  console.log("Body", req.body);
-
-  // config for your database
-  var config = {
-    user: "sa",
-    password: "qwerty1234",
-    server: "localhost",
-    database: "greenSignature",
-    port: 1433,
-  };
-
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
