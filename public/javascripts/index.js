@@ -26,43 +26,85 @@ $(document).ready(function () {
     signatureData = content.recordset;
 
     for (const signature of content.recordset) {
-      signature.ImageData = signature.ImageData.split(",")[1];
+      // signature.ImageData = signature.ImageData.split(",")[1];
       // signature.ImageData = `http://127.0.0.1:8887/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png`;
-      let sigHTML = `
-      <div>
-      <div class="container bcontent">
-        <div class="card">
-          <div class="row no-gutters">
-            <div class="col-sm-3 card-img-main-div">
-              <img
-                class="card-img-main"
-                src="${signature.ImageData}"
-                alt="Microsoft Card"
-              />
-            </div>
-            <div class="col-sm-9">
-              <div class="card-body">
-                <h5 class="card-title">${signature.Name}</h5>
-                <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
-                <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
-                <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
-        signature.Name
-      }.txt"  class="btn btn-warning export">Export</a> -->
+      const html = $(signature.HTML);
+      html.find("img").each(function (index) {
+        // console.log($(this).attr("src"));
+        const currSRC = $(this).attr("src");
+
+        $(this).attr("src", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
+        console.log($(this).attr("src"));
+      });
+      // console.log(html.find("img"));
+      (async () => {
+        let canvas,
+          imgData = "";
+        try {
+          const options = {
+            // y: 0,
+            // x: 0,
+            // scrollY: 0,
+            // scrollX: 0,
+          };
+          // let sampleHTML = $(`
+          // <div>
+          //   <h1>Signature Sample</h1>
+          //   <h2>Green Signature</h2>
+          //   <h3>UAE</h3>
+          // </div>
+          // `);
+          $("#ssDiv").html(html);
+          canvas = await html2canvas($("#ssDiv")[0], options);
+        } catch (e) {
+          console.log(e);
+        }
+
+        if (canvas) {
+          imgData = canvas.toDataURL("image/jpeg");
+        }
+
+        // let img = $("img#previewImgElem");
+        // img.attr("src", imgData);
+        // document.body.append(canvas);
+
+        let sigHTML = `
+          <div>
+          <div class="container bcontent">
+            <div class="card">
+              <div class="row no-gutters">
+                <div class="col-sm-3 card-img-main-div">
+                  <img
+                    class="card-img-main"
+                    src="${imgData}"
+                    alt="Microsoft Card"
+                  />
+                </div>
+                <div class="col-sm-9">
+                  <div class="card-body">
+                    <h5 class="card-title">${signature.Name}</h5>
+                    <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
+                    <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
+                    <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
+          signature.Name
+        }.txt"  class="btn btn-warning export">Export</a> -->
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        </div>
-      </div>`;
+            </div>
+          </div>`;
 
-      let htmlData = $(sigHTML).html();
-      $("#list_sig").append(htmlData);
+        let htmlData = $(sigHTML).html();
+        $("#list_sig").append(htmlData);
+      })();
     }
 
     setTimeout(function () {
       // $(".export").on("click", function () {
       //   console.log($(this).attr("id"));
       // });
+      $("#ssDiv").html("");
       Swal.close();
     }, 500);
   })();
