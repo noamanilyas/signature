@@ -4,11 +4,18 @@ var path = require("path");
 var sql = require("mssql");
 
 // config for your database
+// var config = {
+//   user: "sa",
+//   password: "qwerty1234",
+//   server: "localhost",
+//   database: "greenSignature",
+//   port: 1433,
+// };
 var config = {
   user: "sa",
-  password: "qwerty1234",
-  server: "localhost",
-  database: "greenSignature",
+  password: "asncadmin",
+  server: "20.196.3.43",
+  database: "JAVAD",
   port: 1433,
 };
 
@@ -79,13 +86,21 @@ router.get("/getSignatures", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    var queryText = `SELECT [Id]
-            ,[HTML]
-            ,[SigHTML]
-            ,[Name]
-            ,[ImageData]
-        FROM [dbo].[signatures]
-        ORDER BY SigOrder`;
+    // var queryText = `SELECT [Id]
+    //         ,[HTML]
+    //         ,[SigHTML]
+    //         ,[Name] as
+    //         ,[ImageData]
+    //     FROM [dbo].[signatures]
+    //     ORDER BY SigOrder`;
+
+    var queryText = `SELECT
+      H_DSC AS Name,
+      H_RTextHTML AS SigHTML,
+      H_HTMLTEXT AS HTML,
+      H_ATTACH AS ImageData
+      FROM ADHTMLH
+      WHERE H_CONO = '000005'`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
