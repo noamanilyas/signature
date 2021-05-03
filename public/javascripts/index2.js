@@ -82,6 +82,7 @@ $(document).ready(function () {
       const imagesLength = images.length;
       images.each(async function (index) {
         const currSRC = $(this).attr("src");
+        console.log("Image URL", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
         const imageBase64 = await getBase64FromUrl(`http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
         $(this).attr("src", imageBase64);
         // $(this).attr("src", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
