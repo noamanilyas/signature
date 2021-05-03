@@ -19,11 +19,13 @@ $(document).ready(function () {
 
   const createSig = async (html, signature) => {
     try {
-      var canvas,
+      let canvas,
         imgData = "";
-
-      $("#ssDiv").html($(html));
-
+      console.log(signature.Name);
+      $("#ssDiv").html("");
+      const tempSSDiv = $("#ssDiv").html($(html));
+      // let strHTML = $("<div>").append($(tempSSDiv).clone()).html();
+      // console.log(`strHTML`, strHTML);
       setTimeout(async function () {
         const options = {
           // y: 0,
@@ -31,46 +33,72 @@ $(document).ready(function () {
           // scrollY: 0,
           // scrollX: 0,
         };
-        canvas = await html2canvas($("#ssDiv")[0], options);
+        console.log("beofre");
+        // canvas = await html2canvas(tempSSDiv[0], options);
 
-        if (canvas) {
-          imgData = canvas.toDataURL("image/jpeg");
-        }
+        html2canvas(tempSSDiv[0])
+          .then(function (canvas) {
+            console.log("after", canvas);
 
-        let sigHTML = `
-          <div>
-          <div class="container bcontent">
-            <div class="card">
-              <div class="row no-gutters">
-                <div class="col-sm-3 card-img-main-div">
-                  <img
-                    class="card-img-main"
-                    src="${imgData}"
-                    alt="Microsoft Card"
-                  />
-                </div>
-                <div class="col-sm-9">
-                  <div class="card-body">
-                    <h5 class="card-title">${signature.Name}</h5>
-                    <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
-                    <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
-                    <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
-          signature.Name
-        }.txt"  class="btn btn-warning export">Export</a> -->
+            if (canvas) {
+              imgData = canvas.toDataURL("image/jpeg");
+              console.log(imgData);
+            }
+
+            let sigHTML = `
+              <div>
+              <div class="container bcontent">
+                <div class="card">
+                  <div class="row no-gutters">
+                    <div class="col-sm-3 card-img-main-div">
+                      <img
+                        class="card-img-main"
+                        src="${imgData}"
+                        alt="Microsoft Card"
+                      />
+                    </div>
+                    <div class="col-sm-9">
+                      <div class="card-body">
+                        <h5 class="card-title">${signature.Name}</h5>
+                        <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
+                        <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
+                        <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
+              signature.Name
+            }.txt"  class="btn btn-warning export">Export</a> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            </div>
-          </div>`;
+                </div>
+              </div>`;
 
-        let htmlData = $(sigHTML).html();
-        console.log(htmlData);
-        $("#list_sig").append(htmlData);
-      }, 100);
+            let htmlData = $(sigHTML).html();
+            // console.log(htmlData);
+            $("#list_sig").append(htmlData);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }, 10);
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const getSetImageDataSRC = async (elem) => {
+    return new Promise(async (resolve2, reject2) => {
+      const currSRC = elem.attr("src");
+
+      console.log("Image URL", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
+
+      getBase64FromUrl(`http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`).then((result) => {
+        let imageBase64 = result;
+        // elem.attr("src", imageBase64);
+        // console.log("imageBase64", elem.attr("src"));
+
+        resolve2(imageBase64);
+      });
+    });
   };
 
   const generateSignatureData = async (signature) => {
@@ -80,19 +108,21 @@ $(document).ready(function () {
       // const html = $(signature.HTML).find("table:first").eq(0);
       const images = html.find("img");
       const imagesLength = images.length;
-      images.each(async function (index) {
-        const currSRC = $(this).attr("src");
-        console.log("Image URL", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
-        const imageBase64 = await getBase64FromUrl(`http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
-        $(this).attr("src", imageBase64);
-        // $(this).attr("src", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
 
+      // let promiseArray3 = [];
+
+      images.each(async function (index) {
+        // promiseArray3.push(await getSetImageDataSRC($(this)));
+
+        $(this).attr("src", await getSetImageDataSRC($(this)));
+        // console.log($(this).attr("src"));
+        console.log(`${index}/${imagesLength}`);
+        // console.log(imagesLength - 1);
         if (index === imagesLength - 1) {
           resolve({ html, signature });
           // await createSig(html, signature);
         }
       });
-      console.log(html.find("img"));
     });
   };
 
@@ -120,33 +150,17 @@ $(document).ready(function () {
 
     signatureData = content.recordset;
 
-    const promiseArray = [];
-
     for (const signature of content.recordset) {
-      // signature.ImageData = signature.ImageData.split(",")[1];
-      // signature.ImageData = `http://127.0.0.1:8887/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png`;
-
-      // await generateSignatureData(signature);
-      promiseArray.push(await generateSignatureData(signature));
+      const gsData = await generateSignatureData(signature);
+      await createSig(gsData.html, gsData.signature);
     }
 
-    Promise.all(promiseArray).then(async (results) => {
-      const promiseArray2 = [];
-
-      for (const item of results) {
-        promiseArray2.push(await createSig(item.html, item.signature));
-      }
-      Promise.all(promiseArray2).then((results2) => {
-        // console.log(results2);
-        setTimeout(function () {
-          // $(".export").on("click", function () {
-          //   console.log($(this).attr("id"));
-          // });
-          $("#ssDiv").html("");
-          Swal.close();
-        }, 500);
-      });
-    });
+    setTimeout(function () {
+      $("#ssDiv").html("");
+      Swal.close();
+    }, 500);
+    //   });
+    // });
   })();
 });
 

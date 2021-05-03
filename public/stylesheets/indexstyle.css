@@ -8,7 +8,7 @@
 .card-img-main {
   margin: 2%;
   max-height: 200px;
-  max-width: 300px !important;
+  max-width: 400px !important;
   border-radius: calc(0.25rem - 1px);
 }
 .card-img-main-div {
