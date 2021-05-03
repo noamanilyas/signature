@@ -137,15 +137,15 @@ $(document).ready(function () {
       }
       Promise.all(promiseArray2).then((results2) => {
         // console.log(results2);
+        setTimeout(function () {
+          // $(".export").on("click", function () {
+          //   console.log($(this).attr("id"));
+          // });
+          $("#ssDiv").html("");
+          Swal.close();
+        }, 500);
       });
     });
-    setTimeout(function () {
-      // $(".export").on("click", function () {
-      //   console.log($(this).attr("id"));
-      // });
-      // $("#ssDiv").html("");
-      Swal.close();
-    }, 500);
   })();
 });
 
