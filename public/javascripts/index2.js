@@ -79,7 +79,7 @@ $(document).ready(function () {
           .catch((e) => {
             console.log(e);
           });
-      }, 10);
+      }, 50);
     } catch (e) {
       console.log(e);
     }
