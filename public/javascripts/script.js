@@ -288,22 +288,64 @@ $(document).ready(function () {
 
   // Save signature
   $("#saveSignature").click(function (e) {
+    Swal.fire({
+      // position: "top-end",
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+      // icon: "info",
+      iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
+      title: "Saving Signature",
+      showConfirmButton: false,
+      // timer: 1500,
+    });
+
     let url_string = window.location.href;
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
-    if (id > 0) {
-      console.log("Save signature");
+    $("#previewModel").modal("show");
+    setTimeout(function () {
+      console.log($("div.panelPreview2")[0]);
+      const options = {
+        // y: 0,
+        // x: 0,
+        // scrollY: 0,
+        // scrollX: 0,
+      };
       (async () => {
+        let canvas,
+          imgData = "";
+        try {
+          canvas = await html2canvas($("div.panelPreview2 > table.mainTable")[0], options);
+        } catch (e) {
+          console.log(e);
+        }
+
+        if (canvas) {
+          imgData = canvas.toDataURL("image/jpeg");
+        }
+        let img = $("img#previewImgElem");
+        img.attr("src", imgData);
+        // document.body.append(canvas);
+
+        // SignatureData
         let name = $("#signatureName").val();
         let html = $("#drop").html();
-        let signatureHTML = $(".panelPreview").html();
-        const rawResponse = await fetch("http://localhost:8000/updateHTML", {
+        let signatureHTML = $(".panelPreview2").html();
+        let body = JSON.stringify({ name, html, signatureHTML, imgData });
+        let postURL = "http://localhost:8000/saveHTML";
+        if (id > 0) {
+          body = JSON.stringify({ name, html, signatureHTML, id, imgData });
+          postURL = "http://localhost:8000/updateHTML";
+        }
+
+        const rawResponse = await fetch(postURL, {
           method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, html, signatureHTML, id }),
+          body,
         });
         const content = await rawResponse.json();
         Swal.fire({
@@ -314,31 +356,10 @@ $(document).ready(function () {
           timer: 1500,
         });
       })();
-    } else {
-      console.log("Save signature");
-      (async () => {
-        let name = $("#signatureName").val();
-        let html = $("#drop").html();
-        let signatureHTML = $(".panelPreview").html();
-        const rawResponse = await fetch("http://localhost:8000/saveHTML", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, html, signatureHTML }),
-        });
-        const content = await rawResponse.json();
-        Swal.fire({
-          // position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      })();
-    }
+    }, 1000);
   });
+
+  // function html2Canvas
 
   function droppableDrop() {
     $("#drop").droppable({

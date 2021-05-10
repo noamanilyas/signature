@@ -1,5 +1,45 @@
 $(document).ready(function () {
   // Swal.showLoading();
+  $("body").on("click", ".list-group .list-group-item", function () {
+    $(this).toggleClass("active");
+  });
+  $(".list-arrows button").click(function () {
+    var $button = $(this),
+      actives = "";
+    if ($button.hasClass("move-left")) {
+      actives = $(".list-right ul li.active");
+      actives.clone().appendTo(".list-left ul");
+      actives.remove();
+    } else if ($button.hasClass("move-right")) {
+      actives = $(".list-left ul li.active");
+      actives.clone().appendTo(".list-right ul");
+      actives.remove();
+    }
+  });
+  $(".dual-list .selector").click(function () {
+    var $checkBox = $(this);
+    if (!$checkBox.hasClass("selected")) {
+      $checkBox.addClass("selected").closest(".well").find("ul li:not(.active)").addClass("active");
+      $checkBox.children("i").removeClass("glyphicon-unchecked").addClass("glyphicon-check");
+    } else {
+      $checkBox.removeClass("selected").closest(".well").find("ul li.active").removeClass("active");
+      $checkBox.children("i").removeClass("glyphicon-check").addClass("glyphicon-unchecked");
+    }
+  });
+  $('[name="SearchDualList"]').keyup(function (e) {
+    var code = e.keyCode || e.which;
+    if (code == "9") return;
+    if (code == "27") $(this).val(null);
+    var $rows = $(this).closest(".dual-list").find(".list-group li");
+    var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+    $rows
+      .show()
+      .filter(function () {
+        var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+        return !~text.indexOf(val);
+      })
+      .hide();
+  });
 
   const getBase64FromUrl = async (url) => {
     const options = {
@@ -21,7 +61,7 @@ $(document).ready(function () {
     try {
       let canvas,
         imgData = "";
-      console.log(signature.Name);
+      // console.log(signature.Name);
       $("#ssDiv").html("");
       const tempSSDiv = $("#ssDiv").html($(html));
       // let strHTML = $("<div>").append($(tempSSDiv).clone()).html();
@@ -33,16 +73,16 @@ $(document).ready(function () {
           // scrollY: 0,
           // scrollX: 0,
         };
-        console.log("beofre");
+        // console.log("beofre");
         // canvas = await html2canvas(tempSSDiv[0], options);
 
         html2canvas(tempSSDiv[0])
           .then(function (canvas) {
-            console.log("after", canvas);
+            // console.log("after", canvas);
 
             if (canvas) {
               imgData = canvas.toDataURL("image/jpeg");
-              console.log(imgData);
+              // console.log(imgData);
             }
 
             let sigHTML = `
@@ -62,6 +102,7 @@ $(document).ready(function () {
                         <h5 class="card-title">${signature.Name}</h5>
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                         <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
+                        <button class="btn btn-success addSenders">Groups</button>
                         <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
               signature.Name
             }.txt"  class="btn btn-warning export">Export</a> -->
@@ -79,7 +120,7 @@ $(document).ready(function () {
           .catch((e) => {
             console.log(e);
           });
-      }, 10);
+      }, 5);
     } catch (e) {
       console.log(e);
     }
@@ -89,7 +130,7 @@ $(document).ready(function () {
     return new Promise(async (resolve2, reject2) => {
       const currSRC = elem.attr("src");
 
-      console.log("Image URL", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
+      // console.log("Image URL", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
 
       getBase64FromUrl(`http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`).then((result) => {
         let imageBase64 = result;
@@ -116,7 +157,7 @@ $(document).ready(function () {
 
         $(this).attr("src", await getSetImageDataSRC($(this)));
         // console.log($(this).attr("src"));
-        console.log(`${index}/${imagesLength}`);
+        // console.log(`${index}/${imagesLength}`);
         // console.log(imagesLength - 1);
         if (index === imagesLength - 1) {
           resolve({ html, signature });
@@ -154,6 +195,30 @@ $(document).ready(function () {
       const gsData = await generateSignatureData(signature);
       await createSig(gsData.html, gsData.signature);
     }
+    $(".addSenders").click(function (e) {
+      $("#usergroupsmodel").modal("show");
+
+      // action goes here!!
+    });
+
+    const getCompanyUsersGroups = await fetch("http://localhost:8000/getCompanyUsersGroups", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const compUserJson = await getCompanyUsersGroups.json();
+
+    const groups = compUserJson.recordsets[0];
+    const users = compUserJson.recordsets[1];
+
+    const groupsHtmlString = groups.map((group) => {
+      return `<li class="list-group-item">${group.G_DSC}</li>`;
+    });
+    console.log($("ul.fromList"));
+    console.log($(groupsHtmlString));
+    $("ul.fromList").append(groupsHtmlString);
 
     setTimeout(function () {
       $("#ssDiv").html("");
@@ -162,35 +227,34 @@ $(document).ready(function () {
     //   });
     // });
   })();
-
-  $("#saveorder").click(function (e) {
-    let newArray = [...document.querySelectorAll("div.bcontent")].map(function (item) {
-      return item.getAttribute("data-id");
-    });
-    console.log(newArray);
-    if (newArray.length > 0) {
-      console.log("Save signature");
-      (async () => {
-        const rawResponse = await fetch("http://localhost:8000/updateOrder", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ newOrder: newArray }),
-        });
-        const content = await rawResponse.json();
-        Swal.fire({
-          // position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setTimeout(function () {
-          window.location.href = "/index.html";
-        }, 1600);
-      })();
-    }
-  });
 });
+
+function exportFile() {
+  var textFile = null,
+    makeTextFile = function (text) {
+      var data = new Blob([text], { type: "text/plain" });
+
+      // If we are replacing a previously generated file we need to
+      // manually revoke the object URL to avoid memory leaks.
+      if (textFile !== null) {
+        window.URL.revokeObjectURL(textFile);
+      }
+
+      textFile = window.URL.createObjectURL(data);
+
+      return textFile;
+    };
+
+  var create = document.getElementById("create"),
+    textbox = document.getElementById("textbox");
+
+  create.addEventListener(
+    "click",
+    function () {
+      var link = document.getElementById("downloadlink");
+      link.href = makeTextFile(textbox.value);
+      link.style.display = "block";
+    },
+    false
+  );
+}

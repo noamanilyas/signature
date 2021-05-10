@@ -7,6 +7,12 @@
 }
 .card-img-main {
   margin: 2%;
+  max-height: 200px;
+  max-width: 400px !important;
+  border-radius: calc(0.25rem - 1px);
+}
+.card-img-main-div {
+  height: 210px;
 }
 .nav-right {
   justify-content: start !important;
@@ -19,4 +25,27 @@ body {
 }
 .n-item {
   margin-right: 1rem;
+}
+.usergroupsmodeldiv {
+  height: 450px;
+}
+/* UserGroups Multi select css */
+.dual-list .list-group {
+  text-align: left;
+  margin-top: 8px;
+  overflow: auto;
+  max-height: 350px;
+}
+
+.list-left li,
+.list-right li {
+  cursor: pointer;
+}
+
+.list-arrows {
+  padding-top: 100px;
+}
+
+.list-arrows button {
+  margin-bottom: 20px;
 }

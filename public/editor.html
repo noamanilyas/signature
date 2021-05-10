@@ -61,11 +61,14 @@
         placeholder="Signature Name"
         aria-label="name"
       />
-      <button type="button" id="saveSignature" class="n-item btn btn-success">Save</button>
+      <!-- <button type="button" id="saveSignature" class="n-item btn btn-success">Save</button> -->
       <a href="index.html" class="n-item btn btn-danger">Back</a>
       <!-- <button type="button" class="n-item btn btn-warning">Import</button> -->
-      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#importModal" data-whatever="@mdo">
+      <button type="button" class="btn btn-warning n-item" data-toggle="modal" data-target="#importModal" data-whatever="@mdo">
         Import
+      </button>
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#previewModel" data-whatever="@mdo">
+        Preview
       </button>
     </nav>
     <h1 align="center" class="title">Signature Designer</h1>
@@ -394,28 +397,17 @@
       </div>
     </div>
 
-    <div class="modal" id="tableModal" tabindex="-1" role="dialog">
+    <div class="modal" id="previewModel" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="tableModal">Table Modal</h5>
+            <h5 class="modal-title" id="previewModelLabel">Preview</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <div class="row">
-              <form id="tableRC-form">
-                <div class="form-group">
-                  <label for="formGroupExampleInput2">Cols</label>
-                  <input id="tableRC-cols" type="text" class="form-control" placeholder="0 px" />
-                </div>
-                <div class="form-group">
-                  <label for="formGroupExampleInput2">Rows</label>
-                  <input id="tableRC-rows" type="text" class="form-control" placeholder="0 px" />
-                </div>
-              </form>
-            </div>
+            <div class="panelPreview2"></div>
           </div>
         </div>
       </div>
@@ -456,6 +448,9 @@
         </div>
       </div>
     </div>
+
+    <img id='previewImgElem' style="display: none;" src=''></img>
+
     <!-- </center> -->
     <script type="text/javascript" src="./libs/html2canvas.min.js"></script>
     <script type="text/javascript" src="./javascripts/drop.js"></script>
