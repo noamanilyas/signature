@@ -14,7 +14,7 @@ router.post("/saveHTML", function (req, res, next) {
   // config for your database
   var config = {
     user: "sa",
-    password: "qwerty1234",
+    password: "12DesignDB3$",
     server: "localhost",
     database: "greenSignature",
     port: 1433,
@@ -52,7 +52,7 @@ router.post("/updateHTML", function (req, res, next) {
   // config for your database
   var config = {
     user: "sa",
-    password: "qwerty1234",
+    password: "12DesignDB3$",
     server: "localhost",
     database: "greenSignature",
     port: 1433,
@@ -86,7 +86,7 @@ router.get("/getSignatures", function (req, res, next) {
   // config for your database
   var config = {
     user: "sa",
-    password: "qwerty1234",
+    password: "12DesignDB3$",
     server: "localhost",
     database: "greenSignature",
     port: 1433,
@@ -120,7 +120,7 @@ router.get("/getSignatureById", function (req, res, next) {
   // config for your database
   var config = {
     user: "sa",
-    password: "qwerty1234",
+    password: "12DesignDB3$",
     server: "localhost",
     database: "greenSignature",
     port: 1433,
@@ -157,7 +157,7 @@ router.post("/updateOrder", function (req, res, next) {
   // config for your database
   var config = {
     user: "sa",
-    password: "qwerty1234",
+    password: "12DesignDB3$",
     server: "localhost",
     database: "greenSignature",
     port: 1433,
