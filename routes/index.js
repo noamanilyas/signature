@@ -112,6 +112,34 @@ router.get("/getSignatures", function (req, res, next) {
   });
 });
 
+router.get("/getCompanyUsersGroups", function (req, res, next) {
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    // var queryText = `SELECT [Id]
+    //         ,[HTML]
+    //         ,[SigHTML]
+    //         ,[Name] as
+    //         ,[ImageData]
+    //     FROM [dbo].[signatures]
+    //     ORDER BY SigOrder`;
+
+    var queryText = `SELECT G_DSC  FROM ADGRP365 WHERE G_CONO = '000005';
+    SELECT * FROM ADUSR  WHERE U_CONO = '000005'`;
+
+    // query to the database and get the records
+    request.query(queryText, function (err, recordset) {
+      if (err) console.log(err);
+
+      // send records as a response
+      res.send(recordset);
+    });
+  });
+});
+
 router.get("/getSignatureById", function (req, res, next) {
   // connect to your database
   sql.connect(config, function (err) {

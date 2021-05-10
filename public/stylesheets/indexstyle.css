@@ -26,3 +26,26 @@ body {
 .n-item {
   margin-right: 1rem;
 }
+.usergroupsmodeldiv {
+  height: 450px;
+}
+/* UserGroups Multi select css */
+.dual-list .list-group {
+  text-align: left;
+  margin-top: 8px;
+  overflow: auto;
+  max-height: 350px;
+}
+
+.list-left li,
+.list-right li {
+  cursor: pointer;
+}
+
+.list-arrows {
+  padding-top: 100px;
+}
+
+.list-arrows button {
+  margin-bottom: 20px;
+}
