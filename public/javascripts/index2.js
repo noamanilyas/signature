@@ -180,7 +180,7 @@ $(document).ready(function () {
     // timer: 1500,
   });
   (async () => {
-    const rawResponse = await fetch("http://localhost:8000/getSignatures", {
+    const rawResponse = await fetch(`http://localhost:8000/getSignatures?companyId=${"000005"}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -201,7 +201,7 @@ $(document).ready(function () {
       // action goes here!!
     });
 
-    const getCompanyUsersGroups = await fetch("http://localhost:8000/getCompanyUsersGroups", {
+    const getCompanyUsersGroups = await fetch(`http://localhost:8000/getCompanyUsersGroups?companyId=${"000005"}`, {
       method: "GET",
       headers: {
         Accept: "application/json",

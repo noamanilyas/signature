@@ -80,6 +80,7 @@ router.post("/updateHTML", function (req, res, next) {
 });
 
 router.get("/getSignatures", function (req, res, next) {
+  console.log(req);
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
@@ -100,7 +101,7 @@ router.get("/getSignatures", function (req, res, next) {
       H_HTMLTEXT AS HTML,
       H_ATTACH AS ImageData
       FROM ADHTMLH
-      WHERE H_CONO = '000005'`;
+      WHERE H_CONO = '${req.query.companyId}'`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
@@ -127,8 +128,8 @@ router.get("/getCompanyUsersGroups", function (req, res, next) {
     //     FROM [dbo].[signatures]
     //     ORDER BY SigOrder`;
 
-    var queryText = `SELECT G_DSC  FROM ADGRP365 WHERE G_CONO = '000005';
-    SELECT * FROM ADUSR  WHERE U_CONO = '000005'`;
+    var queryText = `SELECT G_DSC  FROM ADGRP365 WHERE G_CONO = '${req.query.companyId}';
+    SELECT * FROM ADUSR  WHERE U_CONO = '${req.query.companyId}'`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
