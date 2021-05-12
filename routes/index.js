@@ -80,7 +80,6 @@ router.post("/updateHTML", function (req, res, next) {
 });
 
 router.get("/getSignatures", function (req, res, next) {
-  console.log(req);
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
@@ -96,6 +95,7 @@ router.get("/getSignatures", function (req, res, next) {
     //     ORDER BY SigOrder`;
 
     var queryText = `SELECT
+      RID AS Id,
       H_DSC AS Name,
       H_RTextHTML AS SigHTML,
       H_HTMLTEXT AS HTML,
@@ -120,16 +120,82 @@ router.get("/getCompanyUsersGroups", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    // var queryText = `SELECT [Id]
-    //         ,[HTML]
-    //         ,[SigHTML]
-    //         ,[Name] as
-    //         ,[ImageData]
-    //     FROM [dbo].[signatures]
-    //     ORDER BY SigOrder`;
+    var queryText = `SELECT RID, G_DSC, G_EMAIL  FROM ADGRP365 WHERE G_CONO = '${req.query.companyId}';
+    SELECT RID, U_DSC, U_EMAIL FROM ADUSR  WHERE U_CONO = '${req.query.companyId}'`;
 
-    var queryText = `SELECT G_DSC  FROM ADGRP365 WHERE G_CONO = '${req.query.companyId}';
-    SELECT * FROM ADUSR  WHERE U_CONO = '${req.query.companyId}'`;
+    // query to the database and get the records
+    request.query(queryText, function (err, recordset) {
+      if (err) console.log(err);
+
+      // send records as a response
+      res.send(recordset);
+    });
+  });
+});
+
+router.get("/getCurrentSignatureUsers", function (req, res, next) {
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    let prid = req.query.prid.replace(/_/g, " ");
+
+    var queryText = `SELECT * FROM ADHTMLU_TEST WHERE PRID = '${prid}' AND U_TYPE = '0';
+    SELECT * FROM ADHTMLU_TEST WHERE PRID = '${prid}' AND U_TYPE = '2'`;
+
+    // query to the database and get the records
+    request.query(queryText, function (err, data) {
+      if (err) console.log(err);
+
+      const resp = {
+        Included: data ? data.recordsets[0] : [],
+        Excluded: data ? data.recordsets[1] : [],
+      };
+
+      // send records as a response
+      res.send(resp);
+    });
+  });
+});
+
+router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
+  console.log(req.body);
+  // connect to your database
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    var queryText = `
+    DELETE FROM ADHTMLU_TEST WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';
+    INSERT INTO [dbo].[ADHTMLU_TEST]
+           ([PRID]
+           ,[U_CD]
+           ,[U_RTYPE]
+           ,[U_EMAIL]
+           ,[U_TYPE]
+           ,[U_GRP])
+     VALUES
+           ${req.body.items.map((item) => {
+             return `('${req.body.prid.replace(/_/g, " ")}'
+              ,'${item.ucd}'
+              ,'${item.utype + item.ugrp}'
+              ,'${item.uemail}'
+              ,'${item.utype}'
+              ,'${item.ugrp}')`;
+           })}`;
+
+    // (<PRID, varchar(16),>
+    // ,<U_CD, nvarchar(200),>
+    // ,<U_RTYPE, varchar(2),>
+    // ,<U_EMAIL, varchar(100),>
+    // ,<U_TYPE, varchar(1),>
+    // ,<U_GRP, varchar(1),>)
+
+    // console.log(queryText);
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {

@@ -49,3 +49,11 @@ body {
 .list-arrows button {
   margin-bottom: 20px;
 }
+
+/* autocomplete */
+.ui-autocomplete {
+  z-index: 9999 !important;
+  cursor: pointer;
+  height: 350px;
+  overflow-y: scroll;
+}
