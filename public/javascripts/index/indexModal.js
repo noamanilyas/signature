@@ -64,7 +64,12 @@ function setAutoComplete(addBtn, allList, emailKey, nameKey, ridKey, listType, l
 }
 
 (async () => {
-  getCompanyUsersGroups = await fetch(`http://localhost:8000/getCompanyUsersGroups?companyId=${"000005"}`, {
+  let url_string = window.location.href; //window.location.href
+  let url = new URL(url_string);
+  let companyId = url.searchParams.get("companyId");
+  // let companyId = "000005";
+  console.log(companyId);
+  getCompanyUsersGroups = await fetch(`http://localhost:8000/getCompanyUsersGroups?companyId=${companyId}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
