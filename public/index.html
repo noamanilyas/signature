@@ -5,6 +5,9 @@
     <title>Green Signature</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link
       rel="stylesheet"
@@ -68,6 +71,104 @@
       </div> -->
     </div>
     <div id="ssDiv" style="background-color: white"></div>
+
+    <div class="modal" id="usergroupsmodel2" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="usergroupsmodel">Select Users/Groups</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div role="tabpanel">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#includeTab" role="tab" data-toggle="tab">Include</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#excludeTab" role="tab" data-toggle="tab">Exclude</a>
+                </li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="includeTab">
+                  <ul class="list-group includeTabList" style="max-height: 260px; overflow-x: auto">
+                    <li class="list-group-item">
+                      bootstrap-duallist &nbsp;&nbsp;&nbsp;(email)
+                      <button class="btn btn-danger removeItemIncludeTab" style="float: right">Remove</button>
+                      <!-- <span style="float: right">email</span> -->
+                    </li>
+                    <!-- <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li> -->
+                  </ul>
+                  <br />
+                  <div>
+                    <button type="button" class="btn btn-success addUserIncluded">Add User</button>
+                    <button type="button" class="btn btn-success addGroupIncluded">Add Group</button>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="excludeTab">
+                  <ul class="list-group excludeTabList" style="max-height: 260px; overflow-x: auto">
+                    <li class="list-group-item">
+                      bootstrap-duallist &nbsp;&nbsp;&nbsp;(email)
+                      <button class="btn btn-danger removeItemIncludeTab" style="float: right">Remove</button>
+                      <!-- <span style="float: right">email</span> -->
+                    </li>
+                    <!-- <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li> -->
+                  </ul>
+                  <br />
+                  <div>
+                    <button type="button" class="btn btn-success addUserExcluded">Add User</button>
+                    <button type="button" class="btn btn-success addGroupExcluded">Add Group</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary saveUsrGrp" data-dismiss="modal" aria-label="Close">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="usergroupslistmodel" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="usergroupslistmodelH5">Select from list</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label for="namesusrgrp">Search: </label>
+            <input id="namesusrgrp" style="width: 50%" />
+            <br />
+            <button type="button" class="btn btn-success addUsrGrpToList" data-dismiss="modal" aria-label="Close">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="modal" id="usergroupsmodel" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
@@ -158,6 +259,9 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="./javascripts/index2.js"></script>
+    <script type="text/javascript" src="./javascripts/index/apis.js"></script>
+    <script type="text/javascript" src="./javascripts/index/indexProcessSig.js"></script>
+    <script type="text/javascript" src="./javascripts/index/indexModal.js"></script>
+    <script type="text/javascript" src="./javascripts/index/index.js"></script>
   </body>
 </html>
