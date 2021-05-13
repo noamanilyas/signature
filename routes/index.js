@@ -161,7 +161,7 @@ router.get("/getCurrentSignatureUsers", function (req, res, next) {
 });
 
 router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);

@@ -12,8 +12,14 @@ $(document).ready(function () {
    * Get signature list
    */
   (async () => {
+    // console.log(c);
+    let url_string = window.location.href; //window.location.href
+    let url = new URL(url_string);
+    let companyId = url.searchParams.get("companyId");
+    // let companyId = "000005";
+    console.log(companyId);
     let signatureData = [];
-    const rawResponse = await fetch(`http://localhost:8000/getSignatures?companyId=${"000005"}`, {
+    const rawResponse = await fetch(`http://localhost:8000/getSignatures?companyId=${companyId}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
