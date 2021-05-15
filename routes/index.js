@@ -121,7 +121,7 @@ router.get("/getCompanyUsersGroups", function (req, res, next) {
     var request = new sql.Request();
 
     var queryText = `SELECT RID, G_DSC, G_EMAIL  FROM ADGRP365 WHERE G_CONO = '${req.query.companyId}';
-    SELECT RID, U_DSC, U_EMAIL FROM ADUSR  WHERE U_CONO = '${req.query.companyId}'`;
+    SELECT TOP 10000 RID, U_DSC, U_EMAIL FROM ADUSR  WHERE U_CONO = '${req.query.companyId}'`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
