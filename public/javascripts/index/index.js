@@ -29,19 +29,21 @@ $(document).ready(function () {
     const content = await rawResponse.json();
 
     signatureData = content.recordset;
+    // console.log(signatureData.length);
 
     for (const signature of content.recordset) {
-      const gsData = await generateSignatureData(signature);
-      await createSig(gsData.html, gsData.signature);
+      // console.log("for loop");
+      await createSig(signature);
     }
 
     setTimeout(function () {
       $("#ssDiv").html("");
+      // console.log($(".addSenders").length);
       $(".addSenders").click(function (e) {
         processUsrGrpModel(e);
       });
       Swal.close();
-    }, 500);
+    }, 3000);
     //   });
     // });
   })();

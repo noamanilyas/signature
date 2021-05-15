@@ -34,15 +34,29 @@ function setAutoComplete(addBtn, allList, emailKey, nameKey, ridKey, listType, l
       return `${item[nameKey]} (${item[emailKey] != null ? item[emailKey] : "No Email"})`;
     });
     $("#namesusrgrp").val("");
-    $("#namesusrgrp")
-      .autocomplete({
-        source: availableItems,
-        minLength: 0,
+
+    if (availableItems.length > 2000) {
+      $("#namesusrgrp").autocomplete({
+        minLength: 1,
+        source: function (request, response) {
+          var results = $.ui.autocomplete.filter(availableItems, request.term);
+
+          response(results.slice(0, 2000));
+        },
         scroll: true,
-      })
-      .focus(function () {
-        $(this).autocomplete("search", "");
       });
+    } else {
+      $("#namesusrgrp")
+        .autocomplete({
+          minLength: 0,
+          source: availableItems,
+          scroll: true,
+        })
+        .focus(function () {
+          $(this).autocomplete("search", "");
+        });
+    }
+
     $(".addUsrGrpToList").click(function () {
       const index = availableItems.indexOf($("#namesusrgrp").val());
       console.log(index);

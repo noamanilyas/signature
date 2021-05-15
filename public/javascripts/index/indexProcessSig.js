@@ -1,24 +1,61 @@
 const getBase64FromUrl = async (url) => {
-  const options = {
-    method: "GET",
-  };
-  const data = await fetch(url, options);
-  const blob = await data.blob();
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      const base64data = reader.result;
-      resolve(base64data);
+  try {
+    const options = {
+      method: "GET",
     };
+    const data = await fetch(url, options);
+    // console.log(data);
+
+    if (data.status === 200 || data.status === 304) {
+      const blob = await data.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          const base64data = reader.result;
+          resolve(base64data);
+        };
+      });
+    } else {
+      return placeholderBase64;
+    }
+  } catch (error) {
+    console.log(error);
+    return placeholderBase64;
+  }
+};
+
+const generateSignatureData = async (signature) => {
+  return new Promise((resolve, reject) => {
+    const html = $(signature.HTML);
+    const images = html.find("img");
+    const imagesLength = images.length;
+
+    if (imagesLength) {
+      images.each(async function (index) {
+        $(this).attr("src", await getSetImageDataSRC($(this)));
+        if (index === imagesLength - 1) {
+          resolve({ html, signature });
+        }
+      });
+    } else {
+      resolve({ html, signature });
+    }
   });
 };
 
-const createSig = async (html, signature) => {
+const createSig = async (sigHTMLDB) => {
+  // console.log("reached createSig");
   try {
+    const gsData = await generateSignatureData(sigHTMLDB);
+    const html = gsData.html;
+    const signature = gsData.signature;
+    // console.log("reached canvas start");
+
     let canvas,
       imgData = "";
     $("#ssDiv").html("");
+
     const tempSSDiv = $("#ssDiv").html($(html));
     setTimeout(async function () {
       const options = {};
@@ -75,35 +112,17 @@ const createSig = async (html, signature) => {
 const getSetImageDataSRC = async (elem) => {
   return new Promise(async (resolve2, reject2) => {
     const currSRC = elem.attr("src");
-
-    getBase64FromUrl(`http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`).then((result) => {
-      let imageBase64 = result;
-      resolve2(imageBase64);
-    });
-  });
-};
-
-const generateSignatureData = async (signature) => {
-  return new Promise((resolve, reject) => {
-    // console.log(toObjectUrl(`http://127.0.0.1:8887/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png`));
-    const html = $(signature.HTML);
-    // const html = $(signature.HTML).find("table:first").eq(0);
-    const images = html.find("img");
-    const imagesLength = images.length;
-
-    // let promiseArray3 = [];
-
-    images.each(async function (index) {
-      // promiseArray3.push(await getSetImageDataSRC($(this)));
-
-      $(this).attr("src", await getSetImageDataSRC($(this)));
-      // console.log($(this).attr("src"));
-      // console.log(`${index}/${imagesLength}`);
-      // console.log(imagesLength - 1);
-      if (index === imagesLength - 1) {
-        resolve({ html, signature });
-        // await createSig(html, signature);
-      }
-    });
+    const imgURL = `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`;
+    // const imgURL = "http://127.0.0.1:8887/vitateckcom/branches11.png";
+    getBase64FromUrl(imgURL)
+      .then((result) => {
+        console.log("Reached getSetImageDataSRC");
+        let imageBase64 = result;
+        resolve2(imageBase64);
+      })
+      .catch((e) => {
+        console.log(e);
+        resolve2(placeholderBase64);
+      });
   });
 };
