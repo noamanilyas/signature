@@ -1,6 +1,6 @@
 async function getCurrentSignatureUsers(signatureId) {
   try {
-    let URL = `http://localhost:8000/getCurrentSignatureUsers?prid=${signatureId}`;
+    let URL = `${SERVER_URL}/getCurrentSignatureUsers?prid=${signatureId}`;
     // console.log(URL);
     let signatureUserGroups = await fetch(URL, {
       method: "GET",
@@ -28,7 +28,7 @@ async function updateCurrentSignatureUsrGrp(body) {
       showConfirmButton: false,
       // timer: 1500,
     });
-    let URL = `http://localhost:8000/updateCurrentSignatureUsrGrp`;
+    let URL = `${SERVER_URL}/updateCurrentSignatureUsrGrp`;
     let apiCall = await fetch(URL, {
       method: "POST",
       headers: {

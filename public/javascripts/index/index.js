@@ -19,7 +19,7 @@ $(document).ready(function () {
     // let companyId = "000005";
     console.log(companyId);
     let signatureData = [];
-    const rawResponse = await fetch(`http://localhost:8000/getSignatures?companyId=${companyId}`, {
+    const rawResponse = await fetch(`${SERVER_URL}/getSignatures?companyId=${companyId}`, {
       method: "GET",
       headers: {
         Accept: "application/json",

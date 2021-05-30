@@ -22,7 +22,7 @@ $(document).ready(function () {
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
     if (id > 0) {
-      const rawResponse = await fetch("http://localhost:8000/getSignatureById?id=" + id, {
+      const rawResponse = await fetch(`${SERVER_URL}/getSignatureById?id=` + id, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -333,10 +333,10 @@ $(document).ready(function () {
         let html = $("#drop").html();
         let signatureHTML = $(".panelPreview2").html();
         let body = JSON.stringify({ name, html, signatureHTML, imgData });
-        let postURL = "http://localhost:8000/saveHTML";
+        let postURL = `${SERVER_URL}/saveHTML`;
         if (id > 0) {
           body = JSON.stringify({ name, html, signatureHTML, id, imgData });
-          postURL = "http://localhost:8000/updateHTML";
+          postURL = `${SERVER_URL}/updateHTML`;
         }
 
         const rawResponse = await fetch(postURL, {

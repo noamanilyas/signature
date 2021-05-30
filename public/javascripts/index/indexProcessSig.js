@@ -112,7 +112,7 @@ const createSig = async (sigHTMLDB) => {
 const getSetImageDataSRC = async (elem) => {
   return new Promise(async (resolve2, reject2) => {
     const currSRC = elem.attr("src");
-    const imgURL = `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`;
+    const imgURL = `${IMG_SERVER_URL}/${currSRC.split("ftproot/")[1]}`;
     // const imgURL = "http://127.0.0.1:8887/vitateckcom/branches11.png";
     getBase64FromUrl(imgURL)
       .then((result) => {

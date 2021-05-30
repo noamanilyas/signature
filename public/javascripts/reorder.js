@@ -139,7 +139,7 @@ $(document).ready(function () {
     // timer: 1500,
   });
   (async () => {
-    const rawResponse = await fetch("http://localhost:8000/getSignatures", {
+    const rawResponse = await fetch(`${SERVER_URL}/getSignatures`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -171,7 +171,7 @@ $(document).ready(function () {
     if (newArray.length > 0) {
       console.log("Save signature");
       (async () => {
-        const rawResponse = await fetch("http://localhost:8000/updateOrder", {
+        const rawResponse = await fetch(`${SERVER_URL}/updateOrder`, {
           method: "POST",
           headers: {
             Accept: "application/json",
