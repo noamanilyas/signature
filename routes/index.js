@@ -142,8 +142,8 @@ router.get("/getCurrentSignatureUsers", function (req, res, next) {
 
     let prid = req.query.prid.replace(/_/g, " ");
 
-    var queryText = `SELECT * FROM ADHTMLU_TEST WHERE PRID = '${prid}' AND U_TYPE = '0';
-    SELECT * FROM ADHTMLU_TEST WHERE PRID = '${prid}' AND U_TYPE = '2'`;
+    var queryText = `SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '0';
+    SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '2'`;
 
     // query to the database and get the records
     request.query(queryText, function (err, data) {
@@ -170,8 +170,8 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
     var request = new sql.Request();
 
     var queryText = `
-    DELETE FROM ADHTMLU_TEST WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';
-    INSERT INTO [dbo].[ADHTMLU_TEST]
+    DELETE FROM ADHTMLU WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';
+    INSERT INTO [dbo].[ADHTMLU]
            ([PRID]
            ,[U_CD]
            ,[U_RTYPE]

@@ -101,10 +101,34 @@ if (app.get("env") === "development") {
   });
 }
 
+
+
+var portNumber = process.env.port || process.env.PORT || 8000
+
+
+/*
 app.listen(8000, "0.0.0.0", function () {
   // print a message when the server starts listening
   console.log("Server starting on 8000");
 });
+*/
+
+/*
+app.listen(portNumber, () => {
+	console.log(`Example app listening at http://localhost:${portNumber}`);
+});
+*/
+
+
+
+app.listen(portNumber, "0.0.0.0", function () {
+  // print a message when the server starts listening
+  console.log("Server starting on 8000");
+});
+
+
+
+
 
 // production error handler
 // no stacktraces leaked to user
