@@ -101,7 +101,14 @@ router.get("/getSignatures", function (req, res, next) {
       H_HTMLTEXT AS HTML,
       H_ATTACH AS ImageData
       FROM ADHTMLH
-      WHERE H_CONO = '${req.query.companyId}'`;
+      WHERE H_CONO = '${req.query.companyId}';
+      
+      SELECT 
+        DISTINCT I_NAME AS ImgPath, I_STR AS ImgBase64  FROM ADHTMLIMG  
+        INNER JOIN ADHTMLH ON ADHTMLH.RID = ADHTMLIMG.PRID
+        WHERE H_CONO = '${req.query.companyId}';`;
+
+    // select * from ADHTMLIMG  where prid = '583           75'
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {

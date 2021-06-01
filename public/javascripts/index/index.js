@@ -17,8 +17,15 @@ $(document).ready(function () {
     let url = new URL(url_string);
     let companyId = url.searchParams.get("companyId");
     // let companyId = "000005";
-    console.log(companyId);
-    let signatureData = [];
+    if (!companyId) {
+      Swal.fire({
+        // position: "top-end",
+        icon: "info",
+        title: "Company data not available.",
+        showConfirmButton: true,
+      });
+      return;
+    }
     const rawResponse = await fetch(`${SERVER_URL}/getSignatures?companyId=${companyId}`, {
       method: "GET",
       headers: {
@@ -27,13 +34,22 @@ $(document).ready(function () {
       },
     });
     const content = await rawResponse.json();
+    console.log(content);
+    const signatureData = content.recordsets[0];
+    const imageData = content.recordsets[1];
 
-    signatureData = content.recordset;
-    // console.log(signatureData.length);
+    if (signatureData.length === 0) {
+      Swal.fire({
+        // position: "top-end",
+        icon: "info",
+        title: "Company data not available.",
+        showConfirmButton: true,
+      });
+      return;
+    }
 
-    for (const signature of content.recordset) {
-      // console.log("for loop");
-      await createSig(signature);
+    for (const signature of signatureData) {
+      await createSig(signature, imageData);
     }
 
     setTimeout(function () {

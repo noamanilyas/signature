@@ -1,4 +1,5 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "html.format.wrapLineLength": 150
+  "html.format.wrapLineLength": 150,
+  "editor.formatOnSave": true
 }
