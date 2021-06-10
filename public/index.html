@@ -27,7 +27,7 @@
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript" src="./libs/html2canvas.min.js"></script>
-    <!-- <script type="text/javascript" src="https://livejs.com/live.js"></script> -->
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
     <link rel="stylesheet" href="./stylesheets/indexstyle.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   </head>
@@ -39,7 +39,7 @@
       <!-- <button type="button" class="n-item btn btn-success">New Signature</button> -->
       <a href="editor.html" class="n-item btn btn-success">New Signature</a>
       <!-- <button type="button" class="n-item btn btn-danger">Reorder</button> -->
-      <a href="reorder.html" class="n-item btn btn-danger">Reorder</a>
+      <a href="reorder.html" id="reorderBtn" class="n-item btn btn-danger">Reorder</a>
       <!-- <a href="editor.html" class="n-item btn btn-info editor-btn">Editor</a> -->
     </nav>
 
@@ -156,9 +156,12 @@
             </button>
           </div>
           <div class="modal-body">
-            <label for="namesusrgrp">Search: </label>
-            <input id="namesusrgrp" style="width: 50%" />
+            <form autocomplete="off">
+              <label for="namesusrgrp">Search: </label>
+              <input id="namesusrgrp" style="width: 50%" />
+            </form>
             <br />
+
             <button type="button" class="btn btn-success addUsrGrpToList" data-dismiss="modal" aria-label="Close">Ok</button>
           </div>
         </div>

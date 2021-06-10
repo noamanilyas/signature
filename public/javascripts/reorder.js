@@ -1,53 +1,54 @@
 $(document).ready(function () {
-  // Swal.showLoading();
+  let url_string = window.location.href; //window.location.href
+  let url = new URL(url_string);
+  let companyId = url.searchParams.get("companyId");
 
-  const getBase64FromUrl = async (url) => {
-    const options = {
-      method: "GET",
-    };
-    const data = await fetch(url, options);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
+  /**
+   * Set back url
+   */
+  $("#backIndexBtn").attr("href", `index.html?companyId=${companyId}`);
+  const replaceImagePaths = (signature, imageData) => {
+    return new Promise((resolve, reject) => {
+      signature.HTML = signature.HTML.replace(/src="[^"]*"/gm, function (match, i) {
+        return match.toLowerCase();
+      });
+
+      imageData.forEach(function (item, index) {
+        const imagePath = item.ImgPath.toLowerCase();
+        console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
+        signature.HTML = signature.HTML.replace(imagePath, `data:image/png;base64,${item.ImgBase64}`);
+      });
+
+      resolve({ html: signature.HTML });
     });
   };
 
-  const createSig = async (html, signature) => {
+  const createSig = async (sigData, imageData) => {
     try {
-      let canvas,
-        imgData = "";
-      console.log(signature.Name);
+      // const gsData = await generateSignatureData(sigHTMLDB);
+      const gsData = await replaceImagePaths(sigData, imageData);
+      const html = gsData.html;
+      const signature = sigData;
+      console.log("Name", signature.Name);
+
+      let imgData = "";
       $("#ssDiv").html("");
+
       const tempSSDiv = $("#ssDiv").html($(html));
-      // let strHTML = $("<div>").append($(tempSSDiv).clone()).html();
-      // console.log(`strHTML`, strHTML);
-      setTimeout(async function () {
-        const options = {
-          // y: 0,
-          // x: 0,
-          // scrollY: 0,
-          // scrollX: 0,
-        };
-        console.log("beofre");
-        // canvas = await html2canvas(tempSSDiv[0], options);
+      // setTimeout(async function () {
+      const options = {};
 
-        html2canvas(tempSSDiv[0])
-          .then(function (canvas) {
-            console.log("after", canvas);
+      html2canvas(tempSSDiv[0])
+        .then(function (canvas) {
+          if (canvas) {
+            imgData = canvas.toDataURL("image/jpeg");
+          }
 
-            if (canvas) {
-              imgData = canvas.toDataURL("image/jpeg");
-              console.log(imgData);
-            }
-
-            let sigHTML = `
+          let sigHTML = `
+          <li class="ui-state-default">
               <div>
-              <div class="container bcontent">
+              
+              <div class="container bcontent" data-id='${signature.Id.replace(" ", "_")}'>
                 <div class="card">
                   <div class="row no-gutters">
                     <div class="col-sm-3 card-img-main-div">
@@ -63,109 +64,137 @@ $(document).ready(function () {
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                         <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
                         <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
-              signature.Name
-            }.txt"  class="btn btn-warning export">Export</a> -->
+            signature.Name
+          }.txt"  class="btn btn-warning export">Export</a> -->
                       </div>
                     </div>
                   </div>
                 </div>
                 </div>
-              </div>`;
+              </div>
+              </li>`;
 
-            let htmlData = $(sigHTML).html();
-            // console.log(htmlData);
-            $("#list_sig").append(htmlData);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }, 10);
+          let htmlData = $(sigHTML).html();
+          // console.log(htmlData);
+          $("#list_sig").append(htmlData);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     } catch (e) {
       console.log(e);
     }
   };
 
-  const getSetImageDataSRC = async (elem) => {
-    return new Promise(async (resolve2, reject2) => {
-      const currSRC = elem.attr("src");
-
-      console.log("Image URL", `http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`);
-
-      getBase64FromUrl(`http://127.0.0.1:8887/${currSRC.split("ftproot/")[1]}`).then((result) => {
-        let imageBase64 = result;
-        // elem.attr("src", imageBase64);
-        // console.log("imageBase64", elem.attr("src"));
-
-        resolve2(imageBase64);
-      });
-    });
-  };
-
-  const generateSignatureData = async (signature) => {
-    return new Promise((resolve, reject) => {
-      // console.log(toObjectUrl(`http://127.0.0.1:8887/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png`));
-      const html = $(signature.HTML);
-      // const html = $(signature.HTML).find("table:first").eq(0);
-      const images = html.find("img");
-      const imagesLength = images.length;
-
-      // let promiseArray3 = [];
-
-      images.each(async function (index) {
-        // promiseArray3.push(await getSetImageDataSRC($(this)));
-
-        $(this).attr("src", await getSetImageDataSRC($(this)));
-        // console.log($(this).attr("src"));
-        console.log(`${index}/${imagesLength}`);
-        // console.log(imagesLength - 1);
-        if (index === imagesLength - 1) {
-          resolve({ html, signature });
-          // await createSig(html, signature);
-        }
-      });
-    });
-  };
-
-  let signatureData = [];
-  Swal.fire({
-    // position: "top-end",
-    onBeforeOpen: () => {
-      Swal.showLoading();
-    },
-    // icon: "info",
-    iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
-    title: "Signatures are loading",
-    showConfirmButton: false,
-    // timer: 1500,
-  });
-  (async () => {
-    const rawResponse = await fetch(`${SERVER_URL}/getSignatures`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+  $(document).ready(function () {
+    Swal.fire({
+      onBeforeOpen: () => {
+        Swal.showLoading();
       },
+      iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
+      title: "Signatures are loading",
+      showConfirmButton: false,
     });
-    const content = await rawResponse.json();
 
-    signatureData = content.recordset;
+    /**
+     * Get signature list
+     */
+    (async () => {
+      // console.log(c);
+      let url_string = window.location.href; //window.location.href
+      let url = new URL(url_string);
+      let companyId = url.searchParams.get("companyId");
+      // let companyId = "000005";
+      if (!companyId) {
+        Swal.fire({
+          // position: "top-end",
+          icon: "info",
+          title: "Company data not available.",
+          showConfirmButton: true,
+        });
+        return;
+      }
+      const rawResponse = await fetch(`${SERVER_URL}/getSignatures?companyId=${companyId}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const content = await rawResponse.json();
+      console.log(content);
+      const signatureData = content.recordsets[0];
+      const imageData = content.recordsets[1];
 
-    for (const signature of content.recordset) {
-      const gsData = await generateSignatureData(signature);
-      await createSig(gsData.html, gsData.signature);
-    }
+      if (signatureData.length === 0) {
+        Swal.fire({
+          // position: "top-end",
+          icon: "info",
+          title: "Company data not available.",
+          showConfirmButton: true,
+        });
+        return;
+      }
 
-    setTimeout(function () {
-      $("#ssDiv").html("");
-      Swal.close();
-    }, 500);
-    //   });
-    // });
-  })();
+      for (const signature of signatureData) {
+        await createSig(signature, imageData);
+      }
+
+      setTimeout(function () {
+        $("#ssDiv").html("");
+        $(".sortable").sortable();
+        $(".sortable").disableSelection();
+        // console.log($(".addSenders").length);
+        // $(".addSenders").click(function (e) {
+        //   processUsrGrpModel(e);
+        // });
+        Swal.close();
+      }, 3000);
+      //   });
+      // });
+    })();
+  });
+
+  // let signatureData = [];
+  // Swal.fire({
+  //   // position: "top-end",
+  //   onBeforeOpen: () => {
+  //     Swal.showLoading();
+  //   },
+  //   // icon: "info",
+  //   iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
+  //   title: "Signatures are loading",
+  //   showConfirmButton: false,
+  //   // timer: 1500,
+  // });
+  // (async () => {
+  //   const rawResponse = await fetch(`${SERVER_URL}/getSignatures`, {
+  //     method: "GET",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const content = await rawResponse.json();
+
+  //   signatureData = content.recordset;
+
+  //   for (const signature of content.recordset) {
+  //     const gsData = await generateSignatureData(signature);
+  //     await createSig(gsData.html, gsData.signature);
+  //   }
+
+  //   setTimeout(function () {
+  //     $("#ssDiv").html("");
+  //     Swal.close();
+  //   }, 500);
+  //   //   });
+  //   // });
+  // })();
 
   $("#saveorder").click(function (e) {
     let newArray = [...document.querySelectorAll("div.bcontent")].map(function (item) {
-      return item.getAttribute("data-id");
+      return item.getAttribute("data-id").replace("_", " ");
     });
     console.log(newArray);
     if (newArray.length > 0) {
@@ -188,7 +217,7 @@ $(document).ready(function () {
           timer: 1500,
         });
         setTimeout(function () {
-          window.location.href = "/index.html";
+          window.location.href = `/index.html?companyId=${companyId}`;
         }, 1600);
       })();
     }
