@@ -101,7 +101,8 @@ router.get("/getSignatures", function (req, res, next) {
       H_HTMLTEXT AS HTML,
       H_ATTACH AS ImageData
       FROM ADHTMLH
-      WHERE H_CONO = '${req.query.companyId}';
+      WHERE H_CONO = '${req.query.companyId}'
+      ORDER BY H_SRL;
       
       SELECT 
         DISTINCT I_NAME AS ImgPath, I_STR AS ImgBase64  FROM ADHTMLIMG  
@@ -253,10 +254,7 @@ router.post("/updateOrder", function (req, res, next) {
     var queryText = "";
 
     for (let i = 0; i < newOrder.length; i++) {
-      queryText +=
-        `UPDATE [dbo].[signatures]
-          SET [SigOrder] = '${i + 1}'
-        WHERE [dbo].[signatures].[Id] = ` + newOrder[i];
+      queryText += `UPDATE ADHTMLH  SET H_SRL = ${i + 1} WHERE RID = '${newOrder[i]}';`;
     }
 
     // query to the database and get the records

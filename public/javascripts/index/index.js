@@ -8,14 +8,21 @@ $(document).ready(function () {
     showConfirmButton: false,
   });
 
+  let url_string = window.location.href; //window.location.href
+  let url = new URL(url_string);
+  let companyId = url.searchParams.get("companyId");
+
+  /**
+   * Set reorder url
+   */
+  $("#reorderBtn").attr("href", `reorder.html?companyId=${companyId}`);
+
   /**
    * Get signature list
    */
   (async () => {
     // console.log(c);
-    let url_string = window.location.href; //window.location.href
-    let url = new URL(url_string);
-    let companyId = url.searchParams.get("companyId");
+
     // let companyId = "000005";
     if (!companyId) {
       Swal.fire({
