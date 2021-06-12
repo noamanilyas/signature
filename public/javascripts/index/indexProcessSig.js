@@ -52,7 +52,7 @@ const replaceImagePaths = (signature, imageData) => {
 
     imageData.forEach(function (item, index) {
       const imagePath = item.ImgPath.toLowerCase();
-      console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
+      // console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
       signature.HTML = signature.HTML.replace(imagePath, `data:image/png;base64,${item.ImgBase64}`);
     });
 

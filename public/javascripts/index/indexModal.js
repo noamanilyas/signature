@@ -35,17 +35,18 @@ function setAutoComplete(addBtn, allList, emailKey, nameKey, ridKey, listType, l
     });
     $("#namesusrgrp").val("");
 
-    if (availableItems.length > 2000) {
+    if (availableItems.length > 500) {
       $("#namesusrgrp").autocomplete({
         minLength: 1,
         source: function (request, response) {
           var results = $.ui.autocomplete.filter(availableItems, request.term);
 
-          response(results.slice(0, 2000));
+          response(results.slice(0, 500));
         },
         scroll: true,
       });
     } else {
+      console.log("inside set auto completed", availableItems.length);
       $("#namesusrgrp")
         .autocomplete({
           minLength: 0,
@@ -217,12 +218,12 @@ $("#usergroupsmodel2").on("hidden.bs.modal", function () {
   $(`.${addGrpBtnE}`).off();
   $(`.${addUsrBtnE}`).off();
   $(".addUsrGrpToList").off();
-  $("#namesusrgrp").off();
+  // $("#namesusrgrp").off(); // Removed beacaue autocomplete not taking event again
 });
 
 $("#usergroupslistmodel").on("hidden.bs.modal", function () {
   $(".addUsrGrpToList").off();
-  $("#namesusrgrp").off();
+  // $("#namesusrgrp").off(); // Removed beacaue autocomplete not taking event again
 });
 
 $(document).on("show.bs.modal", ".modal", function () {
