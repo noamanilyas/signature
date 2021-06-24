@@ -102,6 +102,10 @@ const createSig = async (sigData, imageData) => {
                           / /g,
                           "_"
                         )} class="btn btn-success addSenders groupC" >Users/Groups</button>
+                        <button id=rules-${signature.Id.replace(
+                          / /g,
+                          "_"
+                        )} class="btn btn-success addRules groupD" >Rules/Conditions</button>
                         <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
           signature.Name
         }.txt"  class="btn btn-warning export">Export</a> -->

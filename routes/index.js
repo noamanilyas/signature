@@ -168,6 +168,121 @@ router.get("/getCurrentSignatureUsers", function (req, res, next) {
   });
 });
 
+router.get("/getCurrentSigRulesConditions", function (req, res, next) {
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    let prid = req.query.prid.replace(/_/g, " ");
+    console.log("Prid", prid);
+
+    // const resp = {
+    //   applySig: true,
+    //   AddSig: {
+    //     Status: true,
+    //     Text: "Subjec text",
+    //     RMText: false,
+    //   },
+    //   DontAddSig: {
+    //     Status: true,
+    //     Text: "Subjec text",
+    //     In: {
+    //       Anywhere: true,
+    //       RecentEmail: false,
+    //     },
+    //     SigNotAdded: {
+    //       ProcessNext: true,
+    //       DontProcessNext: false,
+    //     },
+    //   },
+    //   SigAdded: {
+    //     ProcessNext: true,
+    //     DontProcessNext: false,
+    //   },
+    // };
+
+    const resp = {
+      applySig: false,
+      addSig_Status: true,
+      addSig_Text: "Text",
+      addSig_RMText: true,
+      DA_Status: true,
+      DA_Text: "Subjec text",
+      DA_Anywhere: false,
+      DA_RecentEmail: true,
+      DA_ProcessNext: true,
+      DA_DontProcessNext: false,
+      SigAdded_ProcessNext: true,
+      SigAdded_DontProcessNext: false,
+    };
+
+    // var queryText = `SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '0';
+    // SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '2'`;
+
+    // // query to the database and get the records
+    // request.query(queryText, function (err, data) {
+    //   if (err) console.log(err);
+
+    //   const resp = {
+    //     Included: data ? data.recordsets[0] : [],
+    //     Excluded: data ? data.recordsets[1] : [],
+    //   };
+
+    //   // send records as a response
+    res.send(resp);
+    // });
+  });
+});
+
+router.post("/updateSigRulesConditions", function (req, res, next) {
+  // console.log(req.body);
+  // connect to your database
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    var queryText = `
+    DELETE FROM ADHTMLU WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';
+    INSERT INTO [dbo].[ADHTMLU]
+           ([PRID]
+           ,[U_CD]
+           ,[U_RTYPE]
+           ,[U_EMAIL]
+           ,[U_TYPE]
+           ,[U_GRP])
+     VALUES
+           ${req.body.items.map((item) => {
+             return `('${req.body.prid.replace(/_/g, " ")}'
+              ,'${item.ucd}'
+              ,'${item.utype + item.ugrp}'
+              ,'${item.uemail}'
+              ,'${item.utype}'
+              ,'${item.ugrp}')`;
+           })}`;
+
+    // (<PRID, varchar(16),>
+    // ,<U_CD, nvarchar(200),>
+    // ,<U_RTYPE, varchar(2),>
+    // ,<U_EMAIL, varchar(100),>
+    // ,<U_TYPE, varchar(1),>
+    // ,<U_GRP, varchar(1),>)
+
+    // console.log(queryText);
+
+    // query to the database and get the records
+    request.query(queryText, function (err, recordset) {
+      if (err) console.log(err);
+
+      // send records as a response
+      res.send(recordset);
+    });
+  });
+});
+
 router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
   // console.log(req.body);
   // connect to your database

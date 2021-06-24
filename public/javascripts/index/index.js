@@ -65,6 +65,10 @@ $(document).ready(function () {
       $(".addSenders").click(function (e) {
         processUsrGrpModel(e);
       });
+      $(".addRules").click(function (e) {
+        console.log("clicked addRules");
+        processAddRules(e);
+      });
       Swal.close();
     }, 3000);
     //   });
