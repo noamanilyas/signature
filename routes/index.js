@@ -175,69 +175,68 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    let prid = req.query.prid.replace(/_/g, " ");
-    console.log("Prid", prid);
+    // console.log("rid", req.query);
+    let rid = req.query.prid.replace(/_/g, " ");
 
     // const resp = {
-    //   applySig: true,
-    //   AddSig: {
-    //     Status: true,
-    //     Text: "Subjec text",
-    //     RMText: false,
-    //   },
-    //   DontAddSig: {
-    //     Status: true,
-    //     Text: "Subjec text",
-    //     In: {
-    //       Anywhere: true,
-    //       RecentEmail: false,
-    //     },
-    //     SigNotAdded: {
-    //       ProcessNext: true,
-    //       DontProcessNext: false,
-    //     },
-    //   },
-    //   SigAdded: {
-    //     ProcessNext: true,
-    //     DontProcessNext: false,
-    //   },
+    //   applySig: false,
+    //   addSig_Status: true,
+    //   addSig_Text: "Text",
+    //   addSig_RMText: true,
+    //   DA_Status: true,
+    //   DA_Text: "Subjec text",
+    //   DA_Anywhere: false,
+    //   DA_RecentEmail: true,
+    //   DA_ProcessNext: true,
+    //   DA_DontProcessNext: false,
+    //   SigAdded_ProcessNext: true,
+    //   SigAdded_DontProcessNext: false,
     // };
 
-    const resp = {
-      applySig: false,
-      addSig_Status: true,
-      addSig_Text: "Text",
-      addSig_RMText: true,
-      DA_Status: true,
-      DA_Text: "Subjec text",
-      DA_Anywhere: false,
-      DA_RecentEmail: true,
-      DA_ProcessNext: true,
-      DA_DontProcessNext: false,
-      SigAdded_ProcessNext: true,
-      SigAdded_DontProcessNext: false,
-    };
+    //     H_INACTIVE
+    // ALTER TABLE ADHTMLH  ADD H_OADDSUB BIT
+    // ALTER TABLE ADHTMLH  ADD H_OADDSUBTEXT NVARCHAR(100)
+    // ALTER TABLE ADHTMLH  ADD H_OADDSUBREM BIT
+    // ALTER TABLE ADHTMLH  ADD H_DADDMSG BIT
+    // ALTER TABLE ADHTMLH  ADD H_DADDMSGTEXT NVARCHAR(100)
+    // ALTER TABLE ADHTMLH  ADD H_DADDANY BIT
+    // ALTER TABLE ADHTMLH  ADD H_DADDPNEXT BIT
+    // ALTER TABLE ADHTMLH  ADD H_ADDPNEXT BIT
 
-    // var queryText = `SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '0';
-    // SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '2'`;
+    // CASE WHEN EntityProfile IS NULL THEN 'False' ELSE 'True' END
+    var queryText = `SELECT 
+      H_INACTIVE AS applySig,
+      CASE WHEN H_OADDSUB IS NULL OR H_OADDSUB = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS addSig_Status,
+      H_OADDSUBTEXT AS addSig_Text,
+      CASE WHEN H_OADDSUBREM IS NULL OR H_OADDSUBREM = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS addSig_RMText,
+      CASE WHEN H_DADDMSG IS NULL OR H_DADDMSG = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS DA_Status,
+      H_DADDMSGTEXT AS DA_Text,
+      CASE WHEN H_DADDANY IS NULL OR H_DADDANY = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS DA_Anywhere,
+      CASE WHEN H_DADDPNEXT IS NULL OR H_DADDPNEXT = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS DA_ProcessNext,
+      CASE WHEN H_ADDPNEXT IS NULL OR H_ADDPNEXT = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS SigAdded_ProcessNext
+      FROM ADHTMLH WHERE RID = '${rid}';`;
 
-    // // query to the database and get the records
-    // request.query(queryText, function (err, data) {
-    //   if (err) console.log(err);
+    // query to the database and get the records
+    request.query(queryText, function (err, data) {
+      if (err) console.log(err);
 
-    //   const resp = {
-    //     Included: data ? data.recordsets[0] : [],
-    //     Excluded: data ? data.recordsets[1] : [],
-    //   };
+      console.log("rid", rid);
+      console.log("Before", data.recordset[0]);
+      const resp = {
+        ...data.recordset[0],
+        DA_RecentEmail: !data.recordset[0].DA_Anywhere,
+        DA_DontProcessNext: !data.recordset[0].DA_ProcessNext,
+        SigAdded_DontProcessNext: !data.recordset[0].SigAdded_ProcessNext,
+      };
 
-    //   // send records as a response
-    res.send(resp);
-    // });
+      console.log("After", resp);
+      res.send(resp);
+    });
   });
 });
 
 router.post("/updateSigRulesConditions", function (req, res, next) {
-  // console.log(req.body);
+  console.log(req.body);
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -245,39 +244,29 @@ router.post("/updateSigRulesConditions", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    var queryText = `
-    DELETE FROM ADHTMLU WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';
-    INSERT INTO [dbo].[ADHTMLU]
-           ([PRID]
-           ,[U_CD]
-           ,[U_RTYPE]
-           ,[U_EMAIL]
-           ,[U_TYPE]
-           ,[U_GRP])
-     VALUES
-           ${req.body.items.map((item) => {
-             return `('${req.body.prid.replace(/_/g, " ")}'
-              ,'${item.ucd}'
-              ,'${item.utype + item.ugrp}'
-              ,'${item.uemail}'
-              ,'${item.utype}'
-              ,'${item.ugrp}')`;
-           })}`;
+    const body = req.body;
+    let rid = body.prid.replace(/_/g, " ");
 
-    // (<PRID, varchar(16),>
-    // ,<U_CD, nvarchar(200),>
-    // ,<U_RTYPE, varchar(2),>
-    // ,<U_EMAIL, varchar(100),>
-    // ,<U_TYPE, varchar(1),>
-    // ,<U_GRP, varchar(1),>)
+    var queryText = `UPDATE ADHTMLH
+      SET H_INACTIVE = ${body.applySig ? 1 : 0},
+      H_OADDSUB = ${body.addSig_Status ? 1 : 0},
+      H_OADDSUBTEXT = '${body.addSig_Text ? body.addSig_Text : ""}',
+      H_OADDSUBREM = '${body.addSig_RMText ? 1 : 0}',
+      H_DADDMSG = ${body.DA_Status ? 1 : 0},
+      H_DADDMSGTEXT = '${body.DA_Text ? body.DA_Text : ""}',
+      H_DADDANY = ${body.DA_Anywhere ? 1 : 0},
+      H_DADDPNEXT= ${body.DA_ProcessNext ? 1 : 0},
+      H_ADDPNEXT = ${body.SigAdded_ProcessNext ? 1 : 0}
+      WHERE RID = '${rid}';`;
 
-    // console.log(queryText);
+    console.log(queryText);
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
       if (err) console.log(err);
 
       // send records as a response
+      console.log(recordset);
       res.send(recordset);
     });
   });
