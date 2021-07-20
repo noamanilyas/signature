@@ -98,8 +98,8 @@ $(document).ready(function () {
       // console.log("elemChildren: ", elemChildren);
       // }
 
-      console.log("tagName: ", elemChildren.prop("tagName"));
-      console.log("Text", currItem.text().trim());
+      // console.log("tagName: ", elemChildren.prop("tagName"));
+      // console.log("Text", currItem.text().trim());
       if (elemChildren.eq(0).prop("tagName") === "A") {
         // let type = 'none';
         // if ()
@@ -121,7 +121,7 @@ $(document).ready(function () {
         elemChildren.length === 0 ||
         (elemChildren.eq(0).prop("tagName") === "BR" && currItem.text().trim().length > 0)
       ) {
-        console.log(currItem.text().trim());
+        // console.log(currItem.text().trim());
         let textSpan = $(`<span category="textField">${currItem.html()}</span>`);
         // let textSpan = $(`<span category="textField">${currItem.text().trim()}</span>`);
         textSpan.css(style);
@@ -142,7 +142,8 @@ $(document).ready(function () {
           }
         });
 
-        if (tableElemTR.length > 1 && tdCountMax > 1) {
+        // if (tableElemTR.length > 1 && tdCountMax > 1) {
+        if (tableElemTR.length === 1 && tdCountMax > 1) {
           // Table
           // console.log("table");
           return setTableSubItems(tableElemTR);
@@ -158,13 +159,13 @@ $(document).ready(function () {
           return group2HTML;
         } else if (tableElemTR.length > 1) {
           // Group 3
-          console.log("Group 3");
+          // console.log("Group 3");
           let group3 = tableElemTR;
           let group3HTML = setGroup3SubItems(group3);
           return group3HTML;
         } else if (tableElemTR.length === 1 && tdCountMax === 1) {
           // Group 3
-          console.log("1x1 table");
+          // console.log("1x1 table");
           return processElementsToAppend(tableElemTR.children(), index, "none");
           // return setTableSubItems(tableElemTR);
         }
@@ -214,15 +215,24 @@ $(document).ready(function () {
           addRowSpanVal = `rowspan=${rowspan}`;
         }
         const newTD = $(`
-
-        <td class="editor-td" ${addRowSpanVal}>
-          <div class="ph-table wh100">
-            <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
-              &nbsp;
+          <td class="editor-td" ${addRowSpanVal}>
+            <div class="ph-table wh100">
+              <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+                
+              </div>
             </div>
-          </div>
-        </td>`);
+          </td>`);
 
+        // Copy styles to new td
+        for (const cssItem of trTDs.eq(index)[0].style) {
+          // console.log(cssItem);
+          // console.log(trTDs.eq(index)[0].style[cssItem]);
+          newTD.css(cssItem, trTDs.eq(index)[0].style[cssItem]);
+          newTD.attr(cssItem, trTDs.eq(index)[0].style[cssItem]);
+        }
+        // console.log("yyyyyyyyyyyyyy", style);
+        // console.log("dddddddddddddd", trTDs.eq(index)[0].style);
+        // console.log("dddddddddddddd", trTDs.eq(index)[0].style.length);
         let UUID2 = `item-${Date.now() + index + Date.now()}`;
         let tdDiv = newTD.find("div.editor-td-div");
         tdDiv.attr("id", "editorTD-" + UUID2);
@@ -280,6 +290,7 @@ $(document).ready(function () {
   //Import event listener
   $("#importSource").click(function (e) {
     let importedHTMLText = $("#htmlText").val();
+    // let importedHTMLText = `<table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tbody><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;line-height:normal;"><tbody><tr style="font-size:0;"><td align="left" style="padding:0 10px 0 0;border-top:none;border-right:solid 2px #4B7C53;border-bottom:none;border-left:none;vertical-align:middle;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAA7DAAAOwwHHb6hkAAADeElEQVR4Xu2Yi27iMBBFDX1BW+j//yQSlL4LVCfy1Y68Djixl7Kyj2SNA3nMXM/YTiar1ergKmbqbbU0AbytliaAt9XSBPC2WpoA3lZLE8DbamkCeFstTQBvq6UJ4O3Fs9vt3OfnZ9dKUvyL0H6/dx8fH246nXbt6uqqs6lwPY2AbbM8PDy4m5sbf5RHcQG22637/v72R3+wYtgWBno4nHbn7u7Ozedzf5RHcQHW63VSEKkgmtr7+3t37+vra/f4+OjPyKPoHIBzCp4Uvb+/d7PZzN3e3nYBTCaT7r+hcE/KQteHJZHD6AzAqTB9cVICkKKkaoiC0fm2r2tTUUlhedYYgUcJ8PX15V5eXvxRnDETlUQNhUkRp0/wU4wSgFqkWRgJwFlYLBbdyJRCQqghjgQCyo1SG8qoOUDBAjX+9PTklstlNzmJMHgcfX197TJnzFrOM7k/QfJMMgwrrE9DGHVVGJxqT6MRc4blkcApH4TA5kIGiLMLEJuR1Q+dsakqSuzodE98OasAoAcqaCYpTVRhhsSc63OYoFJXg2MZl8roKxWkHLYjHDrECNmdG9fa+hXchzmCrXQKfRk3hGwBAEfkDMQcYonSZMkKEVuzCZ77IMCpLLCChxk3hGICpDh0rFaZGPUOQfCnsuBYxg3hnwgw1CH2FOGkaLOA/8L/f10AO5q2BIY6Q2DhpgoInt+1bOr+wh7/igCgLGA0NCI2MxTE8/Nz95ZIo6/NkILrg3O05Q4F0PNylkAoIgCBKl3lDMdsfhAA53UOfQWu4PrQPaFPgJzgoYgAFjn09vb2l9M5IIate937YgVgneejhd7SeDPMdVZBx4QYS/YXofALEC8rvLQQrFoIAdBwPuwfA1FpLJeUl2B/EdtXpJAtQN83QKFJikbG2H7M6T5haGQRb4EskZSYyHn1zhYAR1K3riESxwpzShz+t8/kPHaXsfNTyBaApUpLGTWPg7HRoz+EmDjq8zxWktzgIVsAAmNth9hnKf5Xw2nEKAWCkP45ZAvABMhECEx+1KkNOgUCUYMwg/pgwuVTWA7ZAsBms0kaWVLVBmuDPoYVQ32EJ+PsZ7gxFBGAmgxfVhScalf9S6OIAIwKAtiJKmdiOidFBPifubycPDNNAG+rpQngbbU0AbytliaAt9XSBPC2WpoA3lZLE8DbaqlcAOd+ALQ27cXvtzg+AAAAAElFTkSuQmCC" height="80" border="0" alt="" style="height:80px;min-height:80px;max-height:80px;font-size:0;"></td><td align="left" style="padding:10px 0 10px 10px;vertical-align:middle;"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;font-size:0;color:#606060;font-style:normal;font-weight:700;white-space:nowrap;"><tbody><tr style="font-size:14.67px;"><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">Karen&nbsp;Green<span style="font-family:remialcxesans;font-size:1px;color:#FFFFFF;line-height:1px;">​</span></td></tr><tr style="font-size:0;"><td align="left" style="vertical-align:top;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;color:#4B7C53;font-style:normal;font-weight:400;white-space:nowrap;"><tbody><tr style="font-size:14.67px;"><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">a:&nbsp;</td><td align="left" style="vertical-align:top;font-size:0;"><table cellpadding="0" cellspacing="0" border="0" style="font-size:0;color:#808080;font-style:normal;font-weight:400;white-space:nowrap;"><tbody><tr style="font-size:14.67px;"><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">9‑11&nbsp;Alexandra&nbsp;Road</td><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">,&nbsp;</td><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">Farnborough</td><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">,&nbsp;</td><td align="left" style="vertical-align:top;font-family:Calibri,Arial,sans-serif;">GU14&nbsp;6BU</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>`;
 
     reverseParseTableHTML(importedHTMLText);
     $("#importModal").modal("hide");
@@ -305,7 +316,7 @@ $(document).ready(function () {
     var id = url.searchParams.get("id");
     $("#previewModel").modal("show");
     setTimeout(function () {
-      console.log($("div.panelPreview2")[0]);
+      // console.log($("div.panelPreview2")[0]);
       const options = {
         // y: 0,
         // x: 0,
@@ -456,9 +467,9 @@ $(document).ready(function () {
         $("#" + itemId).remove();
 
         const canvasParentTable = canvasParent.parent().closest("div.drag.vertical").parent();
-        console.log("canvasParentTable", canvasParentTable);
-        console.log("canvasParentTable.hasClass", canvasParentTable.hasClass("editor-td-div"));
-        console.log("canvasParent.children().length", canvasParent.children().length);
+        // console.log("canvasParentTable", canvasParentTable);
+        // console.log("canvasParentTable.hasClass", canvasParentTable.hasClass("editor-td-div"));
+        // console.log("canvasParent.children().length", canvasParent.children().length);
 
         if (canvasParent.children().length === 1 && canvasParent.hasClass("tableDrop")) {
           canvasParent.html("&nbsp;");
@@ -477,7 +488,6 @@ $(document).ready(function () {
             //   .droppable("enable");
           }
         } else if (canvasParent.children().length === 1 && canvasParentTable.hasClass("editor-td-div")) {
-          console.log("jererer");
           canvasParent.parent().closest("div.drag.vertical").remove();
           canvasParentTable.html("&nbsp;");
           addDropEvent(canvasParent);
@@ -499,7 +509,7 @@ $(document).ready(function () {
       greedy: true,
       tolerance: "pointer",
       drop: function (event, ui) {
-        console.log("I am i #drop");
+        // console.log("I am i #drop");
         var $canvas = $(this);
         if (!ui.draggable.hasClass("canvas-element")) {
           var $canvasElement = ui.draggable.clone();
@@ -832,7 +842,7 @@ $(document).ready(function () {
     let childLeft = $("#" + itemId);
     let siblings = childLeft.parent().children();
 
-    console.log("siblings", siblings.length);
+    // console.log("siblings", siblings.length);
     // If siblings are 3 then it means there will be only 1 item left in group 2 or group 3.
     if (siblings.length === 3 && (childLeft.parent().hasClass("data2") || childLeft.parent().hasClass("data3"))) {
       // If first item is the one which is left out
@@ -840,7 +850,7 @@ $(document).ready(function () {
       // Remove group2 or group3 class
       // Add dataItem class so it show ups in preview
 
-      console.log("itemId", itemId);
+      // console.log("itemId", itemId);
       let index = 0;
       $.each(siblings, function (i, item) {
         if (siblings.eq(0).attr("id") !== itemId) {

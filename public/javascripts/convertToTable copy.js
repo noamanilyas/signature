@@ -18,11 +18,11 @@ function converToTableFunc() {
         applyCSS(td, $(this).find(".data").children().eq(0), ["align"]);
         td.append(dataItem);
       } else if ($(this).hasClass("group2")) {
-        let table = await getSubItemsForgroup2($(this));
+        let table = getSubItemsForgroup2($(this));
         applyCSS(td, $(this).find(".data2:first"), ["align"]);
         td.append(table);
       } else if ($(this).hasClass("group3")) {
-        let table = await getSubItemsForgroup3($(this));
+        let table = getSubItemsForgroup3($(this));
         applyCSS(td, $(this).find(".data3:first"), ["align"]);
         td.append(table);
       }
@@ -80,12 +80,12 @@ function getSubItemsForTableItem(item) {
 
           td.append(dataItem);
         } else if (actualItem.hasClass("group2")) {
-          let table = await getSubItemsForgroup2(actualItem);
+          let table = getSubItemsForgroup2(actualItem);
           applyCSS(td, actualItem.find(".data2:first"), ["align"]);
           td.append(table);
         } else if (actualItem.hasClass("group3")) {
           console.log("Group 3 found int table", actualItem);
-          let table = await getSubItemsForgroup3(actualItem);
+          let table = getSubItemsForgroup3(actualItem);
           applyCSS(td, actualItem.find(".data3:first"), ["align"]);
           td.append(table);
         }
@@ -161,103 +161,91 @@ function getSubItemsForTableItem(item) {
 // }
 
 function getSubItemsForgroup2(item) {
-  return new Promise(async (resolve, reject) => {
-    let group = $(item).find(".data2:first").children();
+  let group = $(item).find(".data2:first").children();
 
-    // Create table with single TR and TD for the group.
-    let tbody1 = $("<tbody>");
-    let table1 = $("<table>");
-    let tr1 = $("<tr>");
-    let td1 = $("<td>");
-    applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
+  // Create table with single TR and TD for the group.
+  let tbody1 = $("<tbody>");
+  let table1 = $("<table>");
+  let tr1 = $("<tr>");
+  let td1 = $("<td>");
+  applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
 
-    tr1.append(td1);
-    tbody1.append(tr1);
-    table1.append(tbody1);
+  tr1.append(td1);
+  tbody1.append(tr1);
+  table1.append(tbody1);
 
-    let tbody = $("<tbody>");
-    let table = $("<table>");
+  let tbody = $("<tbody>");
+  let table = $("<table>");
 
-    let tr = $("<tr>");
-    for (let index = 0; index < group.length; index++) {
-      const thisItem = group.eq(index);
-      // $.each(group, async function (index, value) {
-      let td = $("<td>");
-      if (thisItem.hasClass("dataItem")) {
-        let dataItem = thisItem.find(".data").children().eq(0).clone();
-        applyCSS(td, thisItem.find(".data").children(), ["align"]);
-        td.append(dataItem);
-      } else if (thisItem.hasClass("group2")) {
-        let table = await getSubItemsForgroup2(thisItem);
-        applyCSS(td, thisItem.find(".data2:first"), ["align"]);
-        td.append(table);
-      } else if (thisItem.hasClass("group3")) {
-        let table = await getSubItemsForgroup3(thisItem);
-        applyCSS(td, thisItem.find(".data3:first"), ["align"]);
-        td.append(table);
-      }
-      tr.append(td);
-      // });
+  let tr = $("<tr>");
+  $.each(group, function (index, value) {
+    let td = $("<td>");
+    if ($(this).hasClass("dataItem")) {
+      let dataItem = $(this).find(".data").children().eq(0).clone();
+      applyCSS(td, $(this).find(".data").children(), ["align"]);
+      td.append(dataItem);
+    } else if ($(this).hasClass("group2")) {
+      let table = getSubItemsForgroup2($(this));
+      applyCSS(td, $(this).find(".data2:first"), ["align"]);
+      td.append(table);
+    } else if ($(this).hasClass("group3")) {
+      let table = getSubItemsForgroup3($(this));
+      applyCSS(td, $(this).find(".data3:first"), ["align"]);
+      td.append(table);
     }
-    tbody.append(tr);
-    table.append(tbody);
-    td1.append(table);
-    // return table1;
-    resolve(table1);
+    tr.append(td);
   });
+  tbody.append(tr);
+  table.append(tbody);
+  td1.append(table);
+  return table1;
 }
 
 function getSubItemsForgroup3(item) {
-  return new Promise(async (resolve, reject) => {
-    let group = $(item).find(".data3:first").children();
+  let group = $(item).find(".data3:first").children();
 
-    // Create table with single TR and TD for the group.
-    let tbody1 = $("<tbody>");
-    let table1 = $("<table>");
-    let tr1 = $("<tr>");
-    let td1 = $("<td>");
-    applyCSS(td1, $(item).find(".data3:first"), ["border", "padding"]);
+  // Create table with single TR and TD for the group.
+  let tbody1 = $("<tbody>");
+  let table1 = $("<table>");
+  let tr1 = $("<tr>");
+  let td1 = $("<td>");
+  applyCSS(td1, $(item).find(".data3:first"), ["border", "padding"]);
 
-    tr1.append(td1);
-    tbody1.append(tr1);
-    table1.append(tbody1);
+  tr1.append(td1);
+  tbody1.append(tr1);
+  table1.append(tbody1);
 
-    let tbody = $("<tbody>");
-    let table = $("<table>");
-    for (let index = 0; index < group.length; index++) {
-      const thisItem = group.eq(index);
-      // $.each(group, async function (index, value) {
-      let tr = $("<tr>");
-      let td = $("<td>");
-      if (thisItem.hasClass("tableItem")) {
-        console.log("Table found in group 3", thisItem.attr("id"));
-        let table = await getSubItemsForTableItem(thisItem);
-        console.log("Table found in group 3 - recieved", table);
-        td.append(table);
-      } else if (thisItem.hasClass("dataItem")) {
-        let dataItem = thisItem.find(".data").children().eq(0).clone();
-        applyCSS(td, thisItem.find(".data").children(), ["align"]);
-        td.append(dataItem);
-      } else if (thisItem.hasClass("group2")) {
-        let table = await getSubItemsForgroup2(thisItem);
-        applyCSS(td, thisItem.find(".data2:first"), ["align"]);
-        td.append(table);
-      } else if (thisItem.hasClass("group3")) {
-        let table = await getSubItemsForgroup3(thisItem);
-        applyCSS(td, thisItem.find(".data3:first"), ["align"]);
-        td.append(table);
-      }
-      tr.append(td);
-      tbody.append(tr);
+  let tbody = $("<tbody>");
+  let table = $("<table>");
+
+  $.each(group, async function (index, value) {
+    let tr = $("<tr>");
+    let td = $("<td>");
+    if ($(this).hasClass("tableItem")) {
+      console.log("Table found in group 3", $(this).attr("id"));
+      let table = await getSubItemsForTableItem($(this));
+      console.log("Table found in group 3 - recieved", table);
+      td.append(table);
+    } else if ($(this).hasClass("dataItem")) {
+      let dataItem = $(this).find(".data").children().eq(0).clone();
+      applyCSS(td, $(this).find(".data").children(), ["align"]);
+      td.append(dataItem);
+    } else if ($(this).hasClass("group2")) {
+      let table = getSubItemsForgroup2($(this));
+      applyCSS(td, $(this).find(".data2:first"), ["align"]);
+      td.append(table);
+    } else if ($(this).hasClass("group3")) {
+      let table = getSubItemsForgroup3($(this));
+      applyCSS(td, $(this).find(".data3:first"), ["align"]);
+      td.append(table);
     }
-
-    // });
-    table.append(tbody);
-    td1.append(table);
-    console.log("group 3 returned", table1);
-    resolve(table1);
-    // return table1;
+    tr.append(td);
+    tbody.append(tr);
   });
+  table.append(tbody);
+  td1.append(table);
+  console.log("group 3 returned", table1);
+  return table1;
 }
 
 function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
