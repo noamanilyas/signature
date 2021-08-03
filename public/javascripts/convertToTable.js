@@ -1,42 +1,48 @@
-function converToTableFunc() {
+async function converToTableFunc() {
   const mainItems = $("#drop > .drag.vertical");
   $(".mainTable").remove();
   let tbody = $("<tbody>");
   let table = $("<table>");
   table.addClass("mainTable");
-  $.each(mainItems, async function (index, value) {
+  // $.each(mainItems, async function (index, value) {
+  for (let i = 0; i < mainItems.length; i++) {
     // const item = value;
-    if ($(this).hasClass("ph-table-row") || $(this).hasClass("ph-table-cell")) {
+    const thisItem = mainItems.eq(i);
+    console.log("index", i);
+    if (thisItem.hasClass("ph-table-row") || thisItem.hasClass("ph-table-cell")) {
       let tr = $("<tr>");
       let td = $("<td>");
-      if ($(this).hasClass("tableItem")) {
-        console.log("Table found");
-        let table = await getSubItemsForTableItem($(this));
+      if (thisItem.hasClass("tableItem")) {
+        console.log("Tacble found herereresssssssssssssss");
+        let table = await getSubItemsForTableItem(thisItem);
+        console.log("moved");
         td.append(table);
-      } else if ($(this).hasClass("dataItem")) {
-        let dataItem = $(this).find(".data").children().eq(0).clone();
-        applyCSS(td, $(this).find(".data").children().eq(0), ["align"]);
+      } else if (thisItem.hasClass("dataItem")) {
+        let dataItem = thisItem.find(".data").children().eq(0).clone();
+        applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
         td.append(dataItem);
-      } else if ($(this).hasClass("group2")) {
-        let table = await getSubItemsForgroup2($(this));
-        applyCSS(td, $(this).find(".data2:first"), ["align"]);
+      } else if (thisItem.hasClass("group2")) {
+        let table = await getSubItemsForgroup2(thisItem);
+        applyCSS(td, thisItem.find(".data2:first"), ["align"]);
         td.append(table);
-      } else if ($(this).hasClass("group3")) {
-        let table = await getSubItemsForgroup3($(this));
-        applyCSS(td, $(this).find(".data3:first"), ["align"]);
+      } else if (thisItem.hasClass("group3")) {
+        let table = await getSubItemsForgroup3(thisItem);
+        applyCSS(td, thisItem.find(".data3:first"), ["align"]);
         td.append(table);
       }
       tr.append(td);
       tbody.append(tr);
     }
-    if (mainItems.length - 1 === index) {
-      // console.log("previewDone");
-      table.append(tbody);
-      // table.appendTo(".panelPreview2", ".panelPreview");
-      $(".panelPreview").append(table.clone());
-      $(".panelPreview2").append(table.clone());
-    }
-  });
+  }
+  // if (mainItems.length - 1 === index) {
+  // setTimeout(function () {
+  table.append(tbody);
+  // table.appendTo(".panelPreview2", ".panelPreview");
+  $(".panelPreview").append(table.clone());
+  $(".panelPreview2").append(table.clone());
+  // }, 100);
+  // }
+  // });
 }
 
 function getSubItemsForTableItem(item) {
@@ -60,10 +66,10 @@ function getSubItemsForTableItem(item) {
         const thisItem = tbTD.eq(tdIndex);
 
         const cssItem = thisItem.children().children();
-        // console.log("cssItem", cssItem);
+        console.log("cssItem", cssItem);
         // console.log("$(this)", $(this));
-        applyCSS(td, cssItem);
         applyCSS(td, thisItem);
+        applyCSS(td, cssItem);
 
         const actualItem = thisItem.children().children().children();
         console.log("actualItem", actualItem);
@@ -263,7 +269,7 @@ function getSubItemsForgroup3(item) {
 function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
   //Test
   const elemAttributes = getAttributes(applyFrom);
-  // console.log("elemAttributes", elemAttributes);
+  console.log("elemAttributes", elemAttributes);
   // console.log("type", type);
 
   for (const attrib of Object.keys(elemAttributes)) {

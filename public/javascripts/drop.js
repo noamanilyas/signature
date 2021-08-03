@@ -362,7 +362,7 @@ function getNewContainer() {
                     <div class="ph-table-cell north ns drop s"></div>
                   </div>
                   <div class="ph-table-row">
-                    <div class="ph-table-cell data"></div>
+                    <div class="ph-table-cell data" style="padding-left: 5px;padding-right: 5px;"></div>
                   </div>
                   <div class="ph-table-row">
                     <div class="ph-table-cell south ns drop s"></div>
