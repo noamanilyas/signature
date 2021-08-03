@@ -310,8 +310,8 @@ $(document).ready(function () {
 
   //Import event listener
   $("#importSource").click(function (e) {
-    // let importedHTMLText = $("#htmlText").val();
-    let importedHTMLText = sigHTMLSample;
+    let importedHTMLText = $("#htmlText").val();
+    // let importedHTMLText = sigHTMLSample;
 
     reverseParseTableHTML(importedHTMLText);
     $("#importModal").modal("hide");
