@@ -13,9 +13,17 @@ function removeExitingItem(itemId) {
 
 function addDropEvent(el, greedy) {
   el.removeClass("ui-droppable");
+  console.log(el.closest("drag"));
+
+  let hoverClass = "ui-mouse-enter";
+
+  if (el.hasClass("we")) {
+    hoverClass = "ui-mouse-enter-2";
+  }
+
   $(el).droppable({
     classes: {
-      "ui-droppable-hover": "ui-mouse-enter",
+      "ui-droppable-hover": hoverClass,
     },
     bubbles: false,
     greedy: greedy,
