@@ -5,3 +5,8 @@ nodemon
 http://localhost:8000/?companyId=000005
 
 Web Server for Chrome
+
+change fof production 
+
+C:\Users\GSAdmin\Desktop\Sohel\editor\editor\public\javascripts\api.js
+
