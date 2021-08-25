@@ -122,7 +122,11 @@ $(document).ready(function () {
         (elemChildren.eq(0).prop("tagName") === "BR" && currItem.text().trim().length > 0)
       ) {
         // console.log(currItem.text().trim());
-        let textSpan = $(`<span category="textField">${currItem.html()}</span>`);
+        let textSpan = $(
+          `<span category="textField" 
+          style="font-size: 14px; white-space: nowrap;" 
+          font-family: Calibri, Arial, sans-serif;>${currItem.html()}</span>`
+        );
         // let textSpan = $(`<span category="textField">${currItem.text().trim()}</span>`);
         textSpan.css(style);
         // console.log(textSpan);

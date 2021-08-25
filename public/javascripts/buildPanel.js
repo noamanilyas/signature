@@ -6,7 +6,8 @@ var personalData = {
 };
 
 const itemIds = {
-  btnText: `<span category="textField">Your text here!</span>`,
+  btnText: `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
+  font-family: Calibri, Arial, sans-serif;>Your text here!</span>`,
   // btnText: `<div category="textField"><span>Your text here!</span></div>`,
   btnImage: `<img
         alt="Fax"

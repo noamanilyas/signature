@@ -2,7 +2,7 @@ async function converToTableFunc() {
   const mainItems = $("#drop > .drag.vertical");
   $(".mainTable").remove();
   let tbody = $("<tbody>");
-  let table = $("<table cellspacing='0' cellpadding='0'>");
+  let table = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
   table.addClass("mainTable");
   // $.each(mainItems, async function (index, value) {
   for (let i = 0; i < mainItems.length; i++) {
@@ -10,7 +10,7 @@ async function converToTableFunc() {
     const thisItem = mainItems.eq(i);
     console.log("index", i);
     if (thisItem.hasClass("ph-table-row") || thisItem.hasClass("ph-table-cell")) {
-      let tr = $("<tr>");
+      let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
         console.log("Tacble found herereresssssssssssssss");
@@ -172,8 +172,8 @@ function getSubItemsForgroup2(item) {
 
     // Create table with single TR and TD for the group.
     let tbody1 = $("<tbody>");
-    let table1 = $("<table cellspacing='0' cellpadding='0'>");
-    let tr1 = $("<tr>");
+    let table1 = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+    let tr1 = $("<tr style='font-size: 0px'>");
     let td1 = $("<td>");
     applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
 
@@ -182,9 +182,9 @@ function getSubItemsForgroup2(item) {
     table1.append(tbody1);
 
     let tbody = $("<tbody>");
-    let table = $("<table cellspacing='0' cellpadding='0'>");
+    let table = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
 
-    let tr = $("<tr>");
+    let tr = $("<tr style='font-size: 0px'>");
     for (let index = 0; index < group.length; index++) {
       const thisItem = group.eq(index);
       // $.each(group, async function (index, value) {
@@ -219,8 +219,8 @@ function getSubItemsForgroup3(item) {
 
     // Create table with single TR and TD for the group.
     let tbody1 = $("<tbody>");
-    let table1 = $("<table cellspacing='0' cellpadding='0'>");
-    let tr1 = $("<tr>");
+    let table1 = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+    let tr1 = $("<tr style='font-size: 0px'>");
     let td1 = $("<td>");
     applyCSS(td1, $(item).find(".data3:first"), ["border", "padding"]);
 
@@ -229,11 +229,11 @@ function getSubItemsForgroup3(item) {
     table1.append(tbody1);
 
     let tbody = $("<tbody>");
-    let table = $("<table cellspacing='0' cellpadding='0'>");
+    let table = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
     for (let index = 0; index < group.length; index++) {
       const thisItem = group.eq(index);
       // $.each(group, async function (index, value) {
-      let tr = $("<tr>");
+      let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
         console.log("Table found in group 3", thisItem.attr("id"));
