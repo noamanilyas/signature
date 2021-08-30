@@ -93,7 +93,10 @@ function appendNewTabs(tabs) {
         </tr>`);
 
       if (item.Type === "text")
-        itemIds[`btn${item.Name.split(" ").join("_")}`] = `<span category="textField">{${item.Name}}</span>`;
+        itemIds[
+          `btn${item.Name.split(" ").join("_")}`
+        ] = `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
+        font-family: Calibri, Arial, sans-serif;>{${item.Name}}</span>`;
 
       return rowItem;
     }

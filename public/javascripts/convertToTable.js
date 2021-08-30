@@ -8,7 +8,7 @@ async function converToTableFunc() {
   for (let i = 0; i < mainItems.length; i++) {
     // const item = value;
     const thisItem = mainItems.eq(i);
-    console.log("index", i);
+    // console.log("index", i);
     if (thisItem.hasClass("ph-table-row") || thisItem.hasClass("ph-table-cell")) {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
@@ -269,7 +269,7 @@ function getSubItemsForgroup3(item) {
 function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
   //Test
   const elemAttributes = getAttributes(applyFrom);
-  console.log("elemAttributes", elemAttributes);
+  // console.log("elemAttributes", elemAttributes);
   // console.log("type", type);
 
   for (const attrib of Object.keys(elemAttributes)) {
