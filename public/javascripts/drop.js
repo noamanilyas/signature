@@ -1,19 +1,6 @@
-function removeExitingItem(itemId) {
-  // console.log();
-
-  let oldItem = $(`#${itemId}`);
-  let siblings = oldItem.parent().children();
-
-  if (siblings.length === 2 && (oldItem.parent().hasClass("data2") || oldItem.parent().hasClass("data3"))) {
-    oldItem.parent().closest("div.drag.vertical").remove();
-  } else {
-    oldItem.remove();
-  }
-}
-
 function addDropEvent(el, greedy) {
   el.removeClass("ui-droppable");
-  console.log(el.closest("drag"));
+  // console.log(el.closest("drag"));
 
   let hoverClass = "ui-mouse-enter";
 
@@ -29,7 +16,7 @@ function addDropEvent(el, greedy) {
     greedy: greedy,
     tolerance: "pointer",
     drop: function (event, ui) {
-      console.log("I am in el");
+      // console.log("I am in el");
 
       var $canvas = $(this);
       if (!ui.draggable.hasClass("canvas-element")) {
@@ -125,7 +112,7 @@ function addDropEvent(el, greedy) {
           // console.log("data2Parent+++", data2Parent);
           let existingItemParent = $canvas.closest("div.drag.vertical").parent();
 
-          console.log("existingItemParent", existingItemParent);
+          // console.log("existingItemParent", existingItemParent);
           if (existingItemParent.hasClass("data2")) {
             let existingItem = $canvas.closest("div.drag.vertical");
             // Change from table row to table cell
@@ -167,8 +154,8 @@ function addDropEvent(el, greedy) {
             let existingItemSouth = existingItem.find("div.noso:first > div > div.south");
             // console.log("existingItem", existingItem);
 
-            console.log("Edited", itemEdited);
-            console.log("Parent item count", existingItem.parent().children().length);
+            // console.log("Edited", itemEdited);
+            // console.log("Parent item count", existingItem.parent().children().length);
 
             if (!itemEdited) {
               if (existingItemNorth.length && !existingItemSouth.length) {
@@ -203,7 +190,7 @@ function addDropEvent(el, greedy) {
           // let existingItemParent = $canvas.closest("div.drag.vertical").parent();
 
           // console.log("existingItemParent", existingItemParent);
-          console.log("canvasParent: ", canvasParent);
+          // console.log("canvasParent: ", canvasParent);
           // console.log("existingItem: ", existingItem);
           // console.log(" $canvas: ", $canvas);
 
@@ -293,6 +280,50 @@ function addDropEvent(el, greedy) {
   });
 }
 
+function removeExitingItem(itemId) {
+  // console.log();
+
+  let oldItem = $(`#${itemId}`);
+  let siblings = oldItem.parent().children();
+  const oldItemParent = oldItem.parent();
+
+  if (siblings.length === 2 && (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))) {
+    /**
+     * If no items in data 2 or data 3 then remove the data 2 or data ss3
+     */
+    oldItemParent.closest("div.drag.vertical").remove();
+  } else if (siblings.length > 2 && (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))) {
+    /**
+     * If still 2 or more items in data 2 or data 3 then add we or ns
+     */
+    oldItem.remove();
+    setTimeout(function () {
+      console.log(oldItemParent);
+      console.log(oldItemParent.children());
+
+      const childs = oldItemParent.children();
+      if (childs.length === 1) {
+        const child1st = childs.eq(0);
+        addMissingNorthSouth(child1st);
+        addMissingEastWest(child1st);
+      } else {
+        const child1st = childs.eq(0);
+        const childlast = childs.eq(childs.length - 1);
+
+        if (oldItemParent.hasClass("data2")) {
+          addMissingEastWest(child1st, true, false);
+          addMissingEastWest(childlast, false, true);
+        } else if (oldItemParent.hasClass("data3")) {
+          addMissingNorthSouth(child1st, true, false);
+          addMissingNorthSouth(childlast, false, true);
+        }
+      }
+    }, 50);
+  } else {
+    oldItem.remove();
+  }
+}
+
 function initDraggedItem(draggedItem) {
   // sync changes in setTableSubItems
   let container = getNewContainer();
@@ -309,14 +340,20 @@ function initDraggedItem(draggedItem) {
       };
     },
   });
-
-  // If existing item is dragged for editing then do belwo tasks
+  /**
+   * Edit
+   * If existing item is dragged for editing then do below tasks
+   */
 
   if (draggedItem.attr("id")) {
     // removeItemWithParent(draggedItem.attr("id"));
     removeExitingItem(draggedItem.attr("id"));
     container.attr("id", draggedItem.attr("id"));
     container.find(".data").replaceWith(draggedItem.find(".data"));
+    addDropEvent(container.find(".ns"), true);
+    addDropEvent(container.find(".we"), true);
+    addMouseOverEvents(container.find(".data"));
+    addModalClick(container.find(".data"));
     return container;
   }
 
@@ -396,14 +433,14 @@ function getNewContainer() {
   return container;
 }
 
-function addMissingNorthSouth(existingItem) {
+function addMissingNorthSouth(existingItem, north = true, south = true) {
   let divnoso = existingItem.find("div.noso:first");
   let firstChild = existingItem.find("div.noso:first > div > div.north");
   let lastChild = existingItem.find("div.noso:first > div > div.south");
   // let existingItemNorth = existingItem.find("div.noso:first > div > div.north");
   // let existingItemSouth = existingItem.find("div.noso:first > div > div.south");
   // console.log(lastChild);
-  if (!lastChild.length) {
+  if (!lastChild.length && south) {
     let n = $(`<div class="ph-table-row">
 													<div class="ph-table-cell south ns drop s"></div>
 													</div>`);
@@ -412,7 +449,7 @@ function addMissingNorthSouth(existingItem) {
     addDropEvent(n.find("div"), true);
     // addMouseEvents(n.find("div"), null);
     return existingItem;
-  } else if (!firstChild.length) {
+  } else if (!firstChild.length && north) {
     let n = $(`<div class="ph-table-row">
 													<div class="ph-table-cell north ns drop s"></div>
 													</div>`);
@@ -426,7 +463,7 @@ function addMissingNorthSouth(existingItem) {
   }
 }
 
-function addMissingEastWest(existingItem) {
+function addMissingEastWest(existingItem, west = true, east = true) {
   let diveowo = existingItem.find("div.eowo:first");
   let firstChild = diveowo.children().first();
   let lastChild = diveowo.children().last();
@@ -436,7 +473,7 @@ function addMissingEastWest(existingItem) {
   // console.log("lastChild", lastChild);
   // console.log("firstChild", firstChild.hasClass("west"));
   // console.log("lastChild", lastChild.hasClass("east"));
-  if (!firstChild.hasClass("west")) {
+  if (!firstChild.hasClass("west") && west) {
     let n = $(`<div class="ph-table-cell west drop we s"></div>`);
     //Drop events
     addDropEvent(n, true);
@@ -444,7 +481,7 @@ function addMissingEastWest(existingItem) {
 
     diveowo.prepend(n);
     return existingItem;
-  } else if (!lastChild.hasClass("east")) {
+  } else if (!lastChild.hasClass("east") && east) {
     let n = $(`<div class="ph-table-cell east drop we s"></div>`);
     //Drop events
     addDropEvent(n, true);
