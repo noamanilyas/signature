@@ -7,7 +7,7 @@ var personalData = {
 
 const itemIds = {
   btnText: `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
-  font-family: Calibri, Arial, sans-serif;>Your text here!</span>`,
+  font-family: Calibri, Arial, sans-serif;>Your text here!&#8203;</span>`,
   // btnText: `<div category="textField"><span>Your text here!</span></div>`,
   btnImage: `<img
         alt="Fax"

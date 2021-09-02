@@ -474,11 +474,11 @@ function resetTableTab(inputElemArr) {
 
 const getMaxNoOfColSpan = (cellId) => {
   const maxRowCol = getTableRowsCols(cellId);
-  console.log("maxRowCol", maxRowCol);
+  // console.log("maxRowCol", maxRowCol);
 
   const cellTD = $(`#${cellId}`).parent().parent();
   const cellTDIndex = cellTD.index();
-  console.log("cellTDIndex", cellTDIndex);
+  // console.log("cellTDIndex", cellTDIndex);
 
   let maxNoOfCols = maxRowCol.cols - cellTDIndex;
   return maxNoOfCols;
@@ -487,11 +487,11 @@ const getMaxNoOfColSpan = (cellId) => {
 const getMaxNoOfRowSpan = (cellId) => {
   const maxRowCol = getTableRowsCols(cellId);
 
-  console.log("maxRowCol", maxRowCol);
+  // console.log("maxRowCol", maxRowCol);
 
   const cellTD = $(`#${cellId}`).parent().parent();
   const cellTRIndex = cellTD.parent().index();
-  console.log("cellTRIndex", cellTRIndex);
+  // console.log("cellTRIndex", cellTRIndex);
 
   let maxNoOfCols = maxRowCol.rows - cellTRIndex;
   return maxNoOfCols;

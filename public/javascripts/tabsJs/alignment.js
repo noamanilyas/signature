@@ -7,12 +7,24 @@ function renderAlignmentTab(id) {
   }, 100);
 }
 
+// Remove css property & active class from elem
+// function removeCSSClass(cssProperty, id, inputElem) {
+//   console.log("I am here");
+//   let obj = {};
+//   obj[cssProperty] = "";
+//   $(`#${id}`).parent().css(obj);
+//   console.log("remove", cssProperty);
+//   $(`#${id}`).removeAttr(cssProperty);
+//   $(`#${inputElem}`).removeClass("active");
+// }
+
 function fillAndFormatAlign(id, item) {
   let { inputElem, cssProperty, cssPropertyVal } = item;
   // Get existing value
   const element = document.querySelector(`#${id}`).parentElement.style[cssProperty];
-  // console.log(element);
-  if (element && cssPropertyVal === element) {
+  const elementAttrib = document.querySelector(`#${id}`).getAttribute(cssProperty);
+
+  if ((element || elementAttrib) && (cssPropertyVal === element || cssPropertyVal === elementAttrib)) {
     $(`#${inputElem}`).addClass("active");
   }
   // Add event listeners
@@ -20,22 +32,27 @@ function fillAndFormatAlign(id, item) {
     // If already exists then remove
     removeActiveClassAll(formattersAlign, inputElem.split("-")[1]);
     const element = document.querySelector(`#${id}`).parentElement.style[cssProperty];
-    if (element && cssPropertyVal === element) {
-      removeCSSClass(cssProperty, id, inputElem);
+    const elementAttrib = document.querySelector(`#${id}`).getAttribute(cssProperty);
+
+    if ((element || elementAttrib) && (cssPropertyVal === element || cssPropertyVal === elementAttrib)) {
+      // removeCSSClass(cssProperty, id, inputElem);
+      // Function was not working so moved code here
+
+      let obj = {};
+      obj[cssProperty] = "";
+      $(`#${id}`).parent().css(obj);
+      $(`#${id}`).removeAttr(cssProperty);
+      $(`#${inputElem}`).removeClass("active");
     } else {
       $(`#${id}`).parent().closest(".drag").css(cssProperty, cssPropertyVal);
       $(`#${id}`).attr(cssProperty, cssPropertyVal);
       $(`#${inputElem}`).addClass("active");
     }
-    converToTableFunc();
+    setTimeout(function () {
+      console.log(document.querySelector(`#${id}`).getAttribute(cssProperty));
+      converToTableFunc();
+    }, 50);
   });
-}
-// Remove css property & active class from elem
-function removeCSSClass(cssProperty, id, inputElem) {
-  let obj = {};
-  obj[cssProperty] = "";
-  $(`#${id}`).parent().css(obj);
-  $(`#${inputElem}`).removeClass("active");
 }
 
 function resetAlignTab(formattersAlign) {
@@ -55,6 +72,11 @@ function removeActiveClassAll(formattersAlign, category) {
 }
 
 const formattersAlign = [
+  {
+    inputElem: "align-horiz-stretch",
+    cssProperty: "width-stretch",
+    cssPropertyVal: "100%",
+  },
   {
     inputElem: "align-text-left",
     cssProperty: "text-align",

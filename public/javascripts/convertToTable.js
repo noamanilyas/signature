@@ -2,7 +2,7 @@ async function converToTableFunc() {
   const mainItems = $("#drop > .drag.vertical");
   $(".mainTable").remove();
   let tbody = $("<tbody>");
-  let table = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+  let table = $("<table style='font-size: 0px; width:100%;' cellspacing='0' cellpadding='0'>");
   table.addClass("mainTable");
   // $.each(mainItems, async function (index, value) {
   for (let i = 0; i < mainItems.length; i++) {
@@ -172,7 +172,7 @@ function getSubItemsForgroup2(item) {
 
     // Create table with single TR and TD for the group.
     let tbody1 = $("<tbody>");
-    let table1 = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+    let table1 = $("<table style='font-size: 0px; width:100%' cellspacing='0' cellpadding='0'>");
     let tr1 = $("<tr style='font-size: 0px'>");
     let td1 = $("<td>");
     applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
@@ -193,6 +193,13 @@ function getSubItemsForgroup2(item) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
+        /**
+         * If width on text item then stretch
+         */
+        console.log(dataItem.attr("width-stretch"));
+        if (dataItem.attr("width-stretch") == "100%") {
+          table.css("width", "100%");
+        }
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
         applyCSS(td, thisItem.find(".data2:first"), ["align"]);
