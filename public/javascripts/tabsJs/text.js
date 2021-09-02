@@ -96,8 +96,8 @@ function renderTextTab(id) {
 // }
 function textTextValue(id) {
   $("#text-text").off();
-  console.log($(`#${id}`).text());
-  console.log($("#text-text").val());
+  // console.log($(`#${id}`).text());
+  // console.log($("#text-text").val());
   $("#text-text").val("here");
   const currentText = $(`#${id}`).text();
   $("#text-text").val(currentText);

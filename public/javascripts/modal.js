@@ -22,7 +22,7 @@ var a = {
   icons: ["labelIcon", "hyperlink", "visibility", "alignment", "border", "padding"],
 };
 function renderModel(e) {
-  console.log("e.target", e.target);
+  // console.log("e.target", e.target);
   let category = e.target.getAttribute("category");
   let id = e.target.getAttribute("id");
 
@@ -54,9 +54,9 @@ function renderModel(e) {
       console.log("Group3", existingItemParent);
     }
   }
-  console.log("category", category);
-  console.log("a[category]", a[category]);
-  console.log(id);
+  // console.log("category", category);
+  // console.log("a[category]", a[category]);
+  // console.log(id);
   if (a[category]) {
     // console.log(e.target);
     $("#propertiesModel").modal("show");

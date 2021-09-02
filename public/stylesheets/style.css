@@ -182,6 +182,7 @@
 .ui-mouse-enter {
   background-color: deepskyblue !important;
   height: 30px !important;
+  border: 1px solid #004c66;
   /* width: 30px !important; */
 }
 
@@ -189,6 +190,7 @@
   background-color: deepskyblue !important;
   /* height: 30px !important; */
   width: 30px !important;
+  border: 1px solid #004c66;
 }
 
 /* Tables */
