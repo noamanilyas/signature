@@ -93,7 +93,7 @@ const createSig = async (sigData, imageData) => {
                     <div class="col-sm-3 card-img-main-div">
                       <img
                         class="card-img-main"
-                        src="${imgData}"
+                        src="${signature.ImageData2 ? signature.ImageData2 : imgData}"
                         alt="Microsoft Card"
                       />
                     </div>

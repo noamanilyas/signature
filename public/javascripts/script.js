@@ -357,48 +357,50 @@ $(document).ready(function () {
           imgData = "";
         try {
           canvas = await html2canvas($("div.panelPreview2 > table.mainTable")[0], options);
+
+          if (canvas) {
+            imgData = canvas.toDataURL("image/jpeg");
+          }
+          let img = $("img#previewImgElem");
+          img.attr("src", imgData);
+          // document.body.append(canvas);
+
+          // SignatureData
+          let name = $("#signatureName").val();
+          let html = $("#drop").html();
+          let signatureHTML = $(".panelPreview2").html();
+          // let body = JSON.stringify({ name, html, signatureHTML, imgData, compNo: companyId });
+          let formData = new FormData();
+          formData.append("name", name);
+          formData.append("html", html);
+          formData.append("signatureHTML", signatureHTML);
+          formData.append("imgData", imgData);
+          formData.append("compNo", companyId);
+
+          let postURL = `${SERVER_URL}/saveHTML`;
+          if (id && id.length > 0) {
+            formData.append("id", id);
+            // body = JSON.stringify({ name, html, signatureHTML, id, imgData, compNo: companyId });
+            postURL = `${SERVER_URL}/updateHTML`;
+          }
+          console.log(formData);
+          const rawResponse = await fetch(postURL, {
+            method: "POST",
+            body: formData,
+          });
+          console.log("rawResponse", rawResponse);
+          const content = await rawResponse.json();
+          console.log("content", content);
+          Swal.fire({
+            // position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         } catch (e) {
           console.log(e);
         }
-
-        if (canvas) {
-          imgData = canvas.toDataURL("image/jpeg");
-        }
-        let img = $("img#previewImgElem");
-        img.attr("src", imgData);
-        // document.body.append(canvas);
-
-        // SignatureData
-        let name = $("#signatureName").val();
-        let html = $("#drop").html();
-        let signatureHTML = $(".panelPreview2").html();
-        // let body = JSON.stringify({ name, html, signatureHTML, imgData, compNo: companyId });
-        let formData = new FormData();
-        formData.append("name", name);
-        formData.append("html", html);
-        formData.append("signatureHTML", signatureHTML);
-        formData.append("imgData", imgData);
-        formData.append("compNo", companyId);
-
-        let postURL = `${SERVER_URL}/saveHTML`;
-        if (id && id.length > 0) {
-          formData.append("id", id);
-          // body = JSON.stringify({ name, html, signatureHTML, id, imgData, compNo: companyId });
-          postURL = `${SERVER_URL}/updateHTML`;
-        }
-        console.log(formData);
-        const rawResponse = await fetch(postURL, {
-          method: "POST",
-          body: formData,
-        });
-        const content = await rawResponse.json();
-        Swal.fire({
-          // position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
       })();
     }, 1000);
   });
