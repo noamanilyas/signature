@@ -1,0 +1,78 @@
+<form id="text-form">
+  <div class="form-group">
+    <label for="text-text">Text</label>
+    <input type="text" class="form-control" id="text-text" placeholder="Your text here!" />
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Font Family</label>
+    <select class="form-control" id="text-fontFamily">
+      <option value="">Inherit</option>
+      <option value="calibri">Calibri</option>
+      <option value="ariel">Ariel</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Font Size (px)</label>
+    <input type="text" class="form-control" id="text-fontSize" placeholder="Inherit" />
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Formatting</label>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" id="text-format-B" title="Bold" class="btn btn-secondary">
+          <span style="font-weight: bold"> B</span>
+        </button>
+        <button type="button" id="text-format-I" title="Italic" class="btn btn-secondary">
+          <span style="font-style: italic">I</span>
+        </button>
+        <button type="button" id="text-format-U" title="Underline" class="btn btn-secondary">
+          <span style="text-decoration: underline">U</span>
+        </button>
+        <button type="button" id="text-format-SC" title="Small Caps" class="btn btn-secondary">
+          <span style="font-variant: small-caps">AB</span>
+        </button>
+        <button type="button" id="text-format-UC" title="Uppercase" class="btn btn-secondary">
+          <span style="text-transform: uppercase">AB</span>
+        </button>
+        <button type="button" id="text-format-LC" title="Lowercase" class="btn btn-secondary">
+          <span style="text-transform: lowercase">AB</span>
+        </button>
+        <!-- <button type="button" id="text-format-CL" class="btn btn-secondary"><span>CL</span></button> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Hyperlink and tooktip removed temporarily -->
+    <!-- <div class="col">
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Hyperlink</label>
+        <input type="text" id="text-hyperlink" class="form-control" placeholder="URL" />
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Tooltip</label>
+        <input type="text" id="text-tooltip" class="form-control" placeholder="Tooltip" />
+      </div>
+    </div> -->
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="formGroupExampleInput">Foreground Color</label>
+        <input type="text" id="text-foreground-color" class="form-control" placeholder="Inherit" />
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label for="formGroupExampleInput">Backgroud Color</label>
+        <input type="text" class="form-control" id="text-background-color" placeholder="Inherit" />
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Line Height(px)</label>
+    <input type="text" class="form-control" id="text-line-height" placeholder="Inherit" />
+  </div>
+</form>
