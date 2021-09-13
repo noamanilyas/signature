@@ -26,7 +26,7 @@ $(document).ready(function () {
     let url_string = window.location.href;
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
-    if (id.length > 0) {
+    if (id && id.length > 0) {
       const rawResponse = await fetch(`${SERVER_URL}/getSignatureById?id=` + id, {
         method: "GET",
         headers: {
