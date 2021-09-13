@@ -8,14 +8,11 @@ $(document).ready(function () {
     showConfirmButton: false,
   });
 
-  let url_string = window.location.href; //window.location.href
-  let url = new URL(url_string);
-  let companyId = url.searchParams.get("companyId");
-
   /**
    * Set reorder url
    */
   $("#reorderBtn").attr("href", `reorder.html?companyId=${companyId}`);
+  $("#newSigBtn").attr("href", `editor.html?companyId=${companyId}`);
 
   /**
    * Get signature list

@@ -44,6 +44,10 @@
 //   });
 // };
 
+let url_string = window.location.href; //window.location.href
+let url = new URL(url_string);
+let companyId = url.searchParams.get("companyId");
+
 const replaceImagePaths = (signature, imageData) => {
   return new Promise((resolve, reject) => {
     signature.HTML = signature.HTML.replace(/src="[^"]*"/gm, function (match, i) {
@@ -97,7 +101,9 @@ const createSig = async (sigData, imageData) => {
                       <div class="card-body">
                         <h5 class="card-title">${signature.Name}</h5>
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
-                        <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
+                        <a href="editor.html?id=${signature.Id}&companyId=${companyId}" class="btn btn-success" ${
+          signature.Id.startsWith("939") === false ? 'style="display:none;"' : ""
+        }>Edit Signature</a>
                         <button id=${signature.Id.replace(
                           / /g,
                           "_"

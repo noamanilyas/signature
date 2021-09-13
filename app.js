@@ -42,6 +42,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.json({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 // app.use(express.static(path.join(__dirname, 'public/node_modules')));
