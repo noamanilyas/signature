@@ -381,7 +381,7 @@ $(document).ready(function () {
         formData.append("compNo", companyId);
 
         let postURL = `${SERVER_URL}/saveHTML`;
-        if (id.length > 0) {
+        if (id && id.length > 0) {
           formData.append("id", id);
           // body = JSON.stringify({ name, html, signatureHTML, id, imgData, compNo: companyId });
           postURL = `${SERVER_URL}/updateHTML`;
