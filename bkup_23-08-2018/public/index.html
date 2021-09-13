@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Green Signature</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="./libs/html2canvas.min.js"></script>
+    <!-- <script type="text/javascript" src="https://livejs.com/live.js"></script> -->
+    <link rel="stylesheet" href="./stylesheets/indexstyle.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark nav-right">
+      <a class="navbar-brand" href="#">
+        <img src="/images/logo.png" height="45" alt="" />
+      </a>
+      <!-- <button type="button" class="n-item btn btn-success">New Signature</button> -->
+      <a href="editor.html" class="n-item btn btn-success">New Signature</a>
+      <!-- <button type="button" class="n-item btn btn-danger">Reorder</button> -->
+      <a href="reorder.html" id="reorderBtn" class="n-item btn btn-danger">Reorder</a>
+      <!-- <a href="editor.html" class="n-item btn btn-info editor-btn">Editor</a> -->
+    </nav>
+
+    <div class="sig-list" id="list_sig">
+      <!-- <div class="container bcontent">
+        <div class="card">
+          <div class="row no-gutters">
+            <div class="col-sm-3">
+              <img
+                class="card-img card-img-main"
+                src="/images/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png"
+                alt="Microsoft Card"
+              />
+            </div>
+            <div class="col-sm-9">
+              <div class="card-body">
+                <h5 class="card-title">Microsoft</h5>
+                <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p>
+                <a href="editor.html" class="btn btn-success">Launch Editor</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div id="ssDiv" style="background-color: white"></div>
+
+    <div class="modal" id="usergroupsmodel2" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="usergroupsmodel">Select Users/Groups</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div role="tabpanel">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#includeTab" role="tab" data-toggle="tab">Include</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#excludeTab" role="tab" data-toggle="tab">Exclude</a>
+                </li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="includeTab">
+                  <ul class="list-group includeTabList" style="max-height: 260px; overflow-x: auto">
+                    <li class="list-group-item">
+                      bootstrap-duallist &nbsp;&nbsp;&nbsp;(email)
+                      <button class="btn btn-danger removeItemIncludeTab" style="float: right">Remove</button>
+                      <!-- <span style="float: right">email</span> -->
+                    </li>
+                    <!-- <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li> -->
+                  </ul>
+                  <br />
+                  <div>
+                    <button type="button" class="btn btn-success addUserIncluded">Add User</button>
+                    <button type="button" class="btn btn-success addGroupIncluded">Add Group</button>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="excludeTab">
+                  <ul class="list-group excludeTabList" style="max-height: 260px; overflow-x: auto">
+                    <li class="list-group-item">
+                      bootstrap-duallist &nbsp;&nbsp;&nbsp;(email)
+                      <button class="btn btn-danger removeItemIncludeTab" style="float: right">Remove</button>
+                      <!-- <span style="float: right">email</span> -->
+                    </li>
+                    <!-- <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Morbi leo risus</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Porta ac consectetur ac</li>
+                    <li class="list-group-item">Vestibulum at eros</li> -->
+                  </ul>
+                  <br />
+                  <div>
+                    <button type="button" class="btn btn-success addUserExcluded">Add User</button>
+                    <button type="button" class="btn btn-success addGroupExcluded">Add Group</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary saveUsrGrp" data-dismiss="modal" aria-label="Close">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="usergroupslistmodel" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="usergroupslistmodelH5">Select from list</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form autocomplete="off">
+              <label for="namesusrgrp">Search: </label>
+              <input id="namesusrgrp" style="width: 50%" />
+            </form>
+            <br />
+
+            <button type="button" class="btn btn-success addUsrGrpToList" data-dismiss="modal" aria-label="Close">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="rulesConditionsModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rulesConditionsModalH">Select Users/Groups</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <!-- ------------- Section 1 ------------- -->
+
+              <div class="form-group">
+                <label class="btn btn-secondary active">
+                  <input type="checkbox" id="applySig" aria-label="Checkbox for following text input" /> Apply Signature
+                  (On/Off)
+                </label>
+                <!-- <h3>Apply Signature</h3>
+                <label class="switch">
+                  <input type="checkbox" checked />
+                  <span class="slider round"></span>
+                </label> -->
+              </div>
+
+              <!-- ------------- Section 2 ------------- -->
+
+              <div class="form-group">
+                <label>Only add this Signature if subject contains</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input id="addSig_Status" type="checkbox" aria-label="Checkbox for following text input" />
+                    </div>
+                  </div>
+                  <input id="addSig_Text" type="text" class="form-control" aria-label="Text input with checkbox" />
+                </div>
+                <div style="margin-left: 30px">
+                  <label class="btn btn-secondary active">
+                    <input id="addSig_TextRM" type="checkbox" aria-label="Checkbox for following text input" /> Remove this
+                    text from this Subject
+                  </label>
+                </div>
+              </div>
+
+              <!-- ------------- Section 3 ------------- -->
+
+              <div class="form-group">
+                <label>Don't add Signature if message contains</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input id="DA_Status" type="checkbox" aria-label="Don't add Signature if message contains" />
+                    </div>
+                  </div>
+                  <input type="text" id="DA_Text" class="form-control" aria-label="Text input with checkbox" />
+                </div>
+                <div style="margin-left: 30px">
+                  <label>In:</label>
+                  <br />
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                      <input id="DA_Anywhere" type="radio" name="options" autocomplete="off" /> Anywhere in email trail
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input id="DA_RecentEmail" type="radio" name="options" autocomplete="off" /> Only the most recent email
+                    </label>
+                  </div>
+                  <br />
+
+                  <label>If this Signature isn't added:</label>
+                  <br />
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                      <input type="radio" name="options" id="DA_ProcessNext" autocomplete="off" /> Process the next Signature
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" id="DA_DontProcessNext" autocomplete="off" /> Don't process the next
+                      Signature
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ------------- Section 4 ------------- -->
+
+              <div class="form-group">
+                <label>If this Signature is added:</label>
+                <br />
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-secondary active">
+                    <input type="radio" name="options" id="SigAdded_ProcessNext" autocomplete="off" checked /> Process the
+                    next Signature
+                  </label>
+                  <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="SigAdded_DontProcessNext" autocomplete="off" /> Don't process the
+                    next Signature
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary saveRulesConditions" data-dismiss="modal" aria-label="Close">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="./javascripts/api.js"></script>
+    <script type="text/javascript" src="./javascripts/index/placeholderImg.js"></script>
+    <script type="text/javascript" src="./javascripts/index/apis.js"></script>
+    <script type="text/javascript" src="./javascripts/index/indexProcessSig.js"></script>
+    <script type="text/javascript" src="./javascripts/index/indexModal.js"></script>
+    <script type="text/javascript" src="./javascripts/index/rulesModal.js"></script>
+    <script type="text/javascript" src="./javascripts/index/index.js"></script>
+  </body>
+</html>

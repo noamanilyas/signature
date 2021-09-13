@@ -42,7 +42,17 @@ function renderImageTab(id) {
   function importFileandPreview() {
     var preview = document.querySelector(`#${id}`);
     var file = document.querySelector(`#${fileInput}`).files[0];
-    console.log(file);
+
+    var fileSize = parseFloat(file.size / 1024).toFixed(2);
+
+    if (fileSize > 150) {
+      $("#uploadSizeError").show();
+      setTimeout(function () {
+        $("#uploadSizeError").hide();
+      }, 5000);
+      $(`#${fileInput}`).val("");
+      return;
+    }
 
     // Add file name to image attr
     $(`#${id}`).attr("filename", file.name);

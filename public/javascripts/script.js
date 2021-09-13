@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  let url_string = window.location.href; //window.location.href
+  let url = new URL(url_string);
+  let companyId = url.searchParams.get("companyId");
+  $("#backIndexBtn").attr("href", `index.html?companyId=${companyId}`);
+
   /**
    * Sample
    * ["labelIcon", "imageSource", "hyperlink", "text",
@@ -21,7 +26,7 @@ $(document).ready(function () {
     let url_string = window.location.href;
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
-    if (id > 0) {
+    if (id.length > 0) {
       const rawResponse = await fetch(`${SERVER_URL}/getSignatureById?id=` + id, {
         method: "GET",
         headers: {
@@ -36,7 +41,6 @@ $(document).ready(function () {
       let HTMLString = content.recordset[0].HTML;
       let HTMLObj = $(HTMLString);
       setTimeout(function () {
-        console.log(HTMLObj.find(".we"));
         addDropEvent(HTMLObj.find(".ns"), false);
         addDropEvent(HTMLObj.find(".we"), false);
         addModalClick(HTMLObj.find(".data"));
@@ -368,20 +372,24 @@ $(document).ready(function () {
         let name = $("#signatureName").val();
         let html = $("#drop").html();
         let signatureHTML = $(".panelPreview2").html();
-        let body = JSON.stringify({ name, html, signatureHTML, imgData });
+        // let body = JSON.stringify({ name, html, signatureHTML, imgData, compNo: companyId });
+        let formData = new FormData();
+        formData.append("name", name);
+        formData.append("html", html);
+        formData.append("signatureHTML", signatureHTML);
+        formData.append("imgData", imgData);
+        formData.append("compNo", companyId);
+
         let postURL = `${SERVER_URL}/saveHTML`;
-        if (id > 0) {
-          body = JSON.stringify({ name, html, signatureHTML, id, imgData });
+        if (id.length > 0) {
+          formData.append("id", id);
+          // body = JSON.stringify({ name, html, signatureHTML, id, imgData, compNo: companyId });
           postURL = `${SERVER_URL}/updateHTML`;
         }
-
+        console.log(formData);
         const rawResponse = await fetch(postURL, {
           method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body,
+          body: formData,
         });
         const content = await rawResponse.json();
         Swal.fire({

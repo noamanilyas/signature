@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var path = require("path");
 var sql = require("mssql");
+var formidable = require("formidable");
 
 // config for your database
 // var config = {
@@ -17,6 +18,8 @@ var config = {
   server: "20.196.3.43",
   database: "JAVAD",
   port: 1433,
+  connectionTimeout: 60000,
+  requestTimeout: 60000,
 };
 
 /* GET home page. */
@@ -32,16 +35,35 @@ router.post("/saveHTML", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    var queryText = `INSERT INTO [dbo].[signatures]
-             ([HTML]
-             ,[SigHTML]
-             ,[Name]
-             ,[ImageData])
-       VALUES
-             ('${req.body.html}'
-             , '${req.body.signatureHTML}'
-             , '${req.body.name}'
-             , '${req.body.imgData}')`;
+    var queryText = `INSERT INTO [dbo].[ADHTMLH]
+    ([RID]
+    ,[H_CCD]
+    ,[H_CD]
+    ,[H_DSC]
+    ,[H_RTextHTML]
+    ,[H_HTMLTEXT]
+    ,[H_CONO]
+    ,[H_IMAGE])
+VALUES
+    ('939   ${Math.floor(Math.random() * 10000000000)}'
+    ,'939'
+    ,'939'
+    ,'${req.body.name}'
+    ,'${req.body.signatureHTML}'
+    ,'${req.body.html}'
+    ,'${req.body.compNo}'
+    ,'${req.body.imgData}')`;
+
+    // var queryText = `INSERT INTO [dbo].[signatures]
+    //          ([HTML]
+    //          ,[SigHTML]
+    //          ,[Name]
+    //          ,[ImageData])
+    //    VALUES
+    //          ('${req.body.html}'
+    //          , '${req.body.signatureHTML}'
+    //          , '${req.body.name}'
+    //          , '${req.body.imgData}')`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
@@ -54,29 +76,44 @@ router.post("/saveHTML", function (req, res, next) {
 });
 
 router.post("/updateHTML", function (req, res, next) {
-  // connect to your database
-  sql.connect(config, function (err) {
-    if (err) console.log(err);
+  const dbData = {};
+  var form = new formidable.IncomingForm();
+  form
+    .parse(req)
+    .on("field", function (name, field) {
+      // console.log("Got a field:", field);
+      console.log("Got a field name:", name);
+      dbData[name] = field;
+    })
+    .on("error", function (err) {
+      res.send({ success: false, error: err });
+    })
+    .on("end", function () {
+      sql.connect(config, function (err) {
+        if (err) console.log(err);
 
-    // create Request object
-    var request = new sql.Request();
+        // create Request object
+        var request = new sql.Request();
 
-    var queryText =
-      `UPDATE [dbo].[signatures]
-        SET [HTML] = '${req.body.html}'
-            ,[SigHTML] = '${req.body.signatureHTML}'
-            ,[Name] = '${req.body.name}'
-            ,[ImageData] = '${req.body.imgData}'
-      WHERE [dbo].[signatures].[Id] = ` + req.body.id;
+        var queryText = `UPDATE [dbo].[ADHTMLH]
+            SET [H_HTMLTEXT] = '${dbData.html}'
+                ,[H_RTextHTML] = '${dbData.signatureHTML}'
+                ,[H_DSC] = '${dbData.name}'
+                ,[H_IMAGE] = '${dbData.imgData}'
+          WHERE [dbo].[ADHTMLH].[RID] = '${dbData.id}'`;
 
-    // query to the database and get the records
-    request.query(queryText, function (err, recordset) {
-      if (err) console.log(err);
+        // query to the database and get the records
+        request.query(queryText, function (err, recordset) {
+          if (err) console.log(err);
 
-      // send records as a response
-      res.send(recordset);
+          // send records as a response
+          res.send(recordset);
+        });
+      });
     });
-  });
+
+  // console.log(req.body);
+  // // connect to your database
 });
 
 router.get("/getSignatures", function (req, res, next) {
@@ -326,15 +363,23 @@ router.get("/getSignatureById", function (req, res, next) {
 
     // create Request object
     var request = new sql.Request();
-    console.log(req.query);
 
-    var queryText =
-      `SELECT [Id]
-            ,[HTML]
-            ,[SigHTML]
-            ,[Name]
-            ,[ImageData]
-        FROM [dbo].[signatures] WHERE [dbo].[signatures].[Id] = ` + req.query.id;
+    var queryText = `SELECT
+      RID AS Id,
+      H_DSC AS Name,
+      H_RTextHTML AS SigHTML,
+      H_HTMLTEXT AS HTML,
+      H_IMAGE AS ImageData
+      FROM ADHTMLH
+      WHERE RID = '${req.query.id}';`;
+
+    // var queryText =
+    //   `SELECT [Id]
+    //         ,[HTML]
+    //         ,[SigHTML]
+    //         ,[Name]
+    //         ,[ImageData]
+    //     FROM [dbo].[signatures] WHERE [dbo].[signatures].[Id] = ` + req.query.id;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {

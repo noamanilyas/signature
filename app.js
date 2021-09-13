@@ -42,6 +42,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.json({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 // app.use(express.static(path.join(__dirname, 'public/node_modules')));
@@ -101,10 +102,7 @@ if (app.get("env") === "development") {
   });
 }
 
-
-
-var portNumber = process.env.port || process.env.PORT || 8000
-
+var portNumber = process.env.port || process.env.PORT || 8000;
 
 /*
 app.listen(8000, "0.0.0.0", function () {
@@ -119,16 +117,10 @@ app.listen(portNumber, () => {
 });
 */
 
-
-
 app.listen(portNumber, "0.0.0.0", function () {
   // print a message when the server starts listening
   console.log("Server starting on 8000");
 });
-
-
-
-
 
 // production error handler
 // no stacktraces leaked to user
