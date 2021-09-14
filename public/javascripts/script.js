@@ -2,8 +2,24 @@ $(document).ready(function () {
   let url_string = window.location.href; //window.location.href
   let url = new URL(url_string);
   let companyId = url.searchParams.get("companyId");
-  $("#backIndexBtn").attr("href", `index.html?companyId=${companyId}`);
+  let close = false;
+  $("#backIndexBtn").click(function (e) {
+    if (edited) {
+      $("#closeModel").modal("show");
+    } else {
+      window.location.href = `index.html?companyId=${companyId}`;
+    }
+  });
 
+  $("#closeModelDSave").click(function (e) {
+    window.location.href = `index.html?companyId=${companyId}`;
+  });
+
+  $("#closeModelSave").click(function (e) {
+    $("#closeModel").modal("hide");
+    $("#saveSignature").click();
+    close = true;
+  });
   /**
    * Sample
    * ["labelIcon", "imageSource", "hyperlink", "text",
@@ -328,6 +344,35 @@ $(document).ready(function () {
 
   // Save signature
   $("#saveSignature").click(function (e) {
+    $("#previewModel").modal("show");
+    let name = $("#signatureName").val();
+    console.log("name1", name.length);
+    if (name) {
+      saveHTMLToDB();
+    } else {
+      $("#nameModel").modal("show");
+    }
+  });
+
+  $("#nameModelSave").click(function (e) {
+    let sigName = $("#nameModelInput").val();
+    let name = $("#signatureName").val();
+    console.log("sigName", !sigName);
+    console.log("name2", name.length);
+    if (!sigName) {
+      $("#nameEmptyError").show();
+      setTimeout(function () {
+        $("#nameEmptyError").hide();
+      }, 3000);
+      return;
+    } else {
+      saveHTMLToDB();
+    }
+  });
+
+  function saveHTMLToDB() {
+    let sigName = $("#nameModelInput").val();
+    let name = $("#signatureName").val();
     Swal.fire({
       // position: "top-end",
       onBeforeOpen: () => {
@@ -343,7 +388,6 @@ $(document).ready(function () {
     let url_string = window.location.href;
     var url = new URL(url_string);
     var id = url.searchParams.get("id");
-    $("#previewModel").modal("show");
     setTimeout(function () {
       // console.log($("div.panelPreview2")[0]);
       const options = {
@@ -371,7 +415,7 @@ $(document).ready(function () {
           let signatureHTML = $(".panelPreview2").html();
           // let body = JSON.stringify({ name, html, signatureHTML, imgData, compNo: companyId });
           let formData = new FormData();
-          formData.append("name", name);
+          formData.append("name", sigName ? sigName : name);
           formData.append("html", html);
           formData.append("signatureHTML", signatureHTML);
           formData.append("imgData", imgData);
@@ -383,14 +427,12 @@ $(document).ready(function () {
             // body = JSON.stringify({ name, html, signatureHTML, id, imgData, compNo: companyId });
             postURL = `${SERVER_URL}/updateHTML`;
           }
-          console.log(formData);
           const rawResponse = await fetch(postURL, {
             method: "POST",
             body: formData,
           });
-          console.log("rawResponse", rawResponse);
+          // console.log("rawResponse", rawResponse);
           const content = await rawResponse.json();
-          console.log("content", content);
           Swal.fire({
             // position: "top-end",
             icon: "success",
@@ -398,12 +440,15 @@ $(document).ready(function () {
             showConfirmButton: false,
             timer: 1500,
           });
+          if (close) {
+            window.location.href = `index.html?companyId=${companyId}`;
+          }
         } catch (e) {
           console.log(e);
         }
       })();
     }, 1000);
-  });
+  }
 
   // function html2Canvas
 
@@ -494,43 +539,95 @@ $(document).ready(function () {
       greedy: false,
       tolerance: "pointer",
       drop: function (event, ui) {
+        edited = true;
         let canvas = $(this);
 
         let itemId = ui.draggable.attr("id");
+        let parentId = ui.draggable.parent().attr("id");
+        const oldItemParent = ui.draggable.parent();
 
-        let canvasParent = ui.draggable.parent();
-        $("#" + itemId).remove();
+        console.log("o Step");
 
-        const canvasParentTable = canvasParent.parent().closest("div.drag.vertical").parent();
-        // console.log("canvasParentTable", canvasParentTable);
-        // console.log("canvasParentTable.hasClass", canvasParentTable.hasClass("editor-td-div"));
-        // console.log("canvasParent.children().length", canvasParent.children().length);
-
-        if (canvasParent.children().length === 1 && canvasParent.hasClass("tableDrop")) {
-          canvasParent.html("&nbsp;");
-          addDropEvent(canvasParent);
-        } else if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
-          canvasParent.remove();
-          if ($("#drop").children().length === 1) {
-            droppableDrop();
-            // $(".drop")
-            //   .droppable({
-            //     bubbles: false,
-            //     greedy: true,
-            //     tolerance: "pointer",
-            //     drop: droppableDrop,
-            //   })
-            //   .droppable("enable");
-          }
-        } else if (canvasParent.children().length === 1 && canvasParentTable.hasClass("editor-td-div")) {
-          canvasParent.parent().closest("div.drag.vertical").remove();
-          canvasParentTable.html("&nbsp;");
-          addDropEvent(canvasParent);
-        }
+        $("#" + itemId)
+          .closest("div.drag.vertical")
+          .remove();
 
         setTimeout(function () {
-          converToTableFunc();
-        }, 200);
+          let canvasParent = ui.draggable.parent();
+          // const canvasParentTable = canvasParent.parent().closest("div.drag.vertical").parent();
+
+          /**
+           * Add missing ns we
+           */
+
+          // console.log(oldItemParent);
+          // console.log(oldItemParent.children().length);
+
+          const childs = oldItemParent.children();
+          if (childs.length === 1) {
+            const child1st = childs.eq(0);
+            addMissingNorthSouth(child1st);
+            addMissingEastWest(child1st);
+          } else {
+            const child1st = childs.eq(0);
+            const childlast = childs.eq(childs.length - 1);
+
+            if (oldItemParent.hasClass("data2")) {
+              addMissingEastWest(child1st, true, false);
+              addMissingEastWest(childlast, false, true);
+            } else if (oldItemParent.hasClass("data3")) {
+              addMissingNorthSouth(child1st, true, false);
+              addMissingNorthSouth(childlast, false, true);
+            }
+          }
+
+          /**
+           * ---------------------------
+           */
+
+          // if (canvasParent.children().length === 1 && canvasParent.hasClass("tableDrop")) {
+          //   console.log("1");
+          //   canvasParent.html("&nbsp;");
+          //   addDropEvent(canvasParent);
+          // } else
+          if ($("#drop").children().length === 0 && parentId === "drop") {
+            // console.log("step 1.5");
+            droppableDrop();
+          } else if (
+            oldItemParent.children().length === 0 &&
+            (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))
+          ) {
+            // console.log("step 2");
+            oldItemParent.closest("div.drag.vertical").remove();
+            if ($("#drop").children().length === 0) {
+              // console.log("step 1.5 repeat");
+              droppableDrop();
+            }
+          }
+          // else if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
+          //   console.log("2");
+          //   canvasParent.remove();
+          //   if ($("#drop").children().length === 1) {
+          //     droppableDrop();
+          //     // $(".drop")
+          //     //   .droppable({
+          //     //     bubbles: false,
+          //     //     greedy: true,
+          //     //     tolerance: "pointer",
+          //     //     drop: droppableDrop,
+          //     //   })
+          //     //   .droppable("enable");
+          //   }
+          // } else if (canvasParent.children().length === 1 && canvasParentTable.hasClass("editor-td-div")) {
+          //   console.log("3");
+          //   canvasParent.parent().closest("div.drag.vertical").remove();
+          //   canvasParentTable.html("&nbsp;");
+          //   addDropEvent(canvasParent);
+          // }
+          setTimeout(function () {
+            converToTableFunc();
+          }, 200);
+        }, 50);
       },
     });
     $("#drop").droppable({
@@ -544,6 +641,7 @@ $(document).ready(function () {
       greedy: true,
       tolerance: "pointer",
       drop: function (event, ui) {
+        edited = true;
         // console.log("I am i #drop");
         var $canvas = $(this);
         if (!ui.draggable.hasClass("canvas-element")) {

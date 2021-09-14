@@ -1,3 +1,4 @@
+let edited = false;
 function addDropEvent(el, greedy) {
   el.removeClass("ui-droppable");
   // console.log(el.closest("drag"));
@@ -17,7 +18,7 @@ function addDropEvent(el, greedy) {
     tolerance: "pointer",
     drop: function (event, ui) {
       // console.log("I am in el");
-
+      edited = true;
       var $canvas = $(this);
       if (!ui.draggable.hasClass("canvas-element")) {
         var $canvasElement = ui.draggable.clone();
@@ -298,8 +299,8 @@ function removeExitingItem(itemId) {
      */
     oldItem.remove();
     setTimeout(function () {
-      console.log(oldItemParent);
-      console.log(oldItemParent.children());
+      // console.log(oldItemParent);
+      // console.log(oldItemParent.children());
 
       const childs = oldItemParent.children();
       if (childs.length === 1) {

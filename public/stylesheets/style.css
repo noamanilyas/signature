@@ -43,6 +43,7 @@
   background-color: #f1f1f1;
   /* padding:10px;  */
   width: auto;
+  /* width: max-content; */
   height: auto;
   /* overflow:auto */
 }
@@ -162,8 +163,9 @@
 .delDrop {
   position: fixed;
   width: 100%;
+  vertical-align: middle;
   bottom: 0;
-  height: 5%;
+  height: 10%;
   background-color: #f443369c;
   color: white;
 }

@@ -196,7 +196,7 @@ function getSubItemsForgroup2(item) {
         /**
          * If width on text item then stretch
          */
-        console.log(dataItem.attr("width-stretch"));
+        // console.log(dataItem.attr("width-stretch"));
         if (dataItem.attr("width-stretch") == "100%") {
           table.css("width", "100%");
         }
