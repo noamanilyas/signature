@@ -398,8 +398,17 @@ $(document).ready(function () {
       };
       (async () => {
         let canvas,
+          signatureHTML = $(".panelPreview2").html(),
+          html = $("#drop").html(),
           imgData = "";
         try {
+          /**
+           * image style
+           *
+           * $("table").css("width", "");
+           * canvas = await html2canvas($("div.panelPreview2 > table.mainTable > tbody")[0], options);
+           *
+           */
           canvas = await html2canvas($("div.panelPreview2 > table.mainTable")[0], options);
 
           if (canvas) {
@@ -411,8 +420,6 @@ $(document).ready(function () {
 
           // SignatureData
           let name = $("#signatureName").val();
-          let html = $("#drop").html();
-          let signatureHTML = $(".panelPreview2").html();
           // let body = JSON.stringify({ name, html, signatureHTML, imgData, compNo: companyId });
           let formData = new FormData();
           formData.append("name", sigName ? sigName : name);
@@ -440,6 +447,7 @@ $(document).ready(function () {
             showConfirmButton: false,
             timer: 1500,
           });
+          edited = false;
           if (close) {
             window.location.href = `index.html?companyId=${companyId}`;
           }
@@ -546,7 +554,7 @@ $(document).ready(function () {
         let parentId = ui.draggable.parent().attr("id");
         const oldItemParent = ui.draggable.parent();
 
-        console.log("o Step");
+        // console.log("o Step");
 
         $("#" + itemId)
           .closest("div.drag.vertical")

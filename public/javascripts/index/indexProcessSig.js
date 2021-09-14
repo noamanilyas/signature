@@ -85,6 +85,27 @@ const createSig = async (sigData, imageData) => {
           imgData = canvas.toDataURL("image/jpeg");
         }
 
+        /**
+         * image style 
+         * 
+         *  <div class="row no-gutters">
+              <div class="col-sm-3 card-img-main-div" style="display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;">
+                <img
+                  class="card-img-main"
+                  src="${signature.ImageData2 ? signature.ImageData2 : imgData}"
+                  alt="Microsoft Card"
+                  style="
+                  max-width: 100%;
+                  max-height: 100%;
+                  display: block;
+                  margin: 0 auto;"
+                />
+              </div>
+         */
+
         let sigHTML = `
               <div>
               <div class="container bcontent">
