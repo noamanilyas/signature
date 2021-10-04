@@ -100,6 +100,8 @@ function renderModel(e) {
 function addModalClick(item) {
   $(item).click(function (e) {
     e.stopPropagation();
+    // setTimeout(function () {
     renderModel(e);
+    // }, 200);
   });
 }

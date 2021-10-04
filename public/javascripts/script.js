@@ -72,6 +72,15 @@ $(document).ready(function () {
     setTimeout(function () {
       Swal.close();
     }, 500);
+
+    // warn before closing if any inputs are modified
+    addEventListener("beforeunload", (evt) => {
+      if (edited) {
+        const unsaved_changes_warning = "Changes you made may not be saved.";
+        evt.returnValue = unsaved_changes_warning;
+        return unsaved_changes_warning;
+      }
+    });
   })();
 
   function css2json(css) {

@@ -77,31 +77,31 @@ const formattersAlign = [
     cssProperty: "width-stretch",
     cssPropertyVal: "100%",
   },
-  {
-    inputElem: "align-text-left",
-    cssProperty: "text-align",
-    cssPropertyVal: "left",
-  },
-  {
-    inputElem: "align-text-right",
-    cssProperty: "text-align",
-    cssPropertyVal: "right",
-  },
-  {
-    inputElem: "align-text-center",
-    cssProperty: "text-align",
-    cssPropertyVal: "center",
-  },
-  {
-    inputElem: "align-text-justify",
-    cssProperty: "text-align",
-    cssPropertyVal: "justify",
-  },
-  {
-    inputElem: "align-text-inherit",
-    cssProperty: "text-align",
-    cssPropertyVal: "inherit",
-  },
+  // {
+  //   inputElem: "align-text-left",
+  //   cssProperty: "text-align",
+  //   cssPropertyVal: "left",
+  // },
+  // {
+  //   inputElem: "align-text-right",
+  //   cssProperty: "text-align",
+  //   cssPropertyVal: "right",
+  // },
+  // {
+  //   inputElem: "align-text-center",
+  //   cssProperty: "text-align",
+  //   cssPropertyVal: "center",
+  // },
+  // {
+  //   inputElem: "align-text-justify",
+  //   cssProperty: "text-align",
+  //   cssPropertyVal: "justify",
+  // },
+  // {
+  //   inputElem: "align-text-inherit",
+  //   cssProperty: "text-align",
+  //   cssPropertyVal: "inherit",
+  // },
   {
     inputElem: "align-vert-top",
     cssProperty: "vertical-align",
@@ -125,11 +125,11 @@ const formattersAlign = [
   {
     inputElem: "align-horiz-right",
     cssProperty: "text-align",
-    cssPropertyVal: "right",
+    cssPropertyVal: "-webkit-right",
   },
   {
     inputElem: "align-horiz-center",
     cssProperty: "text-align",
-    cssPropertyVal: "center",
+    cssPropertyVal: "-webkit-center",
   },
 ];

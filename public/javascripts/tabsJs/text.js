@@ -1,4 +1,11 @@
 function renderTextTab(id) {
+  // $("#text-text").jqte();
+  $("#text-text").jqte({
+    change: function (item) {
+      $(`#${id}`).html($(".jqte_editor").html());
+      converToTableFunc();
+    },
+  });
   const inputElemArr = [
     {
       inputElem: "text-fontFamily",
@@ -98,13 +105,22 @@ function textTextValue(id) {
   $("#text-text").off();
   // console.log($(`#${id}`).text());
   // console.log($("#text-text").val());
-  $("#text-text").val("here");
-  const currentText = $(`#${id}`).text();
-  $("#text-text").val(currentText);
-  $("#text-text").on("change", function () {
-    $(`#${id}`).text(this.value);
-    converToTableFunc();
-  });
+  // $("#text-text").val("here");
+
+  // const currentText = $(`#${id}`).text();
+  // $("#text-text").val(currentText);
+  // $("#text-text").on("change", function () {
+  //   $(`#${id}`).text(this.value);
+  //   converToTableFunc();
+  // });
+
+  const currentText = $(`#${id}`).html();
+  $("#text-text").jqteVal(currentText);
+
+  // $("#text-text").on("change", function () {
+  //   $(`#${id}`).text(this.value);
+  //   converToTableFunc();
+  // });
 }
 function fillAndFormat(id, item) {
   let { inputElem, cssProperty, cssPropertyVal } = item;

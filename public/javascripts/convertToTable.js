@@ -13,9 +13,9 @@ async function converToTableFunc() {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        console.log("Tacble found herereresssssssssssssss");
+        // console.log("Tacble found herereresssssssssssssss");
         let table = await getSubItemsForTableItem(thisItem);
-        console.log("moved");
+        // console.log("moved");
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -46,7 +46,7 @@ async function converToTableFunc() {
 }
 
 function getSubItemsForTableItem(item) {
-  console.log("Called getSubItemsForTableItem");
+  // console.log("Called getSubItemsForTableItem");
   return new Promise(async (resolve, reject) => {
     let tbl = $(item).find(".data:first").children();
     let tbody = $("<tbody>");
@@ -66,16 +66,16 @@ function getSubItemsForTableItem(item) {
         const thisItem = tbTD.eq(tdIndex);
 
         const cssItem = thisItem.children().children();
-        console.log("cssItem", cssItem);
+        // console.log("cssItem", cssItem);
         // console.log("$(this)", $(this));
         applyCSS(td, thisItem);
         applyCSS(td, cssItem);
 
         const actualItem = thisItem.children().children().children();
-        console.log("actualItem", actualItem);
+        // console.log("actualItem", actualItem);
 
         if (actualItem.hasClass("tableItem")) {
-          console.log("Table found in table", actualItem.attr("id"));
+          // console.log("Table found in table", actualItem.attr("id"));
           let table = await getSubItemsForTableItem(actualItem);
           // console.log("table94", table);
           td.append(table);
@@ -90,7 +90,7 @@ function getSubItemsForTableItem(item) {
           applyCSS(td, actualItem.find(".data2:first"), ["align"]);
           td.append(table);
         } else if (actualItem.hasClass("group3")) {
-          console.log("Group 3 found int table", actualItem);
+          // console.log("Group 3 found int table", actualItem);
           let table = await getSubItemsForgroup3(actualItem);
           applyCSS(td, actualItem.find(".data3:first"), ["align"]);
           td.append(table);
@@ -101,7 +101,7 @@ function getSubItemsForTableItem(item) {
       tbody.append(tr);
       if (index === tblTR.length - 1) {
         table.append(tbody);
-        console.log("Returned", table);
+        // console.log("Returned", table);
         resolve(table);
         // return "table";
       }
@@ -243,9 +243,9 @@ function getSubItemsForgroup3(item) {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        console.log("Table found in group 3", thisItem.attr("id"));
+        // console.log("Table found in group 3", thisItem.attr("id"));
         let table = await getSubItemsForTableItem(thisItem);
-        console.log("Table found in group 3 - recieved", table);
+        // console.log("Table found in group 3 - recieved", table);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -253,6 +253,7 @@ function getSubItemsForgroup3(item) {
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
+        console.log(table);
         applyCSS(td, thisItem.find(".data2:first"), ["align"]);
         td.append(table);
       } else if (thisItem.hasClass("group3")) {
@@ -267,7 +268,7 @@ function getSubItemsForgroup3(item) {
     // });
     table.append(tbody);
     td1.append(table);
-    console.log("group 3 returned", table1);
+    // console.log("group 3 returned", table1);
     resolve(table1);
     // return table1;
   });
