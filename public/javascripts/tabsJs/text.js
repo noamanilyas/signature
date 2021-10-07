@@ -1,11 +1,36 @@
-function renderTextTab(id) {
-  // $("#text-text").jqte();
+var currentActiveId = "";
+
+$("#propertiesModel").on("hidden.bs.modal", function () {
+  console.log("===========Model Closed===========");
+  currentActiveId = "";
+  $("#text-text").jqteVal("**Text Place Holder**");
+  $("#text-text").jqteVal("**Text Place Holder**");
+});
+
+function getCurrentActiveId() {
+  return currentActiveId;
+}
+
+// Init JQTE
+//JQTE
+setTimeout(function () {
+  console.log("Text", $("#text-text")[0]);
   $("#text-text").jqte({
-    change: function (item) {
-      $(`#${id}`).html($(".jqte_editor").html());
-      converToTableFunc();
+    change: function () {
+      setTimeout(function () {
+        if ($(".jqte_editor").text().indexOf("**Text Place Holder**") === -1) {
+          console.log("jqte changed", `#${getCurrentActiveId()}`);
+          $(`#${getCurrentActiveId()}`).html($(".jqte_editor").html());
+          converToTableFunc();
+        }
+      }, 200);
     },
   });
+}, 1000);
+
+function renderTextTab(id) {
+  currentActiveId = id;
+  console.log("Render Called");
   const inputElemArr = [
     {
       inputElem: "text-fontFamily",
@@ -78,8 +103,16 @@ function renderTextTab(id) {
     // },
   ];
   resetTextTab(inputElemArr, formatters);
+
+  // Add current val JQTE
+  const currentText = $(`#${getCurrentActiveId()}`).html();
+  $("#text-text").jqteVal(currentText);
+
+  // textTextValue(id);
+  // $("#text-text").jqte();
+  // $("#text-text").jqte();
   setTimeout(function () {
-    textTextValue(id);
+    // textTextValue(id);
 
     inputElemArr.forEach(function (value, key, myArray) {
       fillAndAddEvent(id, value.inputElem, value.cssProperty, value.valAppend);
@@ -102,25 +135,27 @@ function renderTextTab(id) {
 //   });
 // }
 function textTextValue(id) {
-  $("#text-text").off();
+  // $("#text-text").off();
   // console.log($(`#${id}`).text());
   // console.log($("#text-text").val());
   // $("#text-text").val("here");
-
   // const currentText = $(`#${id}`).text();
   // $("#text-text").val(currentText);
   // $("#text-text").on("change", function () {
   //   $(`#${id}`).text(this.value);
   //   converToTableFunc();
   // });
-
-  const currentText = $(`#${id}`).html();
-  $("#text-text").jqteVal(currentText);
-
-  // $("#text-text").on("change", function () {
-  //   $(`#${id}`).text(this.value);
-  //   converToTableFunc();
-  // });
+  //JQTE
+  if ($(".jqte_editor").text().indexOf("**Text Place Holder**") !== -1) {
+    const currentText = $(`#${getCurrentActiveId()}`).html();
+    // $("#text-text").jqteVal("");
+    setTimeout(function () {
+      console.log("current", currentText);
+      $("#text-text").jqteVal(currentText);
+      $("#text-text").jqteVal(currentText);
+      $("#text-text").jqteVal(currentText);
+    }, 100);
+  }
 }
 function fillAndFormat(id, item) {
   let { inputElem, cssProperty, cssPropertyVal } = item;
@@ -198,4 +233,7 @@ function resetTextTab(inputElemArr, formatters) {
   // inputElemArr.each(function (index, item) {});
   // $(selector).off();
   $("#text-form").trigger("reset");
+  // $("#text-text").off();
+  // $("#text-text").jqte();
+  // $("#text-text").jqteVal("");
 }

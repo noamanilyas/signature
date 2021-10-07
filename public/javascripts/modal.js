@@ -22,7 +22,7 @@ var a = {
   icons: ["labelIcon", "hyperlink", "visibility", "alignment", "border", "padding"],
 };
 function renderModel(e) {
-  // console.log("e.target", e.target);
+  console.log("e.target", e.target);
   let category = e.target.getAttribute("category");
   let id = e.target.getAttribute("id");
 
@@ -53,6 +53,15 @@ function renderModel(e) {
       id = existingItemParent.attr("id");
       console.log("Group3", existingItemParent);
     }
+  }
+
+  let checkParentCategory = $(e.target).closest(".data").children().eq(0)[0].getAttribute("category");
+  // .children().eq(0).getAttribute("category");
+  console.log("checkParentCategory", checkParentCategory);
+  console.log("category", category);
+  if (!category) {
+    category = checkParentCategory;
+    id = $(e.target).closest(".data").children().eq(0)[0].getAttribute("id");
   }
   // console.log("category", category);
   // console.log("a[category]", a[category]);

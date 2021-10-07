@@ -13,7 +13,7 @@ function renderSizeTab(id) {
     },
   ];
 
-  resetTextTab(inputElemArr);
+  resetSizeTab(inputElemArr);
 
   inputElemArr.forEach(function (value, key, myArray) {
     fillAndAddEvent(id, value.inputElem, value.cssProperty, value.valAppend);
@@ -37,7 +37,7 @@ function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
   });
 }
 
-function resetTextTab(inputElemArr) {
+function resetSizeTab(inputElemArr) {
   inputElemArr.forEach(function (value, key, myArray) {
     $(`#${value.inputElem}`).off();
   });
