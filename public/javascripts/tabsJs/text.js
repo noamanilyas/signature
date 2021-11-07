@@ -14,7 +14,7 @@ function getCurrentActiveId() {
 // Init JQTE
 //JQTE
 setTimeout(function () {
-  console.log("Text", $("#text-text")[0]);
+  // console.log("Text", $("#text-text")[0]);
   $("#text-text").jqte({
     change: function () {
       setTimeout(function () {

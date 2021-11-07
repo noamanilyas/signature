@@ -346,78 +346,86 @@ var tabs = {
         Type: "text",
       },
       {
-        Name: "extensionAttribute2",
+        Name: "Extension Attribute2",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute3",
+        Name: "Extension Attribute3",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute4",
+        Name: "Extension Attribute4",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute5",
+        Name: "Extension Attribute5",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute6",
+        Name: "Extension Attribute6",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute7",
+        Name: "Extension Attribute7",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute8",
+        Name: "Extension Attribute8",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute9",
+        Name: "Extension Attribute9",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute10",
+        Name: "Extension Attribute10",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute11",
+        Name: "Extension Attribute11",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute12",
+        Name: "ExtensionAttribute12",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute13",
+        Name: "Extension Attribute13",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute14",
+        Name: "Extension Attribute14",
         Value: "Street",
         Type: "text",
       },
       {
-        Name: "extensionAttribute15",
+        Name: "Extension Attribute15",
         Value: "Street",
         Type: "text",
       },
     ],
   },
 };
+
+let allFields = [];
+
+Object.keys(tabs).forEach((key) => {
+  tabs[key].TabFields.forEach((field) => {
+    allFields.push(field.Name);
+  });
+});
 
 setTimeout(function () {
   appendNewTabs(tabs);

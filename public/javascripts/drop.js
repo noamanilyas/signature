@@ -325,9 +325,10 @@ function removeExitingItem(itemId) {
   }
 }
 
-function initDraggedItem(draggedItem) {
+function initDraggedItem(draggedItem, cell = false) {
+  console.log(draggedItem);
   // sync changes in setTableSubItems
-  let container = getNewContainer();
+  let container = getNewContainer(cell);
   container.draggable({
     cancel: false,
     helper: function (e) {
@@ -391,14 +392,32 @@ function initDraggedItem(draggedItem) {
     item.attr("id", UUID);
     dataDiv.append(item);
     return container;
+  } else if (draggedItem.attr("item") === "btnFields") {
+    /**
+     * This part is for dynamic fields
+     */
+    // First open modal
+    // $("#fieldsModel").modal("show");
+    $("#fieldsModel").modal({
+      backdrop: "static",
+      keyboard: false,
+    });
+
+    let item = $(itemIds["btnText"]);
+    item.attr("id", UUID);
+    dataDiv.append(item);
+    console.log(container);
+    container.addClass("toBeReplacedByActual");
+    return container;
+    // First check if single line or multi line
   }
 
   // dataDiv.append(draggedItem);
   // return container;
 }
 
-function getNewContainer() {
-  let containerHTML = `<div class="drag vertical ph-table-row dataItem">
+function getNewContainer(cell = false) {
+  let containerHTML = `<div class="drag vertical ${!!cell ? "ph-table-cell" : "ph-table-row"} dataItem">
           <div class="ph-table">
             <div class="ph-table-row eowo">
               <div class="ph-table-cell west drop we s"></div>

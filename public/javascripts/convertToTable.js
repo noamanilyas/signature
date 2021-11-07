@@ -295,9 +295,10 @@ function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
 
 function getAttributes($node) {
   var attrs = {};
-  $.each($node[0].attributes, function (index, attribute) {
-    attrs[attribute.name] = attribute.value;
-  });
+  if ($node[0])
+    $.each($node[0].attributes, function (index, attribute) {
+      attrs[attribute.name] = attribute.value;
+    });
 
   return attrs;
 }
