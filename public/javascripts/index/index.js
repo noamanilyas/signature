@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $(".test1").jqte();
+  // $(".test1").jqte();
   Swal.fire({
     onBeforeOpen: () => {
       Swal.showLoading();

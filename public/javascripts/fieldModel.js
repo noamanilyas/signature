@@ -144,9 +144,7 @@ $("#fieldsModelSave").click(function (e) {
   // let fieldRows = $(".field-table > tbody > tr");
   let container = getNewContainerWE();
   let containerML = getNewContainerNS();
-  $(".field-table > tbody > tr").each(function () {
-    // console.log(this);
-
+  $(".field-table > tbody > tr").each(function (index) {
     if (multiline) {
       container = getNewContainerWE();
     }
@@ -174,11 +172,13 @@ $("#fieldsModelSave").click(function (e) {
         ),
         true
       );
+      if (!multiline) {
+        dItem.find("div.we.west").remove();
+      }
       container.find("div.data2:first").append(dItem);
     }
 
     const fieldSeperator = $(this).find(".fieldSeperator");
-    console.log(fieldSeperator.attr("disabled"));
     if (fieldSeperator.val() && !fieldSeperator.attr("disabled")) {
       let dItem = initDraggedItem(
         $(
@@ -187,9 +187,16 @@ $("#fieldsModelSave").click(function (e) {
         ),
         true
       );
+      if (!multiline) {
+        dItem.find("div.we.west").remove();
+      }
       container.find("div.data2:first").append(dItem);
     }
+
     if (multiline) {
+      if (index > 0) {
+        container.find("div.ns.north:first").remove();
+      }
       containerML.find("div.data3").append(container);
     }
   });
