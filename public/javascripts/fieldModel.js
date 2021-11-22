@@ -1,6 +1,15 @@
 const trFieldString = `
 <tr>
-    <td>
+  <td>
+    <input
+      type="text"
+      class="form-control fieldText"
+      placeholder="Text"
+      aria-label="Text"
+      aria-describedby="basic-addon1"
+    />
+  </td>
+  <td>
     <select title="Select Icon" class="my-image-selectpicker">
       <option data-thumbnail="data:image/png;base64,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"></option>
       <option data-thumbnail="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xMkMEa+wAAAKjSURBVHhe7VpNS1tBFM2vedsYm8T+BVNbNGr9C1qrUBtbPxbZFLroonTTRRcFcSEoCHXRRUEQREpp3Uq7yEJwU6Eg0q71HLiBx/CSvJgZnZneA4d5IXM/383MnfdSUCgUCoVCoVBYxv2Z9QRsdmAi0+ICA2OA1amXr8sTz3/i+iqLlcnly2Jt7pDz8DmOZDAQBPY5HWgeQuaiXG+8xXWYlUGn6TwC+cuABuHI47VNjOEkgc5Wp1a200EMymCSQCdtB9+m6PU3CXQO/Nh22AWr0ytbGP1MAhzjgpXpuGU2xaQ/gFNJpd44MBx1QrEzCjaHHy1uDNXmjrB9toq12V9DD57sY6t9x+/A26sUMZjpsAuiV+iZ7FtdOO+NP/tgOuADK5Mv9jC6TQINoGn5kzbsGd2uGTRgGPSKWBNOMbqrAij3OgFCd1VA5YYxH/l/J4CLtLhrF1DuvPuzQfYG4rI9QDGan+UvpjFPafcnAIUJsvrbMOIz7SUAyhI0GP8MA94SVXqCke3x4FshleDOn7WVh8TyxFJrZHr1Fa5vlggKIvgfaaUhEueIXYz9JwFCIez3uSjPKfMngZNx97+llYTOvg5KmBjN3TeYb3fgREMwCqKqv2LsXQVoJd+bwhGxdxWUxuY/ZQhGQW6NEmZnFGuz37OEY2Dp4cKWhNkZfNiYJRwDpbHrvg6Uxp7umIKRsfs6gMbhTYZQFCzXG+cYu1cAJsTaB1zxlbyE2RmYGNrxNzdZ3RJmd8hJKlNJ4MzdDaIKllqGcNCU801fh6LY1oL+nhRBIIiHoHl443eHFAKDTsLAf7agMNgMcU2w+taYirg7hLBFyv8KuIbZCT4NKqVy7qlsm3l2QINxfJekD/BlV7ZvN4ErFAqFQqFQKBQKRTwoFK4BwMVHV4reFrIAAAAASUVORK5CYII="></option>
@@ -148,8 +157,24 @@ $("#fieldsModelSave").click(function (e) {
     if (multiline) {
       container = getNewContainerWE();
     }
+
+    const fieldText = $(this).find(".fieldText");
+    if (fieldText.val().length) {
+      let dItem = initDraggedItem(
+        $(
+          `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
+          font-family: Calibri, Arial, sans-serif;>${fieldText.val()}</span>`
+        ),
+        true
+      );
+      if (!multiline && fieldText.val().length && index > 0) {
+        dItem.find("div.we.west").remove();
+      }
+      container.find("div.data2:first").append(dItem);
+    }
+
     const icon = $(this).find(".dropdown li.selected.active");
-    if (icon) {
+    if (icon.length) {
       let dItem = initDraggedItem(
         $(
           `<img
@@ -160,6 +185,9 @@ $("#fieldsModelSave").click(function (e) {
         ),
         true
       );
+      if (!multiline && fieldText.val().length) {
+        dItem.find("div.we.west").remove();
+      }
       container.find("div.data2:first").append(dItem);
     }
 
@@ -172,7 +200,7 @@ $("#fieldsModelSave").click(function (e) {
         ),
         true
       );
-      if (!multiline) {
+      if (!multiline && icon.length) {
         dItem.find("div.we.west").remove();
       }
       container.find("div.data2:first").append(dItem);
@@ -227,8 +255,6 @@ function removeAnyElement(item) {
   let parentId = item.parent().attr("id");
   const oldItemParent = item.parent();
 
-  console.log("o Step");
-
   $("#" + itemId)
     .closest("div.drag.vertical")
     .remove();
@@ -254,6 +280,8 @@ function removeAnyElement(item) {
         addMissingEastWest(childlast, false, true);
       } else if (oldItemParent.hasClass("data3")) {
         addMissingNorthSouth(child1st, true, false);
+        addMissingNorthSouth(childlast, false, true);
+      } else if (parentId === "drop") {
         addMissingNorthSouth(childlast, false, true);
       }
     }

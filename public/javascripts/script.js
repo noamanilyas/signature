@@ -500,92 +500,98 @@ $(document).ready(function () {
         edited = true;
         // let canvas = $(this);
 
-        let itemId = ui.draggable.attr("id");
-        let parentId = ui.draggable.parent().attr("id");
-        const oldItemParent = ui.draggable.parent();
+        const item = ui.draggable;
+
+        removeAnyElement(item);
+
+        // Made it common
+
+        // let itemId = ui.draggable.attr("id");
+        // let parentId = ui.draggable.parent().attr("id");
+        // const oldItemParent = ui.draggable.parent();
 
         // console.log("o Step");
 
-        $("#" + itemId)
-          .closest("div.drag.vertical")
-          .remove();
+        // $("#" + itemId)
+        //   .closest("div.drag.vertical")
+        //   .remove();
 
-        setTimeout(function () {
-          let canvasParent = ui.draggable.parent();
-          // const canvasParentTable = canvasParent.parent().closest("div.drag.vertical").parent();
+        // setTimeout(function () {
+        //   let canvasParent = ui.draggable.parent();
+        //   // const canvasParentTable = canvasParent.parent().closest("div.drag.vertical").parent();
 
-          /**
-           * Add missing ns we
-           */
+        //   /**
+        //    * Add missing ns we
+        //    */
 
-          // console.log(oldItemParent);
-          // console.log(oldItemParent.children().length);
+        //   // console.log(oldItemParent);
+        //   // console.log(oldItemParent.children().length);
 
-          const childs = oldItemParent.children();
-          if (childs.length === 1) {
-            const child1st = childs.eq(0);
-            addMissingNorthSouth(child1st);
-            addMissingEastWest(child1st);
-          } else {
-            const child1st = childs.eq(0);
-            const childlast = childs.eq(childs.length - 1);
+        //   const childs = oldItemParent.children();
+        //   if (childs.length === 1) {
+        //     const child1st = childs.eq(0);
+        //     addMissingNorthSouth(child1st);
+        //     addMissingEastWest(child1st);
+        //   } else {
+        //     const child1st = childs.eq(0);
+        //     const childlast = childs.eq(childs.length - 1);
 
-            if (oldItemParent.hasClass("data2")) {
-              addMissingEastWest(child1st, true, false);
-              addMissingEastWest(childlast, false, true);
-            } else if (oldItemParent.hasClass("data3")) {
-              addMissingNorthSouth(child1st, true, false);
-              addMissingNorthSouth(childlast, false, true);
-            }
-          }
+        //     if (oldItemParent.hasClass("data2")) {
+        //       addMissingEastWest(child1st, true, false);
+        //       addMissingEastWest(childlast, false, true);
+        //     } else if (oldItemParent.hasClass("data3")) {
+        //       addMissingNorthSouth(child1st, true, false);
+        //       addMissingNorthSouth(childlast, false, true);
+        //     }
+        //   }
 
-          /**
-           * ---------------------------
-           */
+        //   /**
+        //    * ---------------------------
+        //    */
 
-          // if (canvasParent.children().length === 1 && canvasParent.hasClass("tableDrop")) {
-          //   console.log("1");
-          //   canvasParent.html("&nbsp;");
-          //   addDropEvent(canvasParent);
-          // } else
-          if ($("#drop").children().length === 0 && parentId === "drop") {
-            // console.log("step 1.5");
-            droppableDrop();
-          } else if (
-            oldItemParent.children().length === 0 &&
-            (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))
-          ) {
-            // console.log("step 2");
-            oldItemParent.closest("div.drag.vertical").remove();
-            if ($("#drop").children().length === 0) {
-              // console.log("step 1.5 repeat");
-              droppableDrop();
-            }
-          }
-          // else if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
-          //   console.log("2");
-          //   canvasParent.remove();
-          //   if ($("#drop").children().length === 1) {
-          //     droppableDrop();
-          //     // $(".drop")
-          //     //   .droppable({
-          //     //     bubbles: false,
-          //     //     greedy: true,
-          //     //     tolerance: "pointer",
-          //     //     drop: droppableDrop,
-          //     //   })
-          //     //   .droppable("enable");
-          //   }
-          // } else if (canvasParent.children().length === 1 && canvasParentTable.hasClass("editor-td-div")) {
-          //   console.log("3");
-          //   canvasParent.parent().closest("div.drag.vertical").remove();
-          //   canvasParentTable.html("&nbsp;");
-          //   addDropEvent(canvasParent);
-          // }
-          setTimeout(function () {
-            converToTableFunc();
-          }, 200);
-        }, 50);
+        //   // if (canvasParent.children().length === 1 && canvasParent.hasClass("tableDrop")) {
+        //   //   console.log("1");
+        //   //   canvasParent.html("&nbsp;");
+        //   //   addDropEvent(canvasParent);
+        //   // } else
+        //   if ($("#drop").children().length === 0 && parentId === "drop") {
+        //     // console.log("step 1.5");
+        //     droppableDrop();
+        //   } else if (
+        //     oldItemParent.children().length === 0 &&
+        //     (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))
+        //   ) {
+        //     // console.log("step 2");
+        //     oldItemParent.closest("div.drag.vertical").remove();
+        //     if ($("#drop").children().length === 0) {
+        //       // console.log("step 1.5 repeat");
+        //       droppableDrop();
+        //     }
+        //   }
+        //   // else if (canvasParent.children().length === 1 && canvasParent.attr("id") !== "drop") {
+        //   //   console.log("2");
+        //   //   canvasParent.remove();
+        //   //   if ($("#drop").children().length === 1) {
+        //   //     droppableDrop();
+        //   //     // $(".drop")
+        //   //     //   .droppable({
+        //   //     //     bubbles: false,
+        //   //     //     greedy: true,
+        //   //     //     tolerance: "pointer",
+        //   //     //     drop: droppableDrop,
+        //   //     //   })
+        //   //     //   .droppable("enable");
+        //   //   }
+        //   // } else if (canvasParent.children().length === 1 && canvasParentTable.hasClass("editor-td-div")) {
+        //   //   console.log("3");
+        //   //   canvasParent.parent().closest("div.drag.vertical").remove();
+        //   //   canvasParentTable.html("&nbsp;");
+        //   //   addDropEvent(canvasParent);
+        //   // }
+        //   setTimeout(function () {
+        //     converToTableFunc();
+        //   }, 200);
+        // }, 50);
       },
     });
     $("#drop").droppable({

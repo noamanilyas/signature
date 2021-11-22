@@ -102,6 +102,22 @@ function renderTextTab(id) {
     //   valAppend: "",
     // },
   ];
+
+  const wrappers = [
+    {
+      inputElem: "text-wrap",
+      cssProperty: "white-space",
+      cssPropertyVal: "normal",
+      valAppend: "",
+    },
+    {
+      inputElem: "text-no-wrap",
+      cssProperty: "white-space",
+      cssPropertyVal: "nowrap",
+      valAppend: "",
+    },
+  ];
+
   resetTextTab(inputElemArr, formatters);
 
   // Add current val JQTE
@@ -121,6 +137,10 @@ function renderTextTab(id) {
     formatters.forEach(function (value, key, myArray) {
       fillAndFormat(id, value);
     });
+
+    wrappers.forEach(function (value, key, myArray) {
+      fillAndWrapping(id, value);
+    });
   }, 100);
 
   // Clear format btn
@@ -134,6 +154,39 @@ function renderTextTab(id) {
 //     });
 //   });
 // }
+
+function fillAndWrapping(id, item) {
+  let { inputElem, cssProperty, cssPropertyVal } = item;
+  // Get existing value
+  const element = document.querySelector(`#${id}`).style[cssProperty];
+  if (element && cssPropertyVal === element) {
+    $(`#${inputElem}`).addClass("active");
+  }
+  // Add event listeners
+  $(`#${inputElem}`).on("click", function () {
+    // If already exists then remove
+    const element = document.querySelector(`#${id}`).style[cssProperty];
+    if (element && cssPropertyVal === element) {
+      // removeCSSClass(cssProperty, id, inputElem);
+      // To be removed
+    } else {
+      // disable others cannot have small caps, lowercase and uppercase at a time
+      if (cssPropertyVal === "nowrap") {
+        removeCSSClass("normal", id, "text-wrap");
+        // removeCSSClass("text-transform", id, "text-format-LC");
+      } else if (cssPropertyVal === "normal") {
+        removeCSSClass("nowrap", id, "text-no-wrap");
+      }
+      // If not exists then add
+      let obj = {};
+      obj[cssProperty] = cssPropertyVal;
+      console.log($(`#${id}`));
+      $(`#${id}`).css(obj);
+      $(`#${inputElem}`).addClass("active");
+    }
+    converToTableFunc();
+  });
+}
 function textTextValue(id) {
   // $("#text-text").off();
   // console.log($(`#${id}`).text());
