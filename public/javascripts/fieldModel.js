@@ -123,6 +123,15 @@ $("#addNewField").click(function (e) {
       });
       enableImageSelector();
     }, 50);
+    // disable icon on adding text;
+    $(".fieldText").change(function (e) {
+      console.log(e.target.value);
+      if (e.target.value !== "") {
+        $(".my-image-selectpicker").attr("disabled", "disabled");
+      } else {
+        $(".my-image-selectpicker").removeAttr("disabled");
+      }
+    });
   }
 });
 
@@ -130,6 +139,16 @@ $("#addNewField").click(function (e) {
 $("#multiLine").change(function (e) {
   if (e.target.checked) {
     $(".fieldSeperator").attr("disabled", "disabled");
+  }
+});
+
+// disable icon on adding text;
+$(".fieldText").change(function (e) {
+  console.log(e.target.value);
+  if (e.target.value !== "") {
+    $(".my-image-selectpicker").attr("disabled", "disabled");
+  } else {
+    $(".my-image-selectpicker").removeAttr("disabled");
   }
 });
 

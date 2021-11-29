@@ -54,12 +54,11 @@ function renderModel(e) {
       console.log("Group3", existingItemParent);
     }
   }
+  // console.log("category", category);
+  // console.log("data2", $(e.target).closest(".data2"));
 
-  let checkParentCategory = $(e.target).closest(".data").children().eq(0)[0].getAttribute("category");
-  // .children().eq(0).getAttribute("category");
-  console.log("checkParentCategory", checkParentCategory);
-  console.log("category", category);
   if (!category) {
+    let checkParentCategory = $(e.target).closest(".data").children().eq(0)[0].getAttribute("category");
     category = checkParentCategory;
     id = $(e.target).closest(".data").children().eq(0)[0].getAttribute("id");
   }
