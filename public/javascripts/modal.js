@@ -102,6 +102,8 @@ function renderModel(e) {
     renderPaddingTab(id);
     // Render TableJS
     renderTableTab(id);
+    // Render HyperlinkJS
+    renderHyperLinkTab(id);
   }
 }
 

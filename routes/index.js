@@ -358,7 +358,7 @@ router.post("/updateSigRulesConditions", function (req, res, next) {
 });
 
 router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
-  // console.log(req.body);
+  console.log(req.body);
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -374,7 +374,8 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
            ,[U_RTYPE]
            ,[U_EMAIL]
            ,[U_TYPE]
-           ,[U_GRP])
+           ,[U_GRP]
+           ,[H_NEW])
      VALUES
            ${req.body.items.map((item) => {
              return `('${req.body.prid.replace(/_/g, " ")}'
@@ -382,7 +383,8 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
               ,'${item.utype + item.ugrp}'
               ,'${item.uemail}'
               ,'${item.utype}'
-              ,'${item.ugrp}')`;
+              ,'${item.ugrp}')
+              ,1`;
            })}`;
 
     // (<PRID, varchar(16),>

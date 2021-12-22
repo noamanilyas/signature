@@ -346,7 +346,6 @@ function initDraggedItem(draggedItem, cell = false) {
    * If existing item is dragged for editing then do below tasks
    */
 
-  console.log(draggedItem);
   if (draggedItem.hasClass("group2")) {
     let clonedItem = draggedItem.clone();
     removeExitingItem(draggedItem.attr("id"));

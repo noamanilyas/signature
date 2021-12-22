@@ -19,6 +19,7 @@ async function converToTableFunc() {
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
+        dataItem = addHyperLinkToImage(dataItem);
         applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
@@ -82,6 +83,7 @@ function getSubItemsForTableItem(item) {
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
           // console.log("dataItem", dataItem);
+          dataItem = addHyperLinkToImage(dataItem);
           applyCSS(td, actualItem.find(".data").children().eq(0), ["align"]);
 
           td.append(dataItem);
@@ -191,6 +193,7 @@ function getSubItemsForgroup2(item) {
       let td = $("<td>");
       if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
+        dataItem = addHyperLinkToImage(dataItem);
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
         /**
@@ -249,6 +252,7 @@ function getSubItemsForgroup3(item) {
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
+        dataItem = addHyperLinkToImage(dataItem);
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
@@ -291,6 +295,20 @@ function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
       applyTo.css(attrib, elemAttributes[attrib]);
     }
   }
+}
+
+function addHyperLinkToImage(item) {
+  if (item.is("img")) {
+    if (item.attr("hyperlink")) {
+      const aTag = $(
+        `<a href="${item.attr("hyperlink")}" id=atag_${item.attr("id")} target="_blank" style="text-decoration:none;">`
+      );
+      aTag.append(item);
+      return aTag;
+    }
+  }
+
+  return item;
 }
 
 function getAttributes($node) {
