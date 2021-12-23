@@ -69,6 +69,14 @@ async function updateSigRulesConditions(body) {
     return data;
   } catch (e) {
     console.log(e);
+    Swal.close();
+    Swal.fire({
+      // position: "top-end",
+      icon: "error",
+      title: "Fail to save Rules and Conditions",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }
 
@@ -105,5 +113,13 @@ async function updateCurrentSignatureUsrGrp(body) {
     return data;
   } catch (e) {
     console.log(e);
+    Swal.close();
+    Swal.fire({
+      // position: "top-end",
+      icon: "error",
+      title: "Fail to save Users and groups",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }

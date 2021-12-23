@@ -55,7 +55,8 @@ router.post("/saveHTML", function (req, res, next) {
           ,[H_RTextHTML]
           ,[H_HTMLTEXT]
           ,[H_CONO]
-          ,[H_IMAGE])
+          ,[H_IMAGE]
+          ,[H_NEW])
       VALUES
           ('939   ${Math.floor(Math.random() * 10000000000)}'
           ,'001'
@@ -64,7 +65,8 @@ router.post("/saveHTML", function (req, res, next) {
           ,'${dbData.signatureHTML}'
           ,'${dbData.html}'
           ,'${dbData.compNo}'
-          ,'${dbData.imgData}')`;
+          ,'${dbData.imgData}'
+          ,1)`;
 
         // query to the database and get the records
         request.query(queryText, function (err, recordset) {
@@ -358,7 +360,7 @@ router.post("/updateSigRulesConditions", function (req, res, next) {
 });
 
 router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
-  console.log(req.body);
+  // console.log("Body", req.body);
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -374,8 +376,7 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
            ,[U_RTYPE]
            ,[U_EMAIL]
            ,[U_TYPE]
-           ,[U_GRP]
-           ,[H_NEW])
+           ,[U_GRP])
      VALUES
            ${req.body.items.map((item) => {
              return `('${req.body.prid.replace(/_/g, " ")}'
@@ -383,9 +384,9 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
               ,'${item.utype + item.ugrp}'
               ,'${item.uemail}'
               ,'${item.utype}'
-              ,'${item.ugrp}')
-              ,1`;
-           })}`;
+              ,'${item.ugrp}')`;
+           })};
+      EXEC USP_INSERT_ADHTMLC '${req.body.prid.replace(/_/g, " ")}';`;
 
     // (<PRID, varchar(16),>
     // ,<U_CD, nvarchar(200),>
@@ -394,7 +395,7 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
     // ,<U_TYPE, varchar(1),>
     // ,<U_GRP, varchar(1),>)
 
-    // console.log(queryText);
+    console.log(queryText);
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
