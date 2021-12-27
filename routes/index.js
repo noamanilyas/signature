@@ -47,7 +47,13 @@ router.post("/saveHTML", function (req, res, next) {
         // create Request object
         var request = new sql.Request();
 
-        var queryText = `INSERT INTO [dbo].[ADHTMLH]
+        var queryText = `
+        BEGIN
+        DECLARE @variable nvarchar(4);
+        DECLARE @rid nvarchar(4);
+        SET @variable = (SELECT max(h_cd) + 1 from [dbo].[ADHTMLH]); 
+        SET @rid = 'R' + @variable;
+        INSERT INTO [dbo].[ADHTMLH]
           ([RID]
           ,[H_CCD]
           ,[H_CD]
@@ -58,16 +64,18 @@ router.post("/saveHTML", function (req, res, next) {
           ,[H_IMAGE]
           ,[H_NEW])
       VALUES
-          ('939   ${Math.floor(Math.random() * 10000000000)}'
+          (@rid
           ,'001'
-          ,${Math.floor(Math.random() * 1000)}
+          ,@variable
           ,'${dbData.name}'
-          ,'${dbData.signatureHTML}'
           ,'${dbData.html}'
+          ,'${dbData.signatureHTML}'
           ,'${dbData.compNo}'
           ,'${dbData.imgData}'
-          ,1)`;
+          ,1);
+          END;`;
 
+        // console.log(queryText);
         // query to the database and get the records
         request.query(queryText, function (err, recordset) {
           if (err) console.log(err);
@@ -145,8 +153,8 @@ router.post("/updateHTML", function (req, res, next) {
         var request = new sql.Request();
 
         var queryText = `UPDATE [dbo].[ADHTMLH]
-            SET [H_HTMLTEXT] = '${dbData.html}'
-                ,[H_RTextHTML] = '${dbData.signatureHTML}'
+            SET [H_HTMLTEXT] = '${dbData.signatureHTML}'
+                ,[H_RTextHTML] = '${dbData.html}'
                 ,[H_DSC] = '${dbData.name}'
                 ,[H_IMAGE] = '${dbData.imgData}'
           WHERE [dbo].[ADHTMLH].[RID] = '${dbData.id}'`;
@@ -183,8 +191,8 @@ router.get("/getSignatures", function (req, res, next) {
     var queryText = `SELECT
       RID AS Id,
       H_DSC AS Name,
-      H_RTextHTML AS SigHTML,
-      H_HTMLTEXT AS HTML,
+      H_RTextHTML AS HTML,
+      H_HTMLTEXT AS SigHTML,
       H_ATTACH AS ImageData,
       H_IMAGE AS ImageData2
       FROM ADHTMLH

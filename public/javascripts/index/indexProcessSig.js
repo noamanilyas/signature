@@ -123,7 +123,7 @@ const createSig = async (sigData, imageData) => {
                         <h5 class="card-title">${signature.Name}</h5>
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                         <a href="editor.html?id=${signature.Id}&companyId=${companyId}" class="btn btn-success" ${
-          signature.Id.startsWith("939") === false ? 'style="display:none;"' : ""
+          signature.Id.startsWith("R") === false ? 'style="display:none;"' : ""
         }>Edit Signature</a>
                         <button id=${signature.Id.replace(
                           / /g,
