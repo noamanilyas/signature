@@ -66,12 +66,12 @@ $(document).ready(function () {
         $("#drop").droppable("destroy");
         // $("#drop").droppable("option", "disabled", true);
 
-        HTMLObj.find("img").forEach(function () {
-          if (this.attr("hyperlink") && this.parent().is("a")) {
+        HTMLObj.find("img").each(function () {
+          if ($(this).attr("hyperlink") && $(this).parent().is("a")) {
             // const aTag = $(`<a href="${newValue}" id=atag_${id} target="_blank" style="text-decoration:none;">`);
             // $(`#${id}`).parent().append(aTag);
-            const mainParent = this.parent().parent();
-            this.detach().appendTo(mainParent);
+            const mainParent = $(this).parent().parent();
+            $(this).detach().appendTo(mainParent);
             // const aTag = $(
             //   `<a href="${item.attr("hyperlink")}" id=atag_${item.attr("id")} target="_blank" style="text-decoration:none;">`
             // );
@@ -79,9 +79,9 @@ $(document).ready(function () {
             // return aTag;
           }
         });
+        $("#drop").append(HTMLObj);
+        converToTableFunc();
       }, 500);
-      $("#drop").append(HTMLObj);
-      converToTableFunc();
     }
     setTimeout(function () {
       Swal.close();

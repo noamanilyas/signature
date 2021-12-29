@@ -1,5 +1,5 @@
 function renderHyperLinkTab(id) {
-  console.log("size");
+  console.log("hyperLink");
   const inputElemArr = [
     {
       inputElem: "hyperlink_url",
@@ -15,9 +15,7 @@ function renderHyperLinkTab(id) {
 
   resetHyperLinkTab(inputElemArr);
 
-  // inputElemArr.forEach(function (value, key, myArray) {
   fillAndAddEventHyperlink(id);
-  // });
 }
 
 function fillAndAddEventHyperlink(id) {
@@ -61,20 +59,7 @@ function fillAndAddEventHyperlink(id) {
     converToTableFunc();
   });
 
-  // // Get existing value
-  // const element = document.querySelector(`#${id}`).style[cssProperty];
-  // if (element) {
-  //   $(`#${inputElem}`).val(element);
-  // }
-  // // Add event listeners
-  // $(`#${inputElem}`).on("change", function () {
-  //   let obj = {};
-  //   obj[cssProperty] = this.value.indexOf(valAppend) === -1 ? this.value + valAppend : this.value;
-  //   console.log(obj);
-  //   console.log(`#${id}`);
-  //   $(`#${id}`).css(obj);
   converToTableFunc();
-  // });
 }
 
 function resetHyperLinkTab(inputElemArr) {
@@ -82,5 +67,5 @@ function resetHyperLinkTab(inputElemArr) {
     $(`#${value.inputElem}`).off();
   });
 
-  $("#size-form").trigger("reset");
+  $("#hyperLink-form").trigger("reset");
 }

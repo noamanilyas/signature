@@ -426,8 +426,8 @@ router.get("/getSignatureById", function (req, res, next) {
     var queryText = `SELECT
       RID AS Id,
       H_DSC AS Name,
-      H_RTextHTML AS SigHTML,
-      H_HTMLTEXT AS HTML,
+      H_RTextHTML AS HTML,
+      H_HTMLTEXT AS SigHTML,
       H_IMAGE AS ImageData
       FROM ADHTMLH
       WHERE RID = '${req.query.id}';`;
