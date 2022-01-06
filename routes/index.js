@@ -132,6 +132,28 @@ router.post("/saveHTML", function (req, res, next) {
   //   });
 });
 
+router.post("/deleteSignature", function (req, res, next) {
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+
+    var queryText = `
+        DELETE FROM [dbo].[ADHTMLU] WHERE PRID = '${req.body.rid.replace(/_/g, " ")}';
+        DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';`;
+
+    // console.log(queryText);
+    // query to the database and get the records
+    request.query(queryText, function (err, recordset) {
+      if (err) console.log(err);
+
+      // send records as a response
+      res.send(recordset);
+    });
+  });
+});
+
 router.post("/updateHTML", function (req, res, next) {
   const dbData = {};
   var form = new formidable.IncomingForm();
@@ -368,7 +390,7 @@ router.post("/updateSigRulesConditions", function (req, res, next) {
 });
 
 router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
-  // console.log("Body", req.body);
+  console.log("Body", req.body);
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
@@ -377,8 +399,9 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
     var request = new sql.Request();
 
     var queryText = `
-    DELETE FROM ADHTMLU WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';
-    INSERT INTO [dbo].[ADHTMLU]
+    DELETE FROM ADHTMLU WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';`;
+    if (req.body.items.length)
+      queryText += `INSERT INTO [dbo].[ADHTMLU]
            ([PRID]
            ,[U_CD]
            ,[U_RTYPE]
@@ -394,7 +417,7 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
               ,'${item.utype}'
               ,'${item.ugrp}')`;
            })};
-      EXEC USP_INSERT_ADHTMLC '${req.body.prid.replace(/_/g, " ")}';`;
+    EXEC USP_INSERT_ADHTMLC '${req.body.prid.replace(/_/g, " ")}';`;
 
     // (<PRID, varchar(16),>
     // ,<U_CD, nvarchar(200),>
