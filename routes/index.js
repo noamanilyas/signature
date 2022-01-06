@@ -140,6 +140,7 @@ router.post("/deleteSignature", function (req, res, next) {
     var request = new sql.Request();
 
     var queryText = `
+        EXEC USP_DELETE_ADHTMLH '${req.body.rid.replace(/_/g, " ")}';
         DELETE FROM [dbo].[ADHTMLU] WHERE PRID = '${req.body.rid.replace(/_/g, " ")}';
         DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';`;
 
