@@ -142,7 +142,8 @@ router.post("/deleteSignature", function (req, res, next) {
     var queryText = `
         EXEC USP_DELETE_ADHTMLH '${req.body.rid.replace(/_/g, " ")}';
         DELETE FROM [dbo].[ADHTMLU] WHERE PRID = '${req.body.rid.replace(/_/g, " ")}';
-        DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';`;
+        DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';
+        EXEC USP_DELETE_ADEMAILSIGN '${req.body.rid.replace(/_/g, " ")}';`;
 
     // console.log(queryText);
     // query to the database and get the records
