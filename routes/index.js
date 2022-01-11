@@ -139,13 +139,17 @@ router.post("/deleteSignature", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    var queryText = `
+    /* var queryText = `
         EXEC USP_DELETE_ADHTMLH '${req.body.rid.replace(/_/g, " ")}';
         DELETE FROM [dbo].[ADHTMLU] WHERE PRID = '${req.body.rid.replace(/_/g, " ")}';
         DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';
-        EXEC USP_DELETE_ADEMAILSIGN '${req.body.rid.replace(/_/g, " ")}';`;
+        EXEC USP_DELETE_ADEMAILSIGN '${req.body.rid.replace(/_/g, " ")}';`; */
 
     console.log(queryText);
+    var queryText = `
+        EXEC USP_DELETE_ADHTMLH '${req.body.rid.replace(/_/g, " ")}'`;
+
+    // console.log(queryText);
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
       if (err) console.log(err);
@@ -181,7 +185,8 @@ router.post("/updateHTML", function (req, res, next) {
                 ,[H_RTextHTML] = '${dbData.html}'
                 ,[H_DSC] = '${dbData.name}'
                 ,[H_IMAGE] = '${dbData.imgData}'
-          WHERE [dbo].[ADHTMLH].[RID] = '${dbData.id}'`;
+          WHERE [dbo].[ADHTMLH].[RID] = '${dbData.id}';
+          EXEC USP_DELETE_ADEMAILSIGN '${dbData.id}';`;
 
         // query to the database and get the records
         request.query(queryText, function (err, recordset) {
