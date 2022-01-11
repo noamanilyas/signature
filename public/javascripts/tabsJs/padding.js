@@ -27,6 +27,40 @@ function fillAndAddEventPadding(id, inputElem, cssProperty, valAppend) {
   });
 }
 
+// function fillAndAddEventPadding(id, inputElem, cssProperty, valAppend) {
+//   // Get existing value
+
+//   if ($(`#${id}`).is("img")) {
+//     let element = document.querySelector(`#${id}`).parentElement.getAttribute(cssProperty);
+//     if (element) {
+//       element = parseInt(element);
+//       $(`#${inputElem}`).val(element);
+//     }
+//   } else {
+//     let element = document.querySelector(`#${id}`).getAttribute(cssProperty);
+//     if (element) {
+//       element = parseInt(element);
+//       $(`#${inputElem}`).val(element);
+//     }
+//   }
+
+//   // Add event listeners
+//   $(`#${inputElem}`).on("change", function () {
+//     let obj = {};
+//     let value = this.value.indexOf(valAppend) === -1 ? this.value + valAppend : this.value;
+//     obj[cssProperty] = value;
+//     console.log(obj);
+//     // $(`#${id}`).parent().css(obj);
+//     if ($(`#${id}`).is("img")) {
+//       $(`#${id}`).parent().css(cssProperty, value);
+//     } else {
+//       $(`#${id}`).css(cssProperty, value);
+//     }
+//     $(`#${id}`).attr(cssProperty, value);
+//     converToTableFunc();
+//   });
+// }
+
 function resetPaddingTab(inputElemArr) {
   inputElemArr?.forEach(function (value, key, myArray) {
     $(`#${value.inputElem}`).off();

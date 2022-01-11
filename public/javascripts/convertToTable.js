@@ -20,6 +20,7 @@ async function converToTableFunc() {
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
+        dataItem = addPaddingToImage(td, dataItem);
         applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
@@ -84,6 +85,7 @@ function getSubItemsForTableItem(item) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
           // console.log("dataItem", dataItem);
           dataItem = addHyperLinkToImage(dataItem);
+          dataItem = addPaddingToImage(td, dataItem);
           applyCSS(td, actualItem.find(".data").children().eq(0), ["align"]);
 
           td.append(dataItem);
@@ -194,6 +196,7 @@ function getSubItemsForgroup2(item) {
       if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
+        dataItem = addPaddingToImage(td, dataItem);
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
         /**
@@ -253,6 +256,7 @@ function getSubItemsForgroup3(item) {
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
+        dataItem = addPaddingToImage(td, dataItem);
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
@@ -305,6 +309,20 @@ function addHyperLinkToImage(item) {
       );
       aTag.append(item);
       return aTag;
+    }
+  }
+
+  return item;
+}
+
+function addPaddingToImage(td, item) {
+  if (item.is("img")) {
+    const elemAttributes = getAttributes(item);
+    for (const attrib of Object.keys(elemAttributes)) {
+      if (attrib.indexOf("padding") !== -1) {
+        td.css(attrib, elemAttributes[attrib]);
+        item.css({ attrib: "" });
+      }
     }
   }
 
