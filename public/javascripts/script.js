@@ -80,6 +80,23 @@ $(document).ready(function () {
           }
         });
         $("#drop").append(HTMLObj);
+
+        // Make all containers draggable
+        setTimeout(function () {
+          $(".drag.vertical").draggable({
+            cancel: false,
+            helper: function (e) {
+              return $(this).clone();
+            },
+            cursor: "move",
+            start: function (event, ui) {
+              $(this).draggable("instance").offset.click = {
+                left: 0,
+                top: 0,
+              };
+            },
+          });
+        }, 50);
         converToTableFunc();
       }, 500);
     }

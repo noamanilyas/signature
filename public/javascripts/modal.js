@@ -54,8 +54,6 @@ function renderModel(e) {
       console.log("Group3", existingItemParent);
     }
   }
-  // console.log("category", category);
-  // console.log("data2", $(e.target).closest(".data2"));
 
   if (!category) {
     let checkParentCategory = $(e.target).closest(".data").children().eq(0)[0].getAttribute("category");
@@ -63,8 +61,6 @@ function renderModel(e) {
     id = $(e.target).closest(".data").children().eq(0)[0].getAttribute("id");
   }
   // console.log("category", category);
-  // console.log("a[category]", a[category]);
-  // console.log(id);
   if (a[category]) {
     // console.log(e.target);
     $("#propertiesModel").modal("show");
