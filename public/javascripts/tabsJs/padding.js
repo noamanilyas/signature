@@ -16,13 +16,22 @@ function fillAndAddEventPadding(id, inputElem, cssProperty, valAppend) {
   }
   // Add event listeners
   $(`#${inputElem}`).on("change", function () {
-    let obj = {};
-    let value = this.value.indexOf(valAppend) === -1 ? this.value + valAppend : this.value;
-    obj[cssProperty] = value;
-    console.log(obj);
-    // $(`#${id}`).parent().css(obj);
-    $(`#${id}`).css(cssProperty, value);
-    $(`#${id}`).attr(cssProperty, value);
+    // let obj = {};
+    const val = this.value.trim();
+
+    if (val) {
+      let value = val.indexOf(valAppend) === -1 ? val + valAppend : val;
+      // obj[cssProperty] = value;
+      // $(`#${id}`).parent().css(obj);
+      // $(`#${id}`).css(cssProperty, value);
+      $(`#${id}`).parent().css(cssProperty, value);
+      $(`#${id}`).attr(cssProperty, value);
+    } else {
+      // $(`#${id}`).css(cssProperty, "");
+      $(`#${id}`).parent().css(cssProperty, "");
+      $(`#${id}`).removeAttr(cssProperty);
+    }
+
     converToTableFunc();
   });
 }

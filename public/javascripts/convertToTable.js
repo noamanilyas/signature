@@ -316,7 +316,7 @@ function addHyperLinkToImage(item) {
 }
 
 function addPaddingToImage(td, item) {
-  if (item.is("img")) {
+  if (item.is("img") || item.is("span")) {
     const elemAttributes = getAttributes(item);
     for (const attrib of Object.keys(elemAttributes)) {
       if (attrib.indexOf("padding") !== -1) {
