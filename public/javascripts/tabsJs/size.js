@@ -16,23 +16,36 @@ function renderSizeTab(id) {
   resetSizeTab(inputElemArr);
 
   inputElemArr.forEach(function (value, key, myArray) {
-    fillAndAddEvent(id, value.inputElem, value.cssProperty, value.valAppend);
+    fillAndAddSizeEvent(id, value.inputElem, value.cssProperty, value.valAppend);
   });
 }
 
-function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
+function fillAndAddSizeEvent(id, inputElem, cssProperty, valAppend) {
   // Get existing value
-  const element = document.querySelector(`#${id}`).style[cssProperty];
+  let element = document.querySelector(`#${id}`).style[cssProperty];
   if (element) {
+    element = parseInt(element);
     $(`#${inputElem}`).val(element);
   }
   // Add event listeners
   $(`#${inputElem}`).on("change", function () {
     let obj = {};
-    obj[cssProperty] = this.value.indexOf(valAppend) === -1 ? this.value + valAppend : this.value;
-    console.log(obj);
-    console.log(`#${id}`);
-    $(`#${id}`).css(obj);
+    const val = this.value.trim();
+    if (val) {
+      obj[cssProperty] = val.indexOf(valAppend) === -1 ? val + valAppend : val;
+      // console.log(obj);
+      $(`#${id}`).css(obj);
+      if ($(`#${id}`).is("img")) {
+        $(`#${id}`).attr(cssProperty, obj[cssProperty]);
+      }
+    } else {
+      obj[cssProperty] = "";
+      $(`#${id}`).css(obj);
+      if ($(`#${id}`).is("img")) {
+        $(`#${id}`).removeAttr(cssProperty);
+      }
+    }
+
     converToTableFunc();
   });
 }

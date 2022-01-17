@@ -180,7 +180,7 @@ function fillAndWrapping(id, item) {
       // If not exists then add
       let obj = {};
       obj[cssProperty] = cssPropertyVal;
-      console.log($(`#${id}`));
+      // console.log($(`#${id}`));
       $(`#${id}`).css(obj);
       $(`#${inputElem}`).addClass("active");
     }
@@ -203,7 +203,7 @@ function textTextValue(id) {
     const currentText = $(`#${getCurrentActiveId()}`).html();
     // $("#text-text").jqteVal("");
     setTimeout(function () {
-      console.log("current", currentText);
+      // console.log("current", currentText);
       $("#text-text").jqteVal(currentText);
       $("#text-text").jqteVal(currentText);
       $("#text-text").jqteVal(currentText);
