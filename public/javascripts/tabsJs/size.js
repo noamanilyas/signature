@@ -36,7 +36,7 @@ function fillAndAddSizeEvent(id, inputElem, cssProperty, valAppend) {
       // console.log(obj);
       $(`#${id}`).css(obj);
       if ($(`#${id}`).is("img")) {
-        $(`#${id}`).attr(cssProperty, obj[cssProperty]);
+        $(`#${id}`).attr(cssProperty, obj[cssProperty].split("px")[0]);
       }
     } else {
       obj[cssProperty] = "";
