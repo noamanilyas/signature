@@ -220,7 +220,7 @@ router.get("/getSignatures", function (req, res, next) {
     var queryText = `SELECT
       RID AS Id,
       H_DSC AS Name,
-      H_RTextHTML AS HTML,
+      ISNULL( H_RTextHTML, ' <div    </div>' ) AS HTML,
       H_HTMLTEXT AS SigHTML,
       H_ATTACH AS ImageData,
       H_IMAGE AS ImageData2
@@ -234,6 +234,8 @@ router.get("/getSignatures", function (req, res, next) {
         WHERE H_CONO = '${req.query.companyId}';`;
 
     // select * from ADHTMLIMG  where prid = '583           75'
+    // log form raju 21/02/2022
+   // console.log(queryText);
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
