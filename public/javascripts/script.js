@@ -469,7 +469,9 @@ $(document).ready(function () {
           formData.append("compNo", companyId);
 
           let postURL = `${SERVER_URL}/saveHTML`;
-          if (id && id.length > 0) {
+          let template = url.searchParams.get("template");
+
+          if (id && id.length > 0 && template !== "1") {
             formData.append("id", id);
             // body = JSON.stringify({ name, html, signatureHTML, id, imgData, compNo: companyId });
             postURL = `${SERVER_URL}/updateHTML`;

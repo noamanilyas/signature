@@ -15,6 +15,9 @@ $(document).ready(function () {
   $("#reorderBtn").attr("href", `reorder.html?companyId=${companyId}`);
   $("#newSigBtn").attr("href", `editor.html?companyId=${companyId}`);
 
+  let templateHref = $("#templateBtn").attr("href");
+  $("#templateBtn").attr("href", `${templateHref}&cid=${companyId}`);
+
   /**
    * Get signature list
    */
