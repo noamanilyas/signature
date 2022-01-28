@@ -555,32 +555,6 @@ function getNewContainerNS() {
 							</div>`;
 
   let container = $(containerHTML);
-
-  // Mouse events
-  // addMouseEvents(container.find(".ns"), container.find(".we"));
-
-  // //Drop events
-  // addDropEvent(container.find(".ns"), true);
-  // addDropEvent(container.find(".we"), true);
-  // addMouseOverEvents(container.find(".data3"));
-  // addModalClick(container.find(".data3"));
-  // container.draggable({
-  //   cancel: false,
-  //   helper: function (e) {
-  //     return $(this).clone();
-  //   },
-  //   cursor: "move",
-  //   start: function (event, ui) {
-  //     $(this).draggable("instance").offset.click = {
-  //       left: 0,
-  //       top: 0,
-  //     };
-  //   },
-  // });
-  // let UUID = `item-${Date.now()}`;
-  // container.attr("id", "container-" + UUID);
-  // container.find(".data3").attr("id", "container-group-" + UUID);
-
   container = addEventsToContainer3(container);
 
   return container;
@@ -614,33 +588,8 @@ function getNewContainerWE() {
 							</div>`;
 
   let container = $(containerHTML);
-
-  // Mouse events
-  // addMouseEvents(container.find(".ns"), container.find(".we"));
-
-  // Seperated into seperate funtion
-  // //Drop events
-  // addDropEvent(container.find(".ns"), true);
-  // addDropEvent(container.find(".we"), true);
-  // addMouseOverEvents(container.find(".data2"));
-  // addModalClick(container.find(".data2"));
-  // container.draggable({
-  //   cancel: false,
-  //   helper: function (e) {
-  //     return $(this).clone();
-  //   },
-  //   cursor: "move",
-  //   start: function (event, ui) {
-  //     $(this).draggable("instance").offset.click = {
-  //       left: 0,
-  //       top: 0,
-  //     };
-  //   },
-  // });
-  // let UUID = `item-${Date.now()}`;
-  // container.attr("id", "container-" + UUID);
-  // container.find(".data2").attr("id", "container-group-" + UUID);
   container = addEventsToContainer2(container);
+
   return container;
 }
 
