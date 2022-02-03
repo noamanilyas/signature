@@ -58,47 +58,8 @@ $(document).ready(function () {
 
     setTimeout(function () {
       $("#ssDiv").html("");
-      // console.log($(".addSenders").length);
-      // $(".addSenders").click(function (e) {
-      //   processUsrGrpModel(e);
-      // });
-      // $(".addRules").click(function (e) {
-      //   console.log("clicked addRules");
-      //   processAddRules(e);
-      // });
+
       Swal.close();
     }, 3000);
-    //   });
-    // });
   })();
 });
-
-// function exportFile() {
-//   var textFile = null,
-//     makeTextFile = function (text) {
-//       var data = new Blob([text], { type: "text/plain" });
-
-//       // If we are replacing a previously generated file we need to
-//       // manually revoke the object URL to avoid memory leaks.
-//       if (textFile !== null) {
-//         window.URL.revokeObjectURL(textFile);
-//       }
-
-//       textFile = window.URL.createObjectURL(data);
-
-//       return textFile;
-//     };
-
-//   var create = document.getElementById("create"),
-//     textbox = document.getElementById("textbox");
-
-//   create.addEventListener(
-//     "click",
-//     function () {
-//       var link = document.getElementById("downloadlink");
-//       link.href = makeTextFile(textbox.value);
-//       link.style.display = "block";
-//     },
-//     false
-//   );
-// }

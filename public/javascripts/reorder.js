@@ -155,43 +155,6 @@ $(document).ready(function () {
     })();
   });
 
-  // let signatureData = [];
-  // Swal.fire({
-  //   // position: "top-end",
-  //   onBeforeOpen: () => {
-  //     Swal.showLoading();
-  //   },
-  //   // icon: "info",
-  //   iconHtml: `<img src="/images/favicon.png" height="45" alt="" />`,
-  //   title: "Signatures are loading",
-  //   showConfirmButton: false,
-  //   // timer: 1500,
-  // });
-  // (async () => {
-  //   const rawResponse = await fetch(`${SERVER_URL}/getSignatures`, {
-  //     method: "GET",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   const content = await rawResponse.json();
-
-  //   signatureData = content.recordset;
-
-  //   for (const signature of content.recordset) {
-  //     const gsData = await generateSignatureData(signature);
-  //     await createSig(gsData.html, gsData.signature);
-  //   }
-
-  //   setTimeout(function () {
-  //     $("#ssDiv").html("");
-  //     Swal.close();
-  //   }, 500);
-  //   //   });
-  //   // });
-  // })();
-
   $("#saveorder").click(function (e) {
     let newArray = [...document.querySelectorAll("div.bcontent")].map(function (item) {
       return item.getAttribute("data-id").replace("_", " ");

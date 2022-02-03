@@ -118,7 +118,7 @@ function renderTextTab(id) {
     },
   ];
 
-  resetTextTab(inputElemArr, formatters);
+  resetTextTab(inputElemArr, formatters, wrappers);
 
   // Add current val JQTE
   const currentText = $(`#${getCurrentActiveId()}`).html();
@@ -165,11 +165,14 @@ function fillAndWrapping(id, item) {
   // Add event listeners
   $(`#${inputElem}`).on("click", function () {
     // If already exists then remove
+    console.log(document.querySelector(`#${id}`));
+    console.log(document.querySelector(`#${id}`).style);
     const element = document.querySelector(`#${id}`).style[cssProperty];
     if (element && cssPropertyVal === element) {
       // removeCSSClass(cssProperty, id, inputElem);
       // To be removed
     } else {
+      console.log("here");
       // disable others cannot have small caps, lowercase and uppercase at a time
       if (cssPropertyVal === "nowrap") {
         removeCSSClass("normal", id, "text-wrap");
@@ -182,6 +185,7 @@ function fillAndWrapping(id, item) {
       obj[cssProperty] = cssPropertyVal;
       // console.log($(`#${id}`));
       $(`#${id}`).css(obj);
+      $(`#${id}`).find("span").css(obj);
       $(`#${inputElem}`).addClass("active");
     }
     converToTableFunc();
@@ -255,6 +259,10 @@ function removeCSSClass(cssProperty, id, inputElem) {
   let obj = {};
   obj[cssProperty] = "";
   $(`#${id}`).css(obj);
+  // Remove white-space from all spans if nowrap or wrap is selected
+  if (inputElem === "text-wrap" || inputElem === "text-no-wrap") {
+    $(`#${id}`).find("span").css(obj);
+  }
   $(`#${inputElem}`).removeClass("active");
 }
 
@@ -275,11 +283,15 @@ function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
   });
 }
 
-function resetTextTab(inputElemArr, formatters) {
+function resetTextTab(inputElemArr, formatters, wrappers) {
   inputElemArr?.forEach(function (value, key, myArray) {
     $(`#${value.inputElem}`).off();
   });
   formatters?.forEach(function (value, key, myArray) {
+    $(`#${value.inputElem}`).off();
+    $(`#${value.inputElem}`).removeClass("active");
+  });
+  wrappers?.forEach(function (value, key, myArray) {
     $(`#${value.inputElem}`).off();
     $(`#${value.inputElem}`).removeClass("active");
   });
