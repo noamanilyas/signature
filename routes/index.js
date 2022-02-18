@@ -235,7 +235,30 @@ router.get("/getSignatures", function (req, res, next) {
 
     // select * from ADHTMLIMG  where prid = '583           75'
     // log form raju 21/02/2022
-   // console.log(queryText);
+    // console.log(queryText);
+
+    // query to the database and get the records
+    request.query(queryText, function (err, recordset) {
+      if (err) console.log(err);
+
+      // send records as a response
+      res.send(recordset);
+    });
+  });
+});
+
+router.get("/getCustomFields", function (req, res, next) {
+  sql.connect(config, function (err) {
+    if (err) console.log(err);
+
+    // create Request object
+    var request = new sql.Request();
+    var queryText = `SELECT 
+    G_DSC, 
+    K_ALIAS  
+    FROM adkey 
+    INNER JOIN ADGRP ON  G_CD = K_GCD
+    ORDER BY G_CD;`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {

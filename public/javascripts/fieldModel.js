@@ -93,9 +93,18 @@ function enableImageSelector() {
 /**
  * Created allFields from Build panel.
  */
-allFields.forEach((item) => {
-  $(".field-select").append(`<option value="${item}">${item}</option>`);
-});
+
+function createAllFieldsForModal() {
+  allFieldsCustom.forEach((item) => {
+    $(".field-select").append(`<option value="${item}">${item}</option>`);
+  });
+}
+
+// function createAllFieldsForModal2() {
+//   allFieldsCustom.forEach((item) => {
+//     trField.find(".field-select").append(`<option value="${item}">${item}</option>`);
+//   });
+// }
 
 $(".removeField").click(function (e) {
   if ($(".field-table > tbody > tr").length > 2) $(e.target).parent().parent().remove();
@@ -107,7 +116,7 @@ $("#addNewField").click(function (e) {
     /**
      * Created allFields from Build panel.
      */
-    allFields.forEach((item) => {
+    allFieldsCustom.forEach((item) => {
       trField.find(".field-select").append(`<option value="${item}">${item}</option>`);
     });
 

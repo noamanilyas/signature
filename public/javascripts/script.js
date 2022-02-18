@@ -39,6 +39,59 @@ $(document).ready(function () {
     // timer: 1500,
   });
   (async () => {
+    const customFieldsRawResponse = await fetch(`${SERVER_URL}/getCustomFields`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    const customFields = await customFieldsRawResponse.json();
+
+    let customTab = {};
+
+    for (let item of customFields.recordsets[0]) {
+      if (!customTab[item.G_DSC]) {
+        customTab[item.G_DSC] = {
+          TabName: item.G_DSC,
+          TabFields: [],
+        };
+        customTab[item.G_DSC].TabFields.push({
+          Name: item.K_ALIAS,
+          Value: item.K_ALIAS,
+          Type: "text",
+        });
+      } else {
+        customTab[item.G_DSC].TabFields.push({
+          Name: item.K_ALIAS,
+          Value: item.K_ALIAS,
+          Type: "text",
+        });
+      }
+    }
+    // let allFieldsCustom = [];
+
+    Object.keys(customTab).forEach((key) => {
+      customTab[key].TabFields.forEach((field) => {
+        allFieldsCustom.push(field.Name);
+      });
+    });
+    createAllFieldsForModal();
+
+    setTimeout(function () {
+      appendNewTabs(customTab);
+    }, 100);
+
+    // GeneralTab: {
+    //   TabName: "General Tab",
+    //   TabFields: [
+    //     {
+    //       Name: "Friendly Name",
+    //       Value: "Noaman",
+    //       Type: "text",
+    //     },
+
     let url_string = window.location.href;
     var url = new URL(url_string);
     var id = url.searchParams.get("id");

@@ -111,323 +111,323 @@ function appendNewTabs(tabs) {
   });
 }
 
-var tabs = {
-  GeneralTab: {
-    TabName: "General Tab",
-    TabFields: [
-      {
-        Name: "Friendly Name",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "First Name",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Initials",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Last Name",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Display Name",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Description",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Office",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Tel. Number",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Tel. Number (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "E-mail",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Web Page",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Web Page (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Common Name",
-        Value: "Noaman",
-        Type: "text",
-      },
-    ],
-  },
-  AddressTab: {
-    TabName: "Address Tab",
-    TabFields: [
-      {
-        Name: "Street",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "PO Box",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "City",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "State/Province",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Zip/Postal",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Country",
-        Value: "Noaman",
-        Type: "text",
-      },
-    ],
-  },
+// var tabs = {
+//   GeneralTab: {
+//     TabName: "General Tab",
+//     TabFields: [
+//       {
+//         Name: "Friendly Name",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "First Name",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Initials",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Last Name",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Display Name",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Description",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Office",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Tel. Number",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Tel. Number (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "E-mail",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Web Page",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Web Page (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Common Name",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//     ],
+//   },
+//   AddressTab: {
+//     TabName: "Address Tab",
+//     TabFields: [
+//       {
+//         Name: "Street",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "PO Box",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "City",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "State/Province",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Zip/Postal",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Country",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//     ],
+//   },
 
-  TelephonesTab: {
-    TabName: "Telephones Tab",
-    TabFields: [
-      {
-        Name: "Home",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Home (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Pager",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Pager (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Mobile",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Mobile (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Fax",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Fax (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Telephone Number",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "IP Phone",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "IP Phone (Other)",
-        Value: "Noaman",
-        Type: "text",
-      },
-      {
-        Name: "Notes",
-        Value: "Noaman",
-        Type: "text",
-      },
-    ],
-  },
-  OrganizationTab: {
-    TabName: "OrganizationTab",
-    TabFields: [
-      {
-        Name: "Title",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Department",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Company",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Manager",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Employee ID",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Employee Type",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Employee Number",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Car License",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Division",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Room Number",
-        Value: "Street",
-        Type: "text",
-      },
-    ],
-  },
-  ExchangeAttributesTab: {
-    TabName: "Exc Attributes Tab",
-    TabFields: [
-      {
-        Name: "extensionAttribute1",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute2",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute3",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute4",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute5",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute6",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute7",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute8",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute9",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute10",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute11",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "ExtensionAttribute12",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute13",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute14",
-        Value: "Street",
-        Type: "text",
-      },
-      {
-        Name: "Extension Attribute15",
-        Value: "Street",
-        Type: "text",
-      },
-    ],
-  },
-};
+//   TelephonesTab: {
+//     TabName: "Telephones Tab",
+//     TabFields: [
+//       {
+//         Name: "Home",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Home (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Pager",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Pager (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Mobile",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Mobile (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Fax",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Fax (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Telephone Number",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "IP Phone",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "IP Phone (Other)",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Notes",
+//         Value: "Noaman",
+//         Type: "text",
+//       },
+//     ],
+//   },
+//   OrganizationTab: {
+//     TabName: "OrganizationTab",
+//     TabFields: [
+//       {
+//         Name: "Title",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Department",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Company",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Manager",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Employee ID",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Employee Type",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Employee Number",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Car License",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Division",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Room Number",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//     ],
+//   },
+//   ExchangeAttributesTab: {
+//     TabName: "Exc Attributes Tab",
+//     TabFields: [
+//       {
+//         Name: "extensionAttribute1",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute2",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute3",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute4",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute5",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute6",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute7",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute8",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute9",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute10",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute11",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "ExtensionAttribute12",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute13",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute14",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//       {
+//         Name: "Extension Attribute15",
+//         Value: "Street",
+//         Type: "text",
+//       },
+//     ],
+//   },
+// };
 
-let allFields = [];
+let allFieldsCustom = [];
 
-Object.keys(tabs).forEach((key) => {
-  tabs[key].TabFields.forEach((field) => {
-    allFields.push(field.Name);
-  });
-});
+// Object.keys(tabs).forEach((key) => {
+//   tabs[key].TabFields.forEach((field) => {
+//     allFields.push(field.Name);
+//   });
+// });
 
-setTimeout(function () {
-  appendNewTabs(tabs);
-}, 500);
+// setTimeout(function () {
+//   appendNewTabs(tabs);
+// }, 500);
