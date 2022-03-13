@@ -1,5 +1,7 @@
 var currentActiveId = "";
 
+var customeFontsArray = [];
+
 $("#propertiesModel").on("hidden.bs.modal", function () {
   console.log("===========Model Closed===========");
   currentActiveId = "";
@@ -19,7 +21,7 @@ setTimeout(function () {
     change: function () {
       setTimeout(function () {
         if ($(".jqte_editor").text().indexOf("**Text Place Holder**") === -1) {
-          console.log("jqte changed", `#${getCurrentActiveId()}`);
+          // console.log("jqte changed", `#${getCurrentActiveId()}`);
           $(`#${getCurrentActiveId()}`).html($(".jqte_editor").html());
           converToTableFunc();
         }
@@ -145,6 +147,9 @@ function renderTextTab(id) {
 
   // Clear format btn
   // clearFormatting(id);
+
+  // Add events on customFontInput
+  customFontEvents();
 }
 
 // function clearFormatting(id) {
@@ -301,4 +306,87 @@ function resetTextTab(inputElemArr, formatters, wrappers) {
   // $("#text-text").off();
   // $("#text-text").jqte();
   // $("#text-text").jqteVal("");
+}
+
+function customFontEvents() {
+  const customFontFileSelector = `#customFontFile`;
+
+  $(customFontFileSelector).on("change", function () {
+    importFontFileandPreview();
+  });
+
+  function importFontFileandPreview() {
+    // var preview = document.querySelector(`#${id}`);
+    var file = document.querySelector(customFontFileSelector).files[0];
+
+    var fileSize = parseFloat(file.size / 1024).toFixed(2);
+
+    if (fileSize > 150) {
+      $("#uploadSizeError").show();
+      setTimeout(function () {
+        $("#uploadSizeError").hide();
+      }, 5000);
+      $(customFontFileSelector).val("");
+      return;
+    }
+
+    var reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      function () {
+        const fontName = file.name.split(".")[0];
+        let font = new FontFace(fontName, `url(${reader.result}) format("woff2")`);
+        font
+          .load()
+          .then(function (loadedFont) {
+            document.fonts.add(loadedFont);
+            const fontId = `font-${Date.now()}`;
+
+            // Add to array
+            customeFontsArray.push(fontName);
+
+            // Prepend font to the font list
+            const fontList = document.querySelector("#text-fontFamily");
+            fontList.prepend();
+            fontList.insertBefore(
+              $(`<option class="${fontId}" value="${fontName}">${fontName}</option>`)[0],
+              document.querySelector("#text-fontFamily").children[1]
+            );
+
+            // Add font to html for future use
+            const newDiv = document.createElement("div");
+            newDiv.id = fontId;
+            newDiv.className = `fontDiv ${fontId}`;
+            newDiv.dataset.fontName = fontName;
+            newDiv.dataset.fontUrl = reader.result;
+            const customFontDiv = document.querySelector("#customeFontDiv");
+            customFontDiv.append(newDiv);
+
+            // Append font to font list for deleteing
+            const fontDeleteList = document.querySelector("ul.customFontListShow");
+            fontDeleteList.append(
+              $(
+                `<li class="list-group-item ${fontId}"> ${fontName} <button class="btn btn-danger removeFontButton" type="button" data-font-id="${fontId}" style="float: right">Remove</button> </li>`
+              )[0]
+            );
+            $(".removeFontButton").off();
+            $("button.removeFontButton").click(function (e) {
+              const fontId = e.target.dataset.fontId;
+              // $(`#drop #customeFontDiv #${fontId}`).remove();
+              $(`.${fontId}`).remove();
+            });
+          })
+          .catch(function (error) {
+            // error occurred
+          });
+        // preview.src = reader.result;
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
 }

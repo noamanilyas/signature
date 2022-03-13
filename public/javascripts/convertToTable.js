@@ -1,6 +1,5 @@
 async function converToTableFunc() {
   const mainItems = $("#drop > .drag.vertical");
-  $(".mainTable").remove();
   let tbody = $("<tbody>");
   let table = $("<table style='font-size: 0px; width:100%;' cellspacing='0' cellpadding='0'>");
   table.addClass("mainTable");
@@ -21,6 +20,7 @@ async function converToTableFunc() {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
         dataItem = addPaddingToImage(td, dataItem);
+        dataItem = await convertCustomFontToImage(dataItem);
         applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
@@ -40,6 +40,7 @@ async function converToTableFunc() {
   // setTimeout(function () {
   table.append(tbody);
   // table.appendTo(".panelPreview2", ".panelPreview");
+  $(".mainTable").remove();
   $(".panelPreview").append(table.clone());
   $(".panelPreview2").append(table.clone());
   // }, 100);
@@ -86,6 +87,7 @@ function getSubItemsForTableItem(item) {
           // console.log("dataItem", dataItem);
           dataItem = addHyperLinkToImage(dataItem);
           dataItem = addPaddingToImage(td, dataItem);
+          dataItem = await convertCustomFontToImage(dataItem);
           applyCSS(td, actualItem.find(".data").children().eq(0), ["align"]);
 
           td.append(dataItem);
@@ -197,6 +199,7 @@ function getSubItemsForgroup2(item) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
         dataItem = addPaddingToImage(td, dataItem);
+        dataItem = await convertCustomFontToImage(dataItem);
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
         /**
@@ -257,6 +260,7 @@ function getSubItemsForgroup3(item) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
         dataItem = addPaddingToImage(td, dataItem);
+        dataItem = await convertCustomFontToImage(dataItem);
         applyCSS(td, thisItem.find(".data").children(), ["align"]);
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
@@ -325,6 +329,57 @@ function addPaddingToImage(td, item) {
       }
     }
   }
+
+  return item;
+}
+
+async function convertCustomFontToImage(item) {
+  if (item.is("span")) {
+    const elemAttributes = getAttributes(item);
+    // console.log(customeFontsArray);
+    let customFontExists = false;
+    // console.log(elemAttributes.style);
+    for (const font of customeFontsArray) {
+      if (elemAttributes.style.indexOf(font) !== -1) {
+        customFontExists = true;
+      }
+      // console.log(elemAttributes.style.indexOf(font));
+    }
+
+    // console.log(customFontExists);
+    if (customFontExists) {
+      const options = {
+        // y: 0,
+        // x: 0,
+        // scrollY: 0,
+        // scrollX: 0,
+      };
+      // console.log(item[0].id);
+      let canvas = await html2canvas($(`#${item[0].id}`)[0], options);
+      // console.log(canvas);
+
+      if (canvas) {
+        let imgData = canvas.toDataURL("image/jpeg");
+        let img = $(`<img
+        alt="Image"
+        title="Image"
+        category="image"
+        src="${imgData}"
+      />`);
+        console.log("return");
+        return img;
+      }
+    } else {
+      return item;
+    }
+    // for (const attrib of Object.keys(elemAttributes)) {
+    //   if (attrib.indexOf("padding") !== -1) {
+    //     td.css(attrib, elemAttributes[attrib]);
+    //     item.css({ attrib: "" });
+    //   }
+    // }
+  }
+  // console.log("lols");
 
   return item;
 }

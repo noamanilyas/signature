@@ -137,6 +137,54 @@ $(document).ready(function () {
         });
         $("#drop").append(HTMLObj);
 
+        if ($("#drop #customeFontDiv").length === 0) {
+          $("#drop").append($('<div id="customeFontDiv" style="display: none"></div>'));
+        } else if ($("#drop #customeFontDiv").length && $("#drop #customeFontDiv").children.length > 0) {
+          // Append custom fonts if any
+          const customFontDiv = Array.from(document.querySelector("#customeFontDiv").children);
+          customFontDiv.forEach(async function (child) {
+            const fontName = child.dataset.fontName;
+            const fontId = child.id;
+            let font = new FontFace(fontName, `url(${child.dataset.fontUrl}) format("woff2")`);
+            await new Promise((resolve, reject) => {
+              font
+                .load()
+                .then(function (loadedFont) {
+                  document.fonts.add(loadedFont);
+
+                  // Add to array
+                  customeFontsArray.push(fontName);
+
+                  // Prepend font to the font list
+                  const fontList = document.querySelector("#text-fontFamily");
+                  fontList.insertBefore(
+                    $(`<option class="${fontId}" value="${fontName}">${fontName}</option>`)[0],
+                    fontList.children[1]
+                  );
+
+                  // Append font to font list for deleteing
+                  const fontDeleteList = document.querySelector("ul.customFontListShow");
+                  fontDeleteList.append(
+                    $(
+                      `<li class="list-group-item ${fontId}"> ${fontName} <button class="btn btn-danger removeFontButton" type="button" data-font-id="${fontId}" style="float: right">Remove</button> </li>`
+                    )[0]
+                  );
+                  $(".removeFontButton").off();
+                  $("button.removeFontButton").click(function (e) {
+                    const fontId = e.target.dataset.fontId;
+                    // $(`#drop #customeFontDiv #${fontId}`).remove();
+                    $(`.${fontId}`).remove();
+                  });
+                  resolve();
+                })
+                .catch(function (error) {
+                  console.error("Error loading fonts", error);
+                  reject();
+                });
+            });
+          });
+        }
+
         // Make all containers draggable
         setTimeout(function () {
           $(".drag.vertical").draggable({
@@ -153,12 +201,15 @@ $(document).ready(function () {
             },
           });
         }, 50);
-        converToTableFunc();
       }, 500);
+    } else {
+      $("#drop").append($('<div id="customeFontDiv" style="display: none"></div>'));
     }
+
     setTimeout(function () {
+      converToTableFunc();
       Swal.close();
-    }, 500);
+    }, 1500);
 
     // warn before closing if any inputs are modified
     addEventListener("beforeunload", (evt) => {
@@ -493,6 +544,9 @@ $(document).ready(function () {
         // scrollX: 0,
       };
       (async () => {
+        // // Append the custom fonts
+        // $("#drop").append($("#customeFontDiv"));
+
         let canvas,
           signatureHTML = $(".panelPreview2").html(),
           html = $("#drop").html(),
