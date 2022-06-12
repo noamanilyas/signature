@@ -174,13 +174,15 @@ function getSubItemsForTableItem(item) {
 
 function getSubItemsForgroup2(item) {
   return new Promise(async (resolve, reject) => {
-    let group = $(item).find(".data2:first").children();
+    let group = $(item).find(".data2:first");
+    let groupChildren = group.children();
 
     // Create table with single TR and TD for the group.
     let tbody1 = $("<tbody>");
     let table1 = $("<table style='font-size: 0px; width:100%' cellspacing='0' cellpadding='0'>");
-    let tr1 = $("<tr style='font-size: 0px'>");
-    let td1 = $("<td>");
+    let tdHorizontalAlignment = group.attr("text-align") ? `align="${group.attr("text-align")}"` : "";
+    let tr1 = $(`<tr style='font-size: 0px' ${tdHorizontalAlignment}>`);
+    let td1 = $(`<td>`);
     applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
 
     tr1.append(td1);
@@ -188,11 +190,15 @@ function getSubItemsForgroup2(item) {
     table1.append(tbody1);
 
     let tbody = $("<tbody>");
-    let table = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+    let table = $(
+      `<table style='font-size: 0px;${
+        group.attr("width-stretch") == "100%" ? "width: 100%" : ""
+      }' cellspacing='0' cellpadding='0'>`
+    );
 
     let tr = $("<tr style='font-size: 0px'>");
-    for (let index = 0; index < group.length; index++) {
-      const thisItem = group.eq(index);
+    for (let index = 0; index < groupChildren.length; index++) {
+      const thisItem = groupChildren.eq(index);
       // $.each(group, async function (index, value) {
       let td = $("<td>");
       if (thisItem.hasClass("dataItem")) {

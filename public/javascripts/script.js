@@ -27,6 +27,35 @@ $(document).ready(function () {
    * "padding", "size", "render", "orientation", "socialMediaIcon"]
    */
 
+  // Preview Drag
+
+  let handle = document.getElementById("previewdrag");
+  let right = document.querySelector(".panelPreview");
+  let container = document.querySelector("body");
+
+  handle.onmousedown = function (e) {
+    isResizing = true;
+  };
+
+  document.onmousemove = function (e) {
+    // we don't want to do anything if we aren't resizing.
+    if (!isResizing) {
+      return;
+    }
+
+    var offsetRight = container.clientWidth - (e.clientX - container.offsetLeft);
+
+    // left.style.right = offsetRight + "px";
+    right.style.width = offsetRight + "px";
+  };
+
+  document.onmouseup = function (e) {
+    // stop resizing
+    isResizing = false;
+  };
+
+  // End --- Preview Drag
+
   Swal.fire({
     // position: "top-end",
     onBeforeOpen: () => {

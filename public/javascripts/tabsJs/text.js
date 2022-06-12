@@ -2,6 +2,8 @@ var currentActiveId = "";
 
 var customeFontsArray = [];
 
+const customFontFileSelector = `#customFontFile`;
+
 $("#propertiesModel").on("hidden.bs.modal", function () {
   console.log("===========Model Closed===========");
   currentActiveId = "";
@@ -300,6 +302,8 @@ function resetTextTab(inputElemArr, formatters, wrappers) {
     $(`#${value.inputElem}`).off();
     $(`#${value.inputElem}`).removeClass("active");
   });
+
+  $(customFontFileSelector).off();
   // inputElemArr.each(function (index, item) {});
   // $(selector).off();
   $("#text-form").trigger("reset");
@@ -309,8 +313,6 @@ function resetTextTab(inputElemArr, formatters, wrappers) {
 }
 
 function customFontEvents() {
-  const customFontFileSelector = `#customFontFile`;
-
   $(customFontFileSelector).on("change", function () {
     importFontFileandPreview();
   });
@@ -321,10 +323,10 @@ function customFontEvents() {
 
     var fileSize = parseFloat(file.size / 1024).toFixed(2);
 
-    if (fileSize > 150) {
-      $("#uploadSizeError").show();
+    if (fileSize > 170) {
+      $("#uploadSizeErrorFont").show();
       setTimeout(function () {
-        $("#uploadSizeError").hide();
+        $("#uploadSizeErrorFont").hide();
       }, 5000);
       $(customFontFileSelector).val("");
       return;
@@ -376,6 +378,8 @@ function customFontEvents() {
               // $(`#drop #customeFontDiv #${fontId}`).remove();
               $(`.${fontId}`).remove();
             });
+
+            document.getElementById(customFontFileSelector).value = "";
           })
           .catch(function (error) {
             // error occurred

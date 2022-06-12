@@ -105,6 +105,8 @@
   display: table;
 }
 .panelPreview {
+  position: absolute;
+  right: 0;
   width: 350px;
   height: 380px;
   /* display: table; */
@@ -287,4 +289,13 @@ span.jqte-test {
 
 .removeField {
   width: 24px;
+}
+
+#previewdrag {
+  position: absolute;
+  left: -4px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: w-resize;
 }

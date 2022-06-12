@@ -90,8 +90,10 @@ function renderModel(e) {
     renderBackgroundTab(id);
     // Render SizeJS
     renderSizeTab(id);
+    // Render AlignmentJS for groups
+    if (category === "group") renderAlignmentTabGroup(id);
     // Render AlignmentJS
-    renderAlignmentTab(id);
+    else renderAlignmentTab(id);
     // Render BorderJS
     renderBorderTab(id);
     // Render PaddingJS
