@@ -275,6 +275,20 @@ body {
   border: #aaa 1px solid;
   font-size: 13px;
 }
+
+.jqte_tool.jqte_tool_1 .jqte_tool_label {
+  position: relative;
+  display: block;
+  padding: 3px;
+  width: 70px;
+  height: 21px; /*change*/
+  overflow: hidden;
+}
+.jqte_tool_label {
+  padding-top: 1px !important; /*add*/
+  height: 25px !important; /*add*/
+}
+
 textarea.jqte-test,
 div.jqte-test,
 span.jqte-test {
