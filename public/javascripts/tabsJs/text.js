@@ -126,6 +126,7 @@ function renderTextTab(id) {
 
   // Add current val JQTE
   const currentText = $(`#${getCurrentActiveId()}`).html();
+  // Need Fix: Disables hover on all texts when click group
   $("#text-text").jqteVal(currentText);
 
   // textTextValue(id);
@@ -172,8 +173,8 @@ function fillAndWrapping(id, item) {
   // Add event listeners
   $(`#${inputElem}`).on("click", function () {
     // If already exists then remove
-    console.log(document.querySelector(`#${id}`));
-    console.log(document.querySelector(`#${id}`).style);
+    // console.log(document.querySelector(`#${id}`));
+    // console.log(document.querySelector(`#${id}`).style);
     const element = document.querySelector(`#${id}`).style[cssProperty];
     if (element && cssPropertyVal === element) {
       // removeCSSClass(cssProperty, id, inputElem);
@@ -233,7 +234,7 @@ function fillAndFormat(id, item) {
   $(`#${inputElem}`).on("click", function () {
     // If already exists then remove
     const element = document.querySelector(`#${id}`).style[cssProperty];
-    console.log(element);
+    // console.log(element);
     if (element && cssPropertyVal === element) {
       // let obj = {};
       // obj[cssProperty] = "";

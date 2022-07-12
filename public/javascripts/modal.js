@@ -83,7 +83,7 @@ function renderModel(e) {
     $(`#v-${a[category][0]}-body`).addClass("show active");
 
     // Render TextJS
-    renderTextTab(id);
+    if (category !== "group") renderTextTab(id);
     // Render ImageJS
     renderImageTab(id);
     // Render BackgroundJS

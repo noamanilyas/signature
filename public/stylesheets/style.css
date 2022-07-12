@@ -109,6 +109,8 @@
   right: 0;
   width: 350px;
   height: 380px;
+  max-width: 75%;
+  min-width: 5%;
   /* display: table; */
   float: right;
   border-top-left-radius: 15px;

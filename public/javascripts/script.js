@@ -33,6 +33,8 @@ $(document).ready(function () {
   let right = document.querySelector(".panelPreview");
   let container = document.querySelector("body");
 
+  let isResizing = false;
+
   handle.onmousedown = function (e) {
     isResizing = true;
   };

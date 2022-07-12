@@ -49,7 +49,7 @@ function fillAndFormatAlign(id, item) {
       $(`#${inputElem}`).addClass("active");
     }
     setTimeout(function () {
-      console.log(document.querySelector(`#${id}`).getAttribute(cssProperty));
+      // console.log(document.querySelector(`#${id}`).getAttribute(cssProperty));
       converToTableFunc();
     }, 50);
   });
