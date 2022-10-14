@@ -4,7 +4,8 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "dev-start": "nodemon ./bin/www"
   },
   "dependencies": {
     "@sweetalert2/theme-borderless": "^4.0.3",
