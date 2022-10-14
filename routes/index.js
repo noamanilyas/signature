@@ -3,6 +3,7 @@ var router = express.Router();
 var path = require("path");
 var sql = require("mssql");
 var formidable = require("formidable");
+const crypto = require("crypto");
 
 // config for your database
 // var config = {
@@ -203,6 +204,7 @@ router.post("/updateHTML", function (req, res, next) {
 });
 
 router.get("/getSignatures", function (req, res, next) {
+  const decryptId = decrypt(`${req.query.companyId}`);
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
@@ -225,13 +227,13 @@ router.get("/getSignatures", function (req, res, next) {
       H_ATTACH AS ImageData,
       H_IMAGE AS ImageData2
       FROM ADHTMLH
-      WHERE H_CONO = '${req.query.companyId}'
+      WHERE H_CONO = '${decryptId}'
       ORDER BY H_SRL;
       
       SELECT 
         DISTINCT I_NAME AS ImgPath, I_STR AS ImgBase64  FROM ADHTMLIMG  
         INNER JOIN ADHTMLH ON ADHTMLH.RID = ADHTMLIMG.PRID
-        WHERE H_CONO = '${req.query.companyId}';`;
+        WHERE H_CONO = '${decryptId}';`;
 
     // select * from ADHTMLIMG  where prid = '583           75'
     // log form raju 21/02/2022
@@ -271,14 +273,15 @@ router.get("/getCustomFields", function (req, res, next) {
 });
 
 router.get("/getCompanyUsersGroups", function (req, res, next) {
+  const decryptId = decrypt(`${req.query.companyId}`);
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
     // create Request object
     var request = new sql.Request();
 
-    var queryText = `SELECT RID, G_DSC, G_EMAIL  FROM ADGRP365 WHERE G_CONO = '${req.query.companyId}';
-    SELECT TOP 10000 RID, U_DSC, U_EMAIL FROM ADUSR  WHERE U_CONO = '${req.query.companyId}'`;
+    var queryText = `SELECT RID, G_DSC, G_EMAIL  FROM ADGRP365 WHERE G_CONO = '${decryptId}';
+    SELECT TOP 10000 RID, U_DSC, U_EMAIL FROM ADUSR  WHERE U_CONO = '${decryptId}'`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
@@ -529,5 +532,19 @@ router.post("/updateOrder", function (req, res, next) {
     });
   });
 });
+
+function decrypt(encryptedText) {
+  const securityKey = "SXE3RbD4W84CcMgt";
+  var alg = "des-ede-cbc";
+  var key = Buffer.from(securityKey, "utf-8");
+  var iv = Buffer.from("QUJDREVGR0g=", "base64"); //This is from c# cipher iv
+
+  var encrypted = Buffer.from(encryptedText, "base64");
+  var decipher = crypto.createDecipheriv(alg, key, iv);
+  var decoded = decipher.update(encrypted, "binary", "ascii");
+  decoded += decipher.final("ascii");
+
+  return decoded;
+}
 
 module.exports = router;
