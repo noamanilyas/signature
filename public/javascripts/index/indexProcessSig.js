@@ -133,7 +133,7 @@ const createSig = async (sigData, imageData) => {
                           / /g,
                           "_"
                         )} class="btn btn-success addRules groupD" >Rules/Conditions</button>
-                        <button id="delete-${signature.Id.replace(/=/g, "_")}" class="n-item btn btn-danger">Delete</button>
+                        <button id="delete-${signature.Id.replace(/ /g, "_")}" class="n-item btn btn-danger">Delete</button>
 
                         <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
           signature.Name
@@ -147,10 +147,10 @@ const createSig = async (sigData, imageData) => {
 
         let htmlData = $(sigHTML).html();
         $("#list_sig").append(htmlData);
-        $(`#delete-${signature.Id.replace(/=/g, "_")}`).click(function () {
+        document.getElementById(`delete-${signature.Id.replace(/ /g, "_")}`).onclick = function () {
           console.log("How are you");
           deleteSignature(signature.Id.replace(/ /g, "_"));
-        });
+        };
       })
       .catch((e) => {
         console.log(e);
