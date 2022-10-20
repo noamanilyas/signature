@@ -120,3 +120,6 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.btnexit {
+  margin-left: 42%;
+}
