@@ -47,7 +47,7 @@ router.post("/saveHTML", function (req, res, next) {
 
         // create Request object
         var request = new sql.Request();
-
+        var companyId = decrypt(dbData.compNo);
         var queryText = `
         BEGIN
         DECLARE @variable nvarchar(4);
@@ -71,7 +71,7 @@ router.post("/saveHTML", function (req, res, next) {
           ,'${dbData.name}'
           ,'${dbData.html}'
           ,'${dbData.signatureHTML}'
-          ,'${dbData.compNo}'
+          ,'${companyId}'
           ,'${dbData.imgData}'
           ,1);
           END;`;
@@ -145,10 +145,10 @@ router.post("/deleteSignature", function (req, res, next) {
         DELETE FROM [dbo].[ADHTMLU] WHERE PRID = '${req.body.rid.replace(/_/g, " ")}';
         DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';
         EXEC USP_DELETE_ADEMAILSIGN '${req.body.rid.replace(/_/g, " ")}';`; */
-
-    console.log(queryText);
+    let rid = decrypt(req.body.rid);
+    // console.log(queryText);
     var queryText = `
-        EXEC USP_DELETE_ADHTMLH '${req.body.rid.replace(/_/g, " ")}'`;
+        EXEC USP_DELETE_ADHTMLH '${rid}'`;
 
     // console.log(queryText);
     // query to the database and get the records
@@ -242,7 +242,14 @@ router.get("/getSignatures", function (req, res, next) {
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
       if (err) console.log(err);
-
+      else {
+        let dbId = recordset.recordsets[0];
+        for (let i = 0; i < dbId.length; i++) {
+          dbId[i]["rstart"] = dbId[i].Id.startsWith("R");
+          var encryptdbIds = encrypt(dbId[i].Id);
+          dbId[i].Id = encryptdbIds;
+        }
+      }
       // send records as a response
       res.send(recordset);
     });
@@ -300,8 +307,7 @@ router.get("/getCurrentSignatureUsers", function (req, res, next) {
     // create Request object
     var request = new sql.Request();
 
-    let prid = req.query.prid.replace(/_/g, " ");
-
+    let prid = decrypt(req.query.prid.replace(/_/g, " "));
     var queryText = `SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '0';
     SELECT * FROM ADHTMLU WHERE PRID = '${prid}' AND U_TYPE = '2'`;
 
@@ -328,7 +334,7 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
     var request = new sql.Request();
 
     // console.log("rid", req.query);
-    let rid = req.query.prid.replace(/_/g, " ");
+    let rid = decrypt(req.query.prid);
 
     // const resp = {
     //   applySig: false,
@@ -372,8 +378,8 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
     request.query(queryText, function (err, data) {
       if (err) console.log(err);
 
-      console.log("rid", rid);
-      console.log("Before", data.recordset[0]);
+      // console.log("rid", rid);
+      // console.log("Before", data.recordset[0]);
       const resp = {
         ...data.recordset[0],
         DA_RecentEmail: !data.recordset[0].DA_Anywhere,
@@ -381,7 +387,7 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
         SigAdded_DontProcessNext: !data.recordset[0].SigAdded_ProcessNext,
       };
 
-      console.log("After", resp);
+      // console.log("After", resp);
       res.send(resp);
     });
   });
@@ -480,6 +486,7 @@ router.get("/getSignatureById", function (req, res, next) {
 
     // create Request object
     var request = new sql.Request();
+    var decryptId = decrypt(req.query.id);
 
     var queryText = `SELECT
       RID AS Id,
@@ -488,7 +495,7 @@ router.get("/getSignatureById", function (req, res, next) {
       H_HTMLTEXT AS SigHTML,
       H_IMAGE AS ImageData
       FROM ADHTMLH
-      WHERE RID = '${req.query.id}';`;
+      WHERE RID = '${decryptId}';`;
 
     // var queryText =
     //   `SELECT [Id]
@@ -545,6 +552,18 @@ function decrypt(encryptedText) {
   decoded += decipher.final("ascii");
 
   return decoded;
+}
+function encrypt(text) {
+  const securityKey = "SXE3RbD4W84CcMgt";
+  var alg = "des-ede-cbc";
+  var key = new Buffer.from(securityKey, "utf-8");
+  var iv = new Buffer.from("QUJDREVGR0g=", "base64"); //This is from c# cipher iv
+
+  var cipher = crypto.createCipheriv(alg, key, iv);
+  var encoded = cipher.update(text, "ascii", "base64");
+  encoded += cipher.final("base64");
+
+  return encoded;
 }
 
 module.exports = router;

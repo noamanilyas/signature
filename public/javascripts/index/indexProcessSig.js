@@ -123,7 +123,7 @@ const createSig = async (sigData, imageData) => {
                         <h5 class="card-title">${signature.Name}</h5>
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                         <a href="editor.html?id=${signature.Id}&companyId=${companyId}" class="btn btn-success" ${
-          signature.Id.startsWith("R") === false ? 'style="display:none;"' : ""
+          signature.rstart === false ? 'style="display:none;"' : ""
         }>Edit Signature</a>
                         <button id=${signature.Id.replace(
                           / /g,
@@ -133,7 +133,7 @@ const createSig = async (sigData, imageData) => {
                           / /g,
                           "_"
                         )} class="btn btn-success addRules groupD" >Rules/Conditions</button>
-                        <button id="delete-${signature.Id.replace(/ /g, "_")}" class="n-item btn btn-danger">Delete</button>
+                        <button id="delete-${signature.Id.replace(/=/g, "_")}" class="n-item btn btn-danger">Delete</button>
 
                         <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
           signature.Name
@@ -147,7 +147,8 @@ const createSig = async (sigData, imageData) => {
 
         let htmlData = $(sigHTML).html();
         $("#list_sig").append(htmlData);
-        $(`#delete-${signature.Id.replace(/ /g, "_")}`).click(function () {
+        $(`#delete-${signature.Id.replace(/=/g, "_")}`).click(function () {
+          console.log("How are you");
           deleteSignature(signature.Id.replace(/ /g, "_"));
         });
       })
