@@ -7,13 +7,21 @@
 }
 .card-img-main {
   margin: 2%;
-  max-height: 200px;
+  max-height: 100%;
   /* image style - remove max width */
-  max-width: 400px !important;
+  width: 150%;
   border-radius: calc(0.25rem - 1px);
+  display: block;
 }
 .card-img-main-div {
   height: 210px;
+}
+.col-sm-9 {
+  flex: 0 0 75%;
+  max-width: 68%;
+
+  position: absolute;
+  left: 38%;
 }
 .nav-right {
   justify-content: start !important;
