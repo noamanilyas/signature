@@ -21,7 +21,7 @@ $(document).ready(function () {
   (async () => {
     // console.log(c);
 
-    let companyId = "000045";
+    let companyId = "pMr0lShPukk=";
     if (!companyId) {
       Swal.fire({
         // position: "top-end",
