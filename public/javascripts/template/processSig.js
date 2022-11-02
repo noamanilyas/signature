@@ -58,7 +58,7 @@ const createSigForTemplate = async (sigData, imageData) => {
                           <h5 class="card-title">${signature.Name}</h5>
                           <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                           <a href="editor.html?id=${signature.Id}&companyId=${cid}&template=1" class="btn btn-success" ${
-          signature.Id.startsWith("R") === false ? 'style="display:none;"' : ""
+          signature.Id.startsWith("R") === true ? 'style="display:none;"' : ""
         }>Use Template</a>
   
                           <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
