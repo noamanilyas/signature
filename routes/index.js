@@ -146,7 +146,7 @@ router.post("/deleteSignature", function (req, res, next) {
         DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';
         EXEC USP_DELETE_ADEMAILSIGN '${req.body.rid.replace(/_/g, " ")}';`; */
     let rid = decrypt(req.body.rid.replace(/_/g, ""));
-    // console.log(queryText);
+
     var queryText = `
         EXEC USP_DELETE_ADHTMLH '${rid}'`;
 
@@ -378,8 +378,6 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
     request.query(queryText, function (err, data) {
       if (err) console.log(err);
 
-      // console.log("rid", rid);
-      // console.log("Before", data.recordset[0]);
       const resp = {
         ...data.recordset[0],
         DA_RecentEmail: !data.recordset[0].DA_Anywhere,
@@ -387,7 +385,6 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
         SigAdded_DontProcessNext: !data.recordset[0].SigAdded_ProcessNext,
       };
 
-      // console.log("After", resp);
       res.send(resp);
     });
   });
@@ -553,6 +550,7 @@ function decrypt(encryptedText) {
 
   return decoded;
 }
+
 function encrypt(text) {
   const securityKey = "SXE3RbD4W84CcMgt";
   var alg = "des-ede-cbc";
