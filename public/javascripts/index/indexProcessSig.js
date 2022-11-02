@@ -148,7 +148,6 @@ const createSig = async (sigData, imageData) => {
         let htmlData = $(sigHTML).html();
         $("#list_sig").append(htmlData);
         document.getElementById(`delete-${signature.Id.replace(/ /g, "_")}`).onclick = function () {
-          console.log("How are you");
           deleteSignature(signature.Id.replace(/ /g, "_"));
         };
       })
