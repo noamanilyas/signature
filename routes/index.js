@@ -47,7 +47,6 @@ router.post("/saveHTML", function (req, res, next) {
 
         // create Request object
         var request = new sql.Request();
-        var companyId = decrypt(dbData.compNo);
         var queryText = `
         BEGIN
         DECLARE @variable nvarchar(4);
@@ -71,7 +70,7 @@ router.post("/saveHTML", function (req, res, next) {
           ,'${dbData.name}'
           ,'${dbData.html}'
           ,'${dbData.signatureHTML}'
-          ,'${companyId}'
+          ,'${decrypt(dbData.compNo)}'
           ,'${dbData.imgData}'
           ,1);
           END;`;
@@ -186,7 +185,7 @@ router.post("/updateHTML", function (req, res, next) {
                 ,[H_RTextHTML] = '${dbData.html}'
                 ,[H_DSC] = '${dbData.name}'
                 ,[H_IMAGE] = '${dbData.imgData}'
-          WHERE [dbo].[ADHTMLH].[RID] = '${dbData.id}';
+          WHERE [dbo].[ADHTMLH].[RID] = '${decrypt(dbData.id)}';
           EXEC USP_DELETE_ADEMAILSIGN '${dbData.id}';`;
 
         // query to the database and get the records
