@@ -7,9 +7,10 @@
 }
 .card-img-main {
   margin: 2%;
+  padding: 2%;
   max-height: 100%;
   /* image style - remove max width */
-  width: 150%;
+  width: 130%;
   border-radius: calc(0.25rem - 1px);
   display: block;
 }
@@ -21,7 +22,7 @@
   max-width: 68%;
 
   position: absolute;
-  left: 38%;
+  left: 34%;
 }
 .nav-right {
   justify-content: start !important;

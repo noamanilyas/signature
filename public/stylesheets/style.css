@@ -124,10 +124,10 @@
 }
 
 .panelPreview2 {
-  width: 100%;
-  height: 400px;
-  display: table;
-  float: right;
+  width: auto;
+  height: auto;
+  display: table-cell;
+  float: left;
   border-radius: 15px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
