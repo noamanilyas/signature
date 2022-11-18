@@ -14,7 +14,7 @@ $(document).ready(function () {
       });
 
       imageData.forEach(function (item, index) {
-        const imagePath = item.ImgPath;
+        const imagePath = item.ImgPath.toLowerCase();
         // console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
         signature.HTML = signature.HTML.replace(imagePath, `data:image/png;base64,${item.ImgBase64}`);
       });
@@ -29,7 +29,6 @@ $(document).ready(function () {
       const gsData = await replaceImagePaths(sigData, imageData);
       const html = gsData.html;
       const signature = sigData;
-      // console.log("Name", signature.Name);
 
       let imgData = "";
       $("#ssDiv").html("");
@@ -45,7 +44,7 @@ $(document).ready(function () {
           }
 
           let sigHTML = `
-                    <div class="ui-state-default">
+                    <li class="ui-state-default">
               <div>
               
               <div class="container bcontent" data-id='${signature.Id.replace(" ", "_")}'>
@@ -74,7 +73,7 @@ $(document).ready(function () {
                 </div>
                 </div>
               </div>
-              </div>`;
+              </li>`;
 
           let htmlData = $(sigHTML).html();
           // console.log(htmlData);
@@ -126,7 +125,7 @@ $(document).ready(function () {
       const content = await rawResponse.json();
       // console.log(content);
       const signatureData = content.recordsets[0];
-      const imageData = content.recordsets[0];
+      const imageData = content.recordsets[1];
       if (signatureData.length === 0) {
         Swal.fire({
           // position: "top-end",
@@ -164,9 +163,7 @@ $(document).ready(function () {
     let newArray = [...document.querySelectorAll("div.bcontent")].map(function (item) {
       return item.getAttribute("data-id").replace("_", " ");
     });
-    // console.log(newArray);
     if (newArray.length > 0) {
-      // console.log("Save signature");
       (async () => {
         const rawResponse = await fetch(`${SERVER_URL}/updateOrder`, {
           method: "POST",
