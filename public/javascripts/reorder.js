@@ -15,7 +15,7 @@ $(document).ready(function () {
 
       imageData.forEach(function (item, index) {
         const imagePath = item.ImgPath.toLowerCase();
-        console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
+        // console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
         signature.HTML = signature.HTML.replace(imagePath, `data:image/png;base64,${item.ImgBase64}`);
       });
 
@@ -29,7 +29,6 @@ $(document).ready(function () {
       const gsData = await replaceImagePaths(sigData, imageData);
       const html = gsData.html;
       const signature = sigData;
-      console.log("Name", signature.Name);
 
       let imgData = "";
       $("#ssDiv").html("");
@@ -45,16 +44,18 @@ $(document).ready(function () {
           }
 
           let sigHTML = `
-          <li class="ui-state-default">
+                    <li class="ui-state-default">
               <div>
               
               <div class="container bcontent" data-id='${signature.Id.replace(" ", "_")}'>
-                <div class="card">
-                  <div class="row no-gutters">
+              <div class="card orderdiv">
+              <div class="row no-gutters ">
+              <div class="numbs"><span class="spannumber"></span></div>
+                  
                     <div class="col-sm-3 card-img-main-div">
                       <img
                         class="card-img-main"
-                        src="${imgData}"
+                        src="${signature.ImageData2 ? signature.ImageData2 : imgData}"
                         alt="Microsoft Card"
                       />
                     </div>
@@ -122,10 +123,9 @@ $(document).ready(function () {
         },
       });
       const content = await rawResponse.json();
-      console.log(content);
+      // console.log(content);
       const signatureData = content.recordsets[0];
       const imageData = content.recordsets[1];
-
       if (signatureData.length === 0) {
         Swal.fire({
           // position: "top-end",
@@ -141,13 +141,17 @@ $(document).ready(function () {
       }
 
       setTimeout(function () {
+        arrange();
         $("#ssDiv").html("");
-        $(".sortable").sortable();
+        $(".sortable").sortable({
+          update: arrange,
+        });
         $(".sortable").disableSelection();
         // console.log($(".addSenders").length);
         // $(".addSenders").click(function (e) {
         //   processUsrGrpModel(e);
         // });
+
         Swal.close();
       }, 3000);
       //   });
@@ -159,9 +163,7 @@ $(document).ready(function () {
     let newArray = [...document.querySelectorAll("div.bcontent")].map(function (item) {
       return item.getAttribute("data-id").replace("_", " ");
     });
-    console.log(newArray);
     if (newArray.length > 0) {
-      console.log("Save signature");
       (async () => {
         const rawResponse = await fetch(`${SERVER_URL}/updateOrder`, {
           method: "POST",
@@ -186,3 +188,9 @@ $(document).ready(function () {
     }
   });
 });
+
+function arrange() {
+  $(".spannumber").each(function (index, element) {
+    $(element).html(index + 1);
+  });
+}
