@@ -13,7 +13,7 @@ require("dotenv").config();
 //   database: "greenSignature",
 //   port: 1433,
 // };
-({ USER_NAME, DB_PASSWORD, DB_SERVER, DB_DBNAME } = process.env);
+const { USER_NAME, DB_PASSWORD, DB_SERVER, DB_DBNAME } = process.env;
 var config = {
   user: USER_NAME,
   password: DB_PASSWORD,
