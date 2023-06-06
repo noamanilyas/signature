@@ -4,7 +4,7 @@ var path = require("path");
 var sql = require("mssql");
 var formidable = require("formidable");
 const crypto = require("crypto");
-
+require("dotenv").config();
 // config for your database
 // var config = {
 //   user: "sa",
@@ -13,11 +13,12 @@ const crypto = require("crypto");
 //   database: "greenSignature",
 //   port: 1433,
 // };
+({ USER_NAME, DB_PASSWORD, DB_SERVER, DB_DBNAME } = process.env);
 var config = {
-  user: "sa",
-  password: "asncadmin",
-  server: "20.74.157.118",
-  database: "JAVAD",
+  user: USER_NAME,
+  password: DB_PASSWORD,
+  server: DB_SERVER,
+  database: DB_DBNAME,
   port: 1433,
   connectionTimeout: 60000,
   requestTimeout: 60000,
