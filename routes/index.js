@@ -4,7 +4,7 @@ var path = require("path");
 var sql = require("mssql");
 var formidable = require("formidable");
 const crypto = require("crypto");
-
+require("dotenv").config();
 // config for your database
 // var config = {
 //   user: "sa",
@@ -13,14 +13,18 @@ const crypto = require("crypto");
 //   database: "greenSignature",
 //   port: 1433,
 // };
+const { USER_NAME, DB_PASSWORD, DB_SERVER, DB_DBNAME } = process.env;
 var config = {
-  user: "sa",
-  password: "asncadmin",
-  server: "20.196.3.43",
-  database: "JAVAD",
+  user: USER_NAME,
+  password: DB_PASSWORD,
+  server: DB_SERVER,
+  database: DB_DBNAME,
   port: 1433,
   connectionTimeout: 60000,
   requestTimeout: 60000,
+  options: {
+    enableArithAbort: true, // or false
+  },
 };
 
 /* GET home page. */
@@ -257,7 +261,10 @@ router.get("/getSignatures", function (req, res, next) {
 
 router.get("/getCustomFields", function (req, res, next) {
   sql.connect(config, function (err) {
-    if (err) console.log(err);
+    if (err) {
+      console.error("Error connecting to SQL Server:", err);
+      return res.status(500).send("Internal Server Error");
+    }
 
     // create Request object
     var request = new sql.Request();
@@ -268,9 +275,12 @@ router.get("/getCustomFields", function (req, res, next) {
     INNER JOIN ADGRP ON  G_CD = K_GCD
     ORDER BY G_CD;`;
 
-    // query to the database and get the records
+    // query the database and get the records
     request.query(queryText, function (err, recordset) {
-      if (err) console.log(err);
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        return res.status(500).send("Internal Server Error");
+      }
 
       // send records as a response
       res.send(recordset);
