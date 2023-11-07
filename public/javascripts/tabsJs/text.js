@@ -306,6 +306,7 @@ function removeCSSClass(cssProperty, id, inputElem) {
   // Remove white-space from all spans if nowrap or wrap is selected
   if (inputElem === "text-wrap" || inputElem === "text-no-wrap") {
     $(`#${id}`).find("span").css(obj);
+    $(`#${id}`).parent().css({ 'max-width': '50vw' });
   }
   $(`#${inputElem}`).removeClass("active");
 }
