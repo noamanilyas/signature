@@ -64,9 +64,9 @@ $(document).ready(function () {
                         <h5 class="card-title">${signature.Name}</h5>
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
                         <!-- <a href="editor.html?id=${signature.Id}" class="btn btn-success">Edit Signature</a> -->
-                        <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
+                         <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
             signature.Name
-          }.txt"  class="btn btn-warning export">Export</a> -->
+          }.txt"  class="btn btn-warning export">Export</a> 
                       </div>
                     </div>
                   </div>

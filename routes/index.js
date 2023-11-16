@@ -4,7 +4,11 @@ var path = require("path");
 var sql = require("mssql");
 var formidable = require("formidable");
 const crypto = require("crypto");
+const multer = require('multer')
 require("dotenv").config();
+
+const storage = multer.memoryStorage(); // Store file data in memory
+const upload = multer({ storage: storage });
 // config for your database
 // var config = {
 //   user: "sa",
@@ -489,7 +493,6 @@ router.get("/getSignatureById", function (req, res, next) {
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
-
     // create Request object
     var request = new sql.Request();
     var decryptId = decrypt(req.query.id);
@@ -573,4 +576,123 @@ function encrypt(text) {
   return encoded;
 }
 
+router.get("/downloadencrypt", function (req, res, next) {
+  // Connect to your database
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Database connection error');
+    }
+    var request = new sql.Request();
+    var decryptId = decrypt(req.query.id);
+
+    var queryText = `SELECT
+      RID AS Id,
+      H_DSC AS Name,
+      H_RTextHTML AS HTML,
+      H_HTMLTEXT AS SigHTML,
+      H_IMAGE AS ImageData
+      FROM ADHTMLH
+      WHERE RID = '${decryptId}';`;
+
+    request.query(queryText, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send('Error querying the database');
+      }
+
+      if (recordset.recordset.length === 0) {
+        return res.status(404).send('Signature not found');
+      }
+      const signatureObject = {
+        Id: encrypt(recordset.recordset[0].Id),
+        Name: recordset.recordset[0].Name,
+        HTML: recordset.recordset[0].HTML,
+        SigHTML: recordset.recordset[0].SigHTML,
+        ImageData: recordset.recordset[0].ImageData,
+      };
+      const objectString = JSON.stringify(signatureObject);
+      const encryptedData = encryptFile(objectString);
+      res.setHeader('Content-Disposition', 'attachment; filename=exportFile.GSign');
+      res.setHeader('Content-Type', 'application/octet-stream');
+      res.send(encryptedData);
+    });
+  });
+});
+
+function encryptFile(data) {
+  const algorithm = 'aes-256-cbc';
+  const key = '9f32d568b7be6c25698741d6e7c256f7'; 
+  const iv = crypto.randomBytes(16); 
+  const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+  const encryptedData = Buffer.concat([cipher.update(data), cipher.final()]);
+  return Buffer.concat([iv, encryptedData]);
+}
+
+function decryptFile(encryptedData) {
+  const algorithm = 'aes-256-cbc';
+  const key = '9f32d568b7be6c25698741d6e7c256f7'; // Replace with your encryption key
+  const iv = encryptedData.slice(0, 16);
+  const data = encryptedData.slice(16);
+  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+  // Update the decipher with the encrypted data
+  const decryptedData = Buffer.concat([decipher.update(data), decipher.final()]);
+  return decryptedData;
+}
+router.post("/uploadAndDecrypt", upload.single('file'), function (req, res, next) {
+  // Check if the request contains a file
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+  const fileData = req.file.buffer; // Access the uploaded file data from memory
+  const { companyId, companyName } = req.body;
+  const decryptedData = decryptFile(fileData); // Implement your decryption logic
+  const decryptedText = decryptedData.toString();
+  const extractedData = JSON.parse(decryptedText);
+  saveToDatabase(extractedData, companyId, companyName, res);
+});
+function saveToDatabase(extractedData, companyId, companyName, res) {
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Database connection error');
+    }
+    // Create Request object
+    var request = new sql.Request();
+    var queryText = `
+      BEGIN
+      DECLARE @variable nvarchar(4);
+      DECLARE @rid nvarchar(4);
+      SET @variable = (SELECT max(h_cd) + 1 from [dbo].[ADHTMLH]); 
+      SET @rid = 'R' + @variable;
+      INSERT INTO [dbo].[ADHTMLH]
+        ([RID]
+        ,[H_CCD]
+        ,[H_CD]
+        ,[H_DSC]
+        ,[H_RTextHTML]
+        ,[H_HTMLTEXT]
+        ,[H_CONO]
+        ,[H_IMAGE]
+        ,[H_NEW])
+    VALUES
+        (@rid
+        ,'001'
+        ,@variable
+        ,'${companyName}'  -- Modify this part based on your actual data structure
+        ,'${extractedData.HTML}'
+        ,'${extractedData.SigHTML}'
+        ,'${decrypt(companyId)}'
+        ,'${extractedData.ImageData}'
+        ,1);
+      END;`;
+    request.query(queryText, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send('Error saving data to the database');
+      }
+      res.send({ success: true, message: 'Data saved successfully' });
+    });
+  });
+}
 module.exports = router;

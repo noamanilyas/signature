@@ -61,9 +61,9 @@ const createSigForTemplate = async (sigData, imageData) => {
           signature.Id.startsWith("R") === true ? 'style="display:none;"' : ""
         }>Use Template</a>
   
-                          <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
+                           <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
           signature.Name
-        }.txt"  class="btn btn-warning export">Export</a> -->
+        }.txt"  class="btn btn-warning export">Export</a> 
                         </div>
                       </div>
                     </div>

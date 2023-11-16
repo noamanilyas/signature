@@ -135,9 +135,9 @@ const createSig = async (sigData, imageData) => {
                         )} class="btn btn-success addRules groupD" >Rules/Conditions</button>
                         <button id="delete-${signature.Id.replace(/ /g, "_")}" class="n-item btn btn-danger">Delete</button>
 
-                        <!-- <a href="data:text/plain;charset=UTF-8,${encodeURIComponent(signature.SigHTML)}" download="${
-          signature.Name
-        }.txt"  class="btn btn-warning export">Export</a> -->
+                        <button  onClick="saveSigfile('${signature.Id}')" class="btn btn-warning export" ${
+                          signature.rstart === false ? 'style="display:none;"' : ""}>Export</button>
+
                       </div>
                     </div>
                   </div>
@@ -177,3 +177,46 @@ const createSig = async (sigData, imageData) => {
 //       });
 //   });
 // };
+function saveSigfile(id) {
+  const url = `${SERVER_URL}/downloadencrypt?id=${id}`;
+  const today = new Date();
+  const formattedDate = `${today.getFullYear()}${today.getMonth() + 1}${today.getDate()}`;
+  const timestamp = `${today.getHours()}${today.getMinutes()}${today.getSeconds()}`;
+  const filename = `file-${formattedDate}-${timestamp}.GSign`;
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => {
+      if (response.ok) {
+        const contentDisposition = response.headers.get('content-disposition');
+        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        const fileName = fileNameMatch ? fileNameMatch[1] : filename;
+
+        // Create a Blob from the response data
+        return response.blob()
+          .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            // Create an anchor element to initiate the download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+            downloadLink.style.display = 'none';
+            // Append the link to the document and trigger a click event to initiate the download
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            // Clean up
+            document.body.removeChild(downloadLink);
+            window.URL.revokeObjectURL(url);
+          });
+      } else {
+        console.error('Request failed with status code: ' + response.status);
+        throw new Error('Request failed');
+      }
+    })
+    .catch(error => {
+      console.error('Request failed:', error);
+    });
+}
