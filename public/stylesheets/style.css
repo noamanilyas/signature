@@ -27,8 +27,8 @@
   border-style: solid;
   border-color: darkred;
 }
-p{
-  margin-bottom: 1px!important;
+p {
+  margin-bottom: 1px !important;
 }
 .data3 {
   border-width: 1px;
@@ -226,10 +226,6 @@ p{
   border-collapse: separate;
   border: 1px dashed blue;
 }
-
-.tableDrop {
-}
-
 /* Home.html */
 .sig-list {
   margin: 5%;
@@ -252,7 +248,6 @@ body {
 .n-item {
   margin-right: 1rem;
 }
-
 .submenu {
   background-color: #61a733;
   color: white;
