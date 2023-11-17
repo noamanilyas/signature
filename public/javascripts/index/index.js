@@ -106,3 +106,45 @@ function exportFile() {
     false
   );
 }
+
+document.getElementById("openPopupBtn").addEventListener("click", function () {
+  document.getElementById("uploadPopup").style.display = "block";
+  document.getElementById("overlay").classList.add("overlay-active");
+});
+
+document.getElementById("closePopupBtn").addEventListener("click", function () {
+  document.getElementById("uploadPopup").style.display = "none";
+  document.getElementById("overlay").classList.remove("overlay-active");
+});
+document.getElementById("fileUploadForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  document.getElementById("uploadPopup").style.display = "none";
+  document.getElementById("overlay").classList.remove("overlay-active");
+  const companyNameInput = document.getElementById("signatureName");
+  const signatureName = companyNameInput.value;
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+  if (file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("companyId", companyId);
+    formData.append("signatureName", signatureName);
+    try {
+      const response = await fetch(`${SERVER_URL}/uploadAndDecrypt`, {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const jsonData = await response.json();
+        console.log("decfile", jsonData);
+        if (jsonData.success) {
+          location.reload();
+        }
+      } else {
+        console.error("Upload and decryption failed.");
+      }
+    } catch (error) {
+      console.error("Request failed:", error);
+    }
+  }
+});

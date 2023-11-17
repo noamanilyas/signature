@@ -41,13 +41,13 @@ setTimeout(function () {
     sup: false,
     outdent: false,
     indent: false,
-    left: false,
-    center: false,
-    right: false,
+    left: true,
+    center: true,
+    right: true,
     strike: false,
     link: false,
     unlink: false,
-    remove: true,
+    remove: false,
     rule: false,
     source: false,
     placeholder: false,
@@ -432,3 +432,6 @@ function customFontEvents() {
     }
   }
 }
+document.getElementById("propTabs").addEventListener("click", function () {
+  edited = true; // Set the flag to true when there is an input change
+});
