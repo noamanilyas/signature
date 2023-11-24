@@ -574,7 +574,7 @@ router.get("/exportsignature", function (req, res, next) {
       };
       const objectString = JSON.stringify(signatureObject);
       const encryptedData = cryptoUtils.encryptFile(objectString);
-      res.setHeader("Content-Disposition", "attachment; filename=exportFile.GSign");
+      res.setHeader("Content-Disposition", `attachment; filename=${recordset.recordset[0].Name}.GSign`);
       res.setHeader("Content-Type", "application/octet-stream");
       res.send(encryptedData);
     });
