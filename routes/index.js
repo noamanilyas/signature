@@ -634,4 +634,84 @@ function saveToDatabase(extractedData, companyId, signatureName, res) {
     });
   });
 }
+
+router.get("/loginuser", (req, res) => {
+  sql.connect(config, function (err) {
+    var decryptId = cryptoUtils.decrypt(req.query.companyId);
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+    var request = new sql.Request();
+    var queryText = `SELECT * FROM ADCO WHERE C_CD = ${decryptId}`;
+    request.query(queryText, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Internal Server Error");
+      }
+      const userData = recordset.recordset[0];
+      const filteredUserData = {
+        First_Name: userData.C_FNAME,
+        Last_Name: userData.C_LNAME,
+        Name: userData.C_FNAME + " " + userData.C_LNAME,
+        Company: userData.C_NAME,
+        telephoneNumber: userData.C_TEL,
+        StreetAddress: userData.C_ADD1,
+        City: userData.C_TOWN,
+        State: userData.C_STATE,
+        PostalCode: userData.C_ZIP,
+        E_Mail: userData.C_USRCD,
+        Mobile_No: userData.C_MOBILEKEY,
+      };
+      res.json(filteredUserData);
+    });
+  });
+});
+
+router.get("/companyuser", (req, res) => {
+  const searchQuery = req.query.query;
+  if (!searchQuery) {
+    return res.status(400).send("Bad Request: Search query is missing");
+  }
+  sql.connect(config, function (err) {
+    var decryptId = cryptoUtils.decrypt(req.query.companyId);
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+    var request = new sql.Request();
+    var queryText = `SELECT U_EMAIL FROM ADUSR WHERE U_CONO = '${decryptId}' AND U_EMAIL LIKE @searchQuery`;
+    request.input("searchQuery", sql.NVarChar, `%${searchQuery}%`);
+    request.query(queryText, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Internal Server Error");
+      }
+      const emailAddresses = recordset.recordset.map((row) => row.U_EMAIL);
+      res.json(emailAddresses);
+    });
+  });
+});
+
+router.get("/companyuser/:email", (req, res) => {
+  const selectedEmail = req.params.email;
+  console.log(selectedEmail);
+  sql.connect(config, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+    var request = new sql.Request();
+    var queryText = `SELECT * FROM ADUSR WHERE U_EMAIL = '${selectedEmail}'`;
+    request.query(queryText, function (err, recordset) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Internal Server Error");
+      }
+      const userData = recordset.recordset[0];
+      res.json(userData);
+    });
+  });
+});
+
 module.exports = router;

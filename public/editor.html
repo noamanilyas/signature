@@ -55,37 +55,64 @@
   </head>
   <body>
     <!-- <center> -->
-    <nav class="navbar navbar-dark bg-dark nav-right">
-      <a class="navbar-brand" href="#">
-        <img src="/images/logo.png" height="45" alt="" />
-      </a>
-      <input
-        autocomplete="off"
-        class="form-control mr-sm-2 sig-name n-item"
-        type="text"
-        id="signatureName"
-        placeholder="Signature Name"
-        aria-label="name"
-      />
-      <button type="button" id="saveSignature" class="n-item btn btn-success">Save</button>
-      <button id="backIndexBtn" class="n-item btn btn-danger">Close</button>
-      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#previewModel" data-whatever="@mdo">
-        Preview
-      </button>
-    </nav>
-    <h1 align="center" class="title">Signature Designer</h1>
-    <div class="panel"></div>
-    <div class="centered">
-      <div style="display: table-row">
-        <div style="display: table-cell">
-          <div id="drop" class="drop"></div>
+    <div>
+      <nav class="navbar navbar-dark bg-dark nav-right">
+        <a class="navbar-brand" href="#">
+          <img src="/images/logo.png" height="45" alt="" />
+        </a>
+        <input
+          autocomplete="off"
+          class="form-control mr-sm-2 sig-name n-item"
+          type="text"
+          id="signatureName"
+          placeholder="Signature Name"
+          aria-label="name"
+        />
+        <button type="button" id="saveSignature" class="n-item btn btn-success">Save</button>
+        <button id="backIndexBtn" class="n-item btn btn-danger">Close</button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#previewModel" data-whatever="@mdo">
+          Preview
+        </button>
+        <div class="dropdown ml-auto" style="display: flex; align-items: center; width: 10%">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="searchDropdownButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            User Email
+          </button>
+          <div class="dropdown-menu" aria-labelledby="searchDropdownButton" style="width: -webkit-fill-available">
+            <input
+              autocomplete="off"
+              class="form-control mr-sm-2 n-item search-input"
+              type="text"
+              id="searchEmail"
+              placeholder="Search Email"
+              aria-label="search-email"
+            />
+            <div class="container mt-4" id="searchResults"></div>
+          </div>
+        </div>
+      </nav>
+      <div><h1 align="center" class="title">Signature Designer</h1></div>
+      <div class="flex-container">
+        <div class="panel"></div>
+        <div class="centered">
+          <div style="display: table-row">
+            <div style="display: table-cell">
+              <div id="drop" class="drop"></div>
+            </div>
+          </div>
+        </div>
+        <div class="panelPreviewdiv">
+          <div class="panelPreview"><div id="previewdrag"></div></div>
         </div>
       </div>
+      <div class="delDrop"><h4 align="center" class="title">Delete Item</h4></div>
     </div>
-
-    <div class="panelPreview"><div id="previewdrag"></div></div>
-    <div class="delDrop"><h4 align="center" class="title">Delete Item</h4></div>
-
     <div class="modal" id="propertiesModel" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

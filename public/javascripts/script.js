@@ -238,7 +238,13 @@ $(document).ready(function () {
     }
 
     setTimeout(function () {
-      converToTableFunc();
+      $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
+        userData = data;
+        converToTableFunc();
+      }).fail(function (error) {
+        console.error("Error:", error);
+        converToTableFunc();
+      });
       Swal.close();
     }, 1500);
 
