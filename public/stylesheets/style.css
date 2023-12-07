@@ -348,7 +348,7 @@ span.jqte-test {
 }
 
 .dropdown .btn {
-  width: 100%;
+  width: fit-content;
 }
 
 .dropdown-menu {

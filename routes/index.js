@@ -497,16 +497,6 @@ router.get("/getSignatureById", function (req, res, next) {
       H_IMAGE AS ImageData
       FROM ADHTMLH
       WHERE RID = '${decryptId}';`;
-
-    // var queryText =
-    //   `SELECT [Id]
-    //         ,[HTML]
-    //         ,[SigHTML]
-    //         ,[Name]
-    //         ,[ImageData]
-    //     FROM [dbo].[signatures] WHERE [dbo].[signatures].[Id] = ` + req.query.id;
-
-    // query to the database and get the records
     request.query(queryText, function (err, recordset) {
       if (err) console.log(err);
 
@@ -695,7 +685,6 @@ router.get("/companyuser", (req, res) => {
 
 router.get("/companyuser/:email", (req, res) => {
   const selectedEmail = req.params.email;
-  console.log(selectedEmail);
   sql.connect(config, function (err) {
     if (err) {
       console.log(err);

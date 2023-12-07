@@ -47,6 +47,7 @@ async function converToTableFunc() {
   // }
   // });
   if (userData) {
+    document.getElementById("searchDropdownButton").innerText = userData.E_Mail || data.U_EMAIL;
     applyRegexReplacementToTable($(".panelPreview .mainTable"), userData);
   }
 }
