@@ -243,17 +243,35 @@ p {
 .card-img-main {
   margin: 2%;
 }
-.nav-right {
+/* .nav-right {
   justify-content: start !important;
-}
+} */
 body {
   background-color: #61a733;
 }
 .editor-btn {
   float: right;
 }
-.n-item {
+/* .n-item {
   margin-right: 1rem;
+} */
+
+#arrowIcon {
+  cursor: pointer;
+  position: absolute;
+  bottom: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #fff;
+  padding: 5px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  color: green;
+  height: 14%;
+  display: flex;
+  align-items: center;
+  width: 17px;
+  z-index: 50;
 }
 .submenu {
   background-color: #61a733;
@@ -352,8 +370,9 @@ span.jqte-test {
 }
 
 .dropdown-menu {
-  width: 280% !important;
-  left: -360px !important;
+  width: 198% !important;
+  left: -225px !important;
+  text-align: -webkit-center;
 }
 
 .flex-container {

@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="stylesheet" href="./libs/jquery-te-1.4.0.css" />
     <script type="text/javascript" src="./libs/jquery-te-1.4.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -86,6 +87,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="searchDropdownButton" style="width: -webkit-fill-available">
             <input
+              style="width: 95% !important"
               autocomplete="off"
               class="form-control mr-sm-2 n-item search-input"
               type="text"
@@ -108,7 +110,12 @@
           </div>
         </div>
         <div class="panelPreviewdiv">
-          <div class="panelPreview"><div id="previewdrag"></div></div>
+          <div class="arrow-icon" id="arrowIcon">
+            <i class="fas fa-chevron-left"></i>
+          </div>
+          <div class="panelPreview">
+            <div id="previewdrag"></div>
+          </div>
         </div>
       </div>
       <div class="delDrop"><h4 align="center" class="title">Delete Item</h4></div>
