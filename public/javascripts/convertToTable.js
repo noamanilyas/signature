@@ -46,6 +46,57 @@ async function converToTableFunc() {
   // }, 100);
   // }
   // });
+  if (userData) {
+    document.getElementById("searchDropdownButton").innerText = userData.E_Mail || data.U_EMAIL;
+    applyRegexReplacementToTable($(".panelPreview .mainTable"), userData);
+  }
+}
+function applyRegexReplacementToTable(table, data) {
+  table.html(
+    table
+      .html()
+      .replace(
+        /\{Display Name\}|\{First Name\}|\{Last Name\}|\{StreetAddress\}|\{PostalCode\}|\{Mobile No\.\}|\{Telephone Number\}|\{E-Mail\}|\{Web Page\}|\{FAX\}|\{Title\}|\{Company\}|\{Department\}|\{City\}|\{Country\}|\{State\}/g,
+        function (match) {
+          switch (match) {
+            case "{Display Name}":
+              return data.Name || data.U_CD || match;
+            case "{First Name}":
+              return data.First_Name || match;
+            case "{Last Name}":
+              return data.Last_Name || match;
+            case "{StreetAddress}":
+              return data.StreetAddress || match;
+            case "{PostalCode}":
+              return data.PostalCode || match;
+            case "{Mobile No.}":
+              return data.Mobile_No || match;
+            case "{Telephone Number}":
+              return data.telephoneNumber || match;
+            case "{E-Mail}":
+              return data.E_Mail || data.U_EMAIL || match;
+            case "{Web Page}":
+              return data.WebPage || match;
+            case "{FAX}":
+              return data.FAX || match;
+            case "{Title}":
+              return data.Title || match;
+            case "{Company}":
+              return data.Company || data.U_CONO || match;
+            case "{Department}":
+              return data.Department || match;
+            case "{City}":
+              return data.City || match;
+            case "{Country}":
+              return data.Country || match;
+            case "{State}":
+              return data.State || match;
+            default:
+              return match;
+          }
+        }
+      )
+  );
 }
 
 function getSubItemsForTableItem(item) {
@@ -201,6 +252,11 @@ function getSubItemsForgroup2(item) {
       const thisItem = groupChildren.eq(index);
       // $.each(group, async function (index, value) {
       let td = $("<td>");
+      // if (thisItem.hasClass("tableItem")) {
+      //   console.log("Table found in group 2", thisItem.attr("id"));
+      //   let table = await getSubItemsForTableItem(thisItem);
+      //   td.append(table);
+      // } else
       if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
@@ -399,3 +455,49 @@ function getAttributes($node) {
 
   return attrs;
 }
+
+$("#searchEmail").on("input", function () {
+  let url_string = window.location.href;
+  var url = new URL(url_string);
+  var companyId = url.searchParams.get("companyId");
+  var query = $(this).val();
+  $("#searchResults").empty();
+  $.ajax({
+    url: `${SERVER_URL}/companyuser`,
+    type: "GET",
+    data: { query, companyId },
+    success: function (data) {
+      displaySearchResults(data);
+    },
+    error: function (error) {
+      console.error("Error fetching search results:", error);
+    },
+  });
+});
+
+function displaySearchResults(results) {
+  if (results.length > 0) {
+    var resultHtml = "<ul>";
+    results.forEach(function (email) {
+      resultHtml += "<li>" + email + "</li>";
+    });
+    resultHtml += "</ul>";
+    $("#searchResults").html(resultHtml);
+  } else {
+    $("#searchResults").html("<p>No results found.</p>");
+  }
+}
+$("#searchResults").on("click", "li", function () {
+  var selectedEmail = $(this).text();
+  $.ajax({
+    url: `${SERVER_URL}/companyuser/${selectedEmail}`,
+    type: "GET",
+    success: function (data) {
+      userData = data;
+      converToTableFunc();
+    },
+    error: function (error) {
+      console.error("Error fetching user information:", error);
+    },
+  });
+});

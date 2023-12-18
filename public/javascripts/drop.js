@@ -1,4 +1,5 @@
 let edited = false;
+var userData = false;
 function addDropEvent(el, greedy) {
   el.removeClass("ui-droppable");
   // console.log(el.closest("drag"));

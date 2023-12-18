@@ -42,7 +42,6 @@ $(document).ready(function () {
       },
     });
     const content = await rawResponse.json();
-    console.log(content);
     const signatureData = content.recordsets[0];
     const imageData = content.recordsets[1];
 

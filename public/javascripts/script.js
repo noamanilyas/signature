@@ -238,7 +238,13 @@ $(document).ready(function () {
     }
 
     setTimeout(function () {
-      converToTableFunc();
+      $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
+        userData = data;
+        converToTableFunc();
+      }).fail(function (error) {
+        console.error("Error:", error);
+        converToTableFunc();
+      });
       Swal.close();
     }, 1500);
 
@@ -749,4 +755,17 @@ $(document).ready(function () {
       childLeft.remove();
     }
   }
+  $("#arrowIcon").click(function () {
+    $(".panelPreview").toggleClass("expanded");
+    let paneldiv = document.querySelector(".panelPreview.expanded");
+    let paneldiv1 = document.querySelector(".panelPreview");
+
+    if (paneldiv) {
+      paneldiv.style.width = "fit-content";
+      $("#arrowIcon i").css("transform", "rotate(180deg)");
+    } else {
+      paneldiv1.style.width = "350px";
+      $("#arrowIcon i").css("transform", "rotate(0deg)");
+    }
+  });
 });

@@ -70,7 +70,6 @@ const createSig = async (sigData, imageData) => {
     const gsData = await replaceImagePaths(sigData, imageData);
     const html = gsData.html;
     const signature = sigData;
-    console.log("Name", signature.Name);
 
     let imgData = "";
     $("#ssDiv").html("");
@@ -193,7 +192,7 @@ function exportSignature(id) {
     .then((response) => {
       if (response.ok) {
         const contentDisposition = response.headers.get("content-disposition");
-        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        const fileNameMatch = contentDisposition.match(/filename=["']?([^"']+)["']?/);
         const fileName = fileNameMatch ? fileNameMatch[1] : filename;
 
         // Create a Blob from the response data
