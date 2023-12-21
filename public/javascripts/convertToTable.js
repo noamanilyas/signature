@@ -47,7 +47,6 @@ async function converToTableFunc() {
   // }
   // });
   if (userData) {
-    document.getElementById("searchDropdownButton").innerText = userData.E_Mail || userData.U_EMAIL;
     applyRegexReplacementToTable($(".panelPreview .mainTable"), userData);
   }
 }
@@ -457,6 +456,7 @@ function getAttributes($node) {
 }
 
 $("#searchEmail").on("input", function () {
+  $("#searchResults").show();
   let url_string = window.location.href;
   var url = new URL(url_string);
   var companyId = url.searchParams.get("companyId");
@@ -477,7 +477,7 @@ $("#searchEmail").on("input", function () {
 
 function displaySearchResults(results) {
   if (results.length > 0) {
-    var resultHtml = "<ul>";
+    var resultHtml = '<ul style="background: #61a733; color: white;">';
     results.forEach(function (email) {
       resultHtml += "<li>" + email + "</li>";
     });
@@ -487,8 +487,12 @@ function displaySearchResults(results) {
     $("#searchResults").html("<p>No results found.</p>");
   }
 }
+
 $("#searchResults").on("click", "li", function () {
   var selectedEmail = $(this).text();
+  $("#searchEmail").val("");
+  $("#searchEmail").prop("placeholder", selectedEmail);
+  $("#searchResults").hide();
   $.ajax({
     url: `${SERVER_URL}/companyuser/${selectedEmail}`,
     type: "GET",

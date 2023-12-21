@@ -192,3 +192,7 @@ button:hover {
 .overlay-active {
   display: block;
 }
+
+.emailinput {
+  margin-bottom: 1rem;
+}

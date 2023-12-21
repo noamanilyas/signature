@@ -119,6 +119,7 @@ p {
   position: absolute;
   right: 0;
   width: 350px;
+  max-width: 80vw;
   max-height: fit-content;
   min-height: 475px;
   min-width: 5%;
@@ -342,14 +343,14 @@ span.jqte-test {
 }
 
 #searchResults ul li {
-  padding: 2%;
+  padding: 5px;
   list-style: none;
   cursor: pointer;
   border-radius: 5px;
 }
 
 #searchResults ul li:hover {
-  background-color: #61a733;
+  background-color: #f443369c;
   color: white;
 }
 

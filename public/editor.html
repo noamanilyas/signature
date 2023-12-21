@@ -75,28 +75,7 @@
           Preview
         </button>
         <div class="dropdown ml-auto" style="display: flex; align-items: center; width: fit-content">
-          <button
-            class="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="searchDropdownButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            User Email
-          </button>
-          <div class="dropdown-menu" aria-labelledby="searchDropdownButton" style="width: -webkit-fill-available">
-            <input
-              style="width: 95% !important"
-              autocomplete="off"
-              class="form-control mr-sm-2 n-item search-input"
-              type="text"
-              id="searchEmail"
-              placeholder="Search Email"
-              aria-label="search-email"
-            />
-            <div class="container mt-4" id="searchResults"></div>
-          </div>
+          <button class="btn btn-secondary" type="button" id="searchDropdownButton">User Email</button>
         </div>
       </nav>
       <div><h1 align="center" class="title">Signature Designer</h1></div>
@@ -114,6 +93,17 @@
             <i class="fas fa-chevron-left"></i>
           </div>
           <div class="panelPreview">
+            <div aria-labelledby="searchDropdownButton">
+              <input
+                type="text"
+                autocomplete="off"
+                class="emailinput form-control mr-sm-2 n-item search-input"
+                id="searchEmail"
+                placeholder="Search Email"
+                aria-label="search-email"
+              />
+              <div class="container mt-4" id="searchResults" style="position: absolute; margin-top: 0rem !important"></div>
+            </div>
             <div id="previewdrag"></div>
           </div>
         </div>
