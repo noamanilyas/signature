@@ -478,7 +478,8 @@ $("#searchEmail").on("input", function () {
 function displaySearchResults(results) {
   if (results.length > 0) {
     var resultHtml = '<ul style="background: #61a733; color: white;">';
-    results.forEach(function (email) {
+    var displayedResults = results.slice(0, 5);
+    displayedResults.forEach(function (email) {
       resultHtml += "<li>" + email + "</li>";
     });
     resultHtml += "</ul>";
