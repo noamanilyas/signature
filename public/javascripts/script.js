@@ -236,9 +236,9 @@ $(document).ready(function () {
     } else {
       $("#drop").append($('<div id="customeFontDiv" style="display: none"></div>'));
     }
-
-    setTimeout(function () {
+    function getloginuser() {
       $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
+        $("#searchEmail").prop("placeholder", data.E_Mail);
         userData = data;
         document.getElementById("searchDropdownButton").innerText = userData.E_Mail || userData.U_EMAIL;
         converToTableFunc();
@@ -247,7 +247,11 @@ $(document).ready(function () {
         converToTableFunc();
       });
       Swal.close();
-    }, 1500);
+    }
+    setTimeout(getloginuser, 500);
+    $("#searchDropdownButton").on("click", function () {
+      getloginuser();
+    });
 
     // warn before closing if any inputs are modified
     addEventListener("beforeunload", (evt) => {

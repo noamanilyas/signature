@@ -59,39 +59,39 @@ function applyRegexReplacementToTable(table, data) {
         function (match) {
           switch (match) {
             case "{Display Name}":
-              return data.Name || data.U_CD || match;
+              return data.Name || data.U_CD || " ";
             case "{First Name}":
-              return data.First_Name || match;
+              return data.First_Name || " ";
             case "{Last Name}":
-              return data.Last_Name || match;
+              return data.Last_Name || " ";
             case "{StreetAddress}":
-              return data.StreetAddress || match;
+              return data.StreetAddress || " ";
             case "{PostalCode}":
-              return data.PostalCode || match;
+              return data.PostalCode || " ";
             case "{Mobile No.}":
-              return data.Mobile_No || match;
+              return data.Mobile_No || " ";
             case "{Telephone Number}":
-              return data.telephoneNumber || match;
+              return data.telephoneNumber || " ";
             case "{E-Mail}":
-              return data.E_Mail || data.U_EMAIL || match;
+              return data.E_Mail || data.U_EMAIL || " ";
             case "{Web Page}":
-              return data.WebPage || match;
+              return data.WebPage || " ";
             case "{FAX}":
-              return data.FAX || match;
+              return data.FAX || " ";
             case "{Title}":
-              return data.Title || match;
+              return data.Title || " ";
             case "{Company}":
-              return data.Company || data.U_CONO || match;
+              return data.Company || data.U_CONO || " ";
             case "{Department}":
-              return data.Department || match;
+              return data.Department || " ";
             case "{City}":
-              return data.City || match;
+              return data.City || " ";
             case "{Country}":
-              return data.Country || match;
+              return data.Country || " ";
             case "{State}":
-              return data.State || match;
+              return data.State || " ";
             default:
-              return match;
+              return " ";
           }
         }
       )
@@ -326,7 +326,6 @@ function getSubItemsForgroup3(item) {
         td.append(dataItem);
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
-        console.log(table);
         applyCSS(td, thisItem.find(".data2:first"), ["align"]);
         td.append(table);
       } else if (thisItem.hasClass("group3")) {
@@ -477,7 +476,7 @@ $("#searchEmail").on("input", function () {
 
 function displaySearchResults(results) {
   if (results.length > 0) {
-    var resultHtml = '<ul style="background: #61a733; color: white;">';
+    var resultHtml = '<ul style="background: #61a733; color: white;border-radius: 5px;">';
     var displayedResults = results.slice(0, 5);
     displayedResults.forEach(function (email) {
       resultHtml += "<li>" + email + "</li>";
@@ -485,7 +484,7 @@ function displaySearchResults(results) {
     resultHtml += "</ul>";
     $("#searchResults").html(resultHtml);
   } else {
-    $("#searchResults").html("<p>No results found.</p>");
+    $("#searchResults").html("<p style='background: #61a733; color: white;border-radius: 5px;'>No results found.</p>");
   }
 }
 
@@ -505,4 +504,11 @@ $("#searchResults").on("click", "li", function () {
       console.error("Error fetching user information:", error);
     },
   });
+});
+
+$(document).on("click", function (event) {
+  const dropdown = $(".mt-4");
+  if (!dropdown.is(event.target) && dropdown.has(event.target).length === 0) {
+    $("#searchResults").hide();
+  }
 });
