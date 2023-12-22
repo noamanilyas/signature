@@ -240,6 +240,7 @@ $(document).ready(function () {
     setTimeout(function () {
       $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
         userData = data;
+        document.getElementById("searchDropdownButton").innerText = userData.E_Mail || userData.U_EMAIL;
         converToTableFunc();
       }).fail(function (error) {
         console.error("Error:", error);
