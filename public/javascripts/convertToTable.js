@@ -61,19 +61,19 @@ function applyRegexReplacementToTable(table, data) {
             case "{Display Name}":
               return data.Name || data.U_CD || " ";
             case "{First Name}":
-              return data.First_Name || " ";
+              return data.First_Name || C_FNAME || " ";
             case "{Last Name}":
-              return data.Last_Name || " ";
+              return data.Last_Name || C_LNAME || " ";
             case "{StreetAddress}":
-              return data.StreetAddress || " ";
+              return data.StreetAddress || C_ADD1 || " ";
             case "{PostalCode}":
-              return data.PostalCode || " ";
+              return data.PostalCode || C_ZIP || " ";
             case "{Mobile No.}":
               return data.Mobile_No || " ";
             case "{Telephone Number}":
-              return data.telephoneNumber || " ";
+              return data.telephoneNumber || C_TEL || " ";
             case "{E-Mail}":
-              return data.E_Mail || data.U_EMAIL || " ";
+              return data.E_Mail || data.U_EMAIL || C_USRCD || " ";
             case "{Web Page}":
               return data.WebPage || " ";
             case "{FAX}":
@@ -81,15 +81,15 @@ function applyRegexReplacementToTable(table, data) {
             case "{Title}":
               return data.Title || " ";
             case "{Company}":
-              return data.Company || data.U_CONO || " ";
+              return data.Company || data.U_CONO || C_NAME || " ";
             case "{Department}":
               return data.Department || " ";
             case "{City}":
               return data.City || " ";
             case "{Country}":
-              return data.Country || " ";
+              return data.Country || C_STATE || " ";
             case "{State}":
-              return data.State || " ";
+              return data.State || C_TOWN || " ";
             default:
               return " ";
           }
