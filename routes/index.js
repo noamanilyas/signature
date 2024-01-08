@@ -691,13 +691,21 @@ router.get("/companyuser/:email", (req, res) => {
       return res.status(500).send("Internal Server Error");
     }
     var request = new sql.Request();
-    var queryText = `SELECT * FROM ADUSR WHERE U_EMAIL = '${selectedEmail}'`;
+    var queryText = `SELECT  D_KEY = ISNULL( K_ALIAS,  D_KEY ) , D_VAL FROM ADPATH
+    LEFT JOIN ADDET ON D_PCD = P_CD
+    LEFT JOIN ADKEY ON  K_NO = D_KNO
+     WHERE P_DSC = '${selectedEmail}'`;
     request.query(queryText, function (err, recordset) {
       if (err) {
         console.log(err);
         return res.status(500).send("Internal Server Error");
       }
-      const userData = recordset.recordset[0];
+      const userData1 = recordset.recordset;
+      const userData = userData1.reduce((acc, { D_KEY, D_VAL }) => {
+        const formattedKey = D_KEY.replace(/ /g, "_");
+        acc[formattedKey] = D_VAL;
+        return acc;
+      }, {});
       res.json(userData);
     });
   });
