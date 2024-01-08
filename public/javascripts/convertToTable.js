@@ -61,19 +61,19 @@ function applyRegexReplacementToTable(table, data) {
             case "{Display Name}":
               return data.Name || data.U_CD || " ";
             case "{First Name}":
-              return data.First_Name || C_FNAME || " ";
+              return data.First_Name || data.C_FNAME || " ";
             case "{Last Name}":
-              return data.Last_Name || C_LNAME || " ";
+              return data.Last_Name || data.C_LNAME || " ";
             case "{StreetAddress}":
-              return data.StreetAddress || C_ADD1 || " ";
+              return data.StreetAddress || data.C_ADD1 || " ";
             case "{PostalCode}":
-              return data.PostalCode || C_ZIP || " ";
+              return data.PostalCode || data.C_ZIP || " ";
             case "{Mobile No.}":
               return data.Mobile_No || " ";
             case "{Telephone Number}":
-              return data.telephoneNumber || C_TEL || " ";
+              return data.telephoneNumber || data.C_TEL || " ";
             case "{E-Mail}":
-              return data.E_Mail || data.U_EMAIL || C_USRCD || " ";
+              return data.E_Mail || data.U_EMAIL || data.C_USRCD || " ";
             case "{Web Page}":
               return data.WebPage || " ";
             case "{FAX}":
@@ -81,15 +81,15 @@ function applyRegexReplacementToTable(table, data) {
             case "{Title}":
               return data.Title || " ";
             case "{Company}":
-              return data.Company || data.U_CONO || C_NAME || " ";
+              return data.Company || data.U_CONO || data.C_NAME || " ";
             case "{Department}":
               return data.Department || " ";
             case "{City}":
               return data.City || " ";
             case "{Country}":
-              return data.Country || C_STATE || " ";
+              return data.Country || data.C_STATE || " ";
             case "{State}":
-              return data.State || C_TOWN || " ";
+              return data.State || data.C_TOWN || " ";
             default:
               return " ";
           }
