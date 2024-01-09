@@ -702,7 +702,7 @@ router.get("/companyuser/:email", (req, res) => {
       }
       const userData1 = recordset.recordset;
       const userData = userData1.reduce((acc, { D_KEY, D_VAL }) => {
-        const formattedKey = D_KEY.replace(/ /g, "_");
+        const formattedKey = D_KEY.replace(/ /g, "_").replace(/-/g, "_").replace(/\./g, "");
         acc[formattedKey] = D_VAL;
         return acc;
       }, {});

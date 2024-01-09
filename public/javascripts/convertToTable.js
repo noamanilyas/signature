@@ -71,7 +71,7 @@ function applyRegexReplacementToTable(table, data) {
             case "{Mobile No.}":
               return data.Mobile_No || " ";
             case "{Telephone Number}":
-              return data.telephoneNumber || data.C_TEL || " ";
+              return data.telephoneNumber || data.C_TEL || data.Telephone_Number || " ";
             case "{E-Mail}":
               return data.E_Mail || data.U_EMAIL || data.C_USRCD || " ";
             case "{Web Page}":
