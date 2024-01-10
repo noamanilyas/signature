@@ -533,6 +533,7 @@ $(document).ready(function () {
 
   // Save signature
   $("#saveSignature").click(function (e) {
+    applyRegexReplacementToTable($(".panelPreview2 > table.mainTable"), userData);
     $("#previewModel").modal("show");
     let name = $("#signatureName").val();
     console.log("name1", name.length);
@@ -588,7 +589,7 @@ $(document).ready(function () {
       (async () => {
         // // Append the custom fonts
         // $("#drop").append($("#customeFontDiv"));
-
+        applyRegexReplacementToTable($(".panelPreview2 > table.mainTable"), userData);
         let canvas,
           signatureHTML = $(".panelPreview2").html(),
           html = $("#drop").html(),

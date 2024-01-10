@@ -71,7 +71,14 @@
         />
         <button type="button" id="saveSignature" class="n-item btn btn-success">Save</button>
         <button id="backIndexBtn" class="n-item btn btn-danger">Close</button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#previewModel" data-whatever="@mdo">
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#previewModel"
+          data-whatever="@mdo"
+          onclick="applyRegexReplacementToTable($('.panelPreview2 > table.mainTable'), userData);"
+        >
           Preview
         </button>
         <div class="dropdown ml-auto" style="display: flex; align-items: center; width: fit-content">
