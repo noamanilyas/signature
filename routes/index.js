@@ -34,8 +34,6 @@ router.post("/saveHTML", function (req, res, next) {
   form
     .parse(req)
     .on("field", function (name, field) {
-      // console.log("Got a field:", field);
-      console.log("Got a field name:", name);
       dbData[name] = field;
     })
     .on("error", function (err) {
@@ -74,62 +72,12 @@ router.post("/saveHTML", function (req, res, next) {
           ,'${dbData.imgData}'
           ,1);
           END;`;
-
-        // console.log(queryText);
-        // query to the database and get the records
         request.query(queryText, function (err, recordset) {
           if (err) console.log(err);
-
-          // send records as a response
           res.send(recordset);
         });
       });
     });
-  // connect to your database
-  //   sql.connect(config, function (err) {
-  //     if (err) console.log(err);
-
-  //     // create Request object
-  //     var request = new sql.Request();
-
-  //     var queryText = `INSERT INTO [dbo].[ADHTMLH]
-  //     ([RID]
-  //     ,[H_CCD]
-  //     ,[H_CD]
-  //     ,[H_DSC]
-  //     ,[H_RTextHTML]
-  //     ,[H_HTMLTEXT]
-  //     ,[H_CONO]
-  //     ,[H_IMAGE])
-  // VALUES
-  //     ('939   ${Math.floor(Math.random() * 10000000000)}'
-  //     ,'939'
-  //     ,'939'
-  //     ,'${req.body.name}'
-  //     ,'${req.body.signatureHTML}'
-  //     ,'${req.body.html}'
-  //     ,'${req.body.compNo}'
-  //     ,'${req.body.imgData}')`;
-
-  //     // var queryText = `INSERT INTO [dbo].[signatures]
-  //     //          ([HTML]
-  //     //          ,[SigHTML]
-  //     //          ,[Name]
-  //     //          ,[ImageData])
-  //     //    VALUES
-  //     //          ('${req.body.html}'
-  //     //          , '${req.body.signatureHTML}'
-  //     //          , '${req.body.name}'
-  //     //          , '${req.body.imgData}')`;
-
-  //     // query to the database and get the records
-  //     request.query(queryText, function (err, recordset) {
-  //       if (err) console.log(err);
-
-  //       // send records as a response
-  //       res.send(recordset);
-  //     });
-  //   });
 });
 
 router.post("/deleteSignature", function (req, res, next) {
@@ -138,18 +86,11 @@ router.post("/deleteSignature", function (req, res, next) {
 
     // create Request object
     var request = new sql.Request();
-
-    /* var queryText = `
-        EXEC USP_DELETE_ADHTMLH '${req.body.rid.replace(/_/g, " ")}';
-        DELETE FROM [dbo].[ADHTMLU] WHERE PRID = '${req.body.rid.replace(/_/g, " ")}';
-        DELETE FROM [dbo].[ADHTMLH] WHERE RID = '${req.body.rid.replace(/_/g, " ")}';
-        EXEC USP_DELETE_ADEMAILSIGN '${req.body.rid.replace(/_/g, " ")}';`; */
     let rid = cryptoUtils.decrypt(req.body.rid.replace(/_/g, ""));
 
     var queryText = `
         EXEC USP_DELETE_ADHTMLH '${rid}'`;
 
-    // console.log(queryText);
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
       if (err) console.log(err);
@@ -166,8 +107,6 @@ router.post("/updateHTML", function (req, res, next) {
   form
     .parse(req)
     .on("field", function (name, field) {
-      // console.log("Got a field:", field);
-      console.log("Got a field name:", name);
       dbData[name] = field;
     })
     .on("error", function (err) {
@@ -197,9 +136,6 @@ router.post("/updateHTML", function (req, res, next) {
         });
       });
     });
-
-  // console.log(req.body);
-  // // connect to your database
 });
 
 router.get("/getSignatures", function (req, res, next) {
@@ -209,14 +145,6 @@ router.get("/getSignatures", function (req, res, next) {
 
     // create Request object
     var request = new sql.Request();
-
-    // var queryText = `SELECT [Id]
-    //         ,[HTML]
-    //         ,[SigHTML]
-    //         ,[Name] as
-    //         ,[ImageData]
-    //     FROM [dbo].[signatures]
-    //     ORDER BY SigOrder`;
 
     var queryText = `SELECT
       RID AS Id,
@@ -233,10 +161,6 @@ router.get("/getSignatures", function (req, res, next) {
         DISTINCT I_NAME AS ImgPath, I_STR AS ImgBase64  FROM ADHTMLIMG  
         INNER JOIN ADHTMLH ON ADHTMLH.RID = ADHTMLIMG.PRID
         WHERE H_CONO = '${decryptId}';`;
-
-    // select * from ADHTMLIMG  where prid = '583           75'
-    // log form raju 21/02/2022
-    // console.log(queryText);
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
@@ -340,33 +264,6 @@ router.get("/getCurrentSigRulesConditions", function (req, res, next) {
 
     // console.log("rid", req.query);
     let rid = cryptoUtils.decrypt(req.query.prid);
-
-    // const resp = {
-    //   applySig: false,
-    //   addSig_Status: true,
-    //   addSig_Text: "Text",
-    //   addSig_RMText: true,
-    //   DA_Status: true,
-    //   DA_Text: "Subjec text",
-    //   DA_Anywhere: false,
-    //   DA_RecentEmail: true,
-    //   DA_ProcessNext: true,
-    //   DA_DontProcessNext: false,
-    //   SigAdded_ProcessNext: true,
-    //   SigAdded_DontProcessNext: false,
-    // };
-
-    //     H_INACTIVE
-    // ALTER TABLE ADHTMLH  ADD H_OADDSUB BIT
-    // ALTER TABLE ADHTMLH  ADD H_OADDSUBTEXT NVARCHAR(100)
-    // ALTER TABLE ADHTMLH  ADD H_OADDSUBREM BIT
-    // ALTER TABLE ADHTMLH  ADD H_DADDMSG BIT
-    // ALTER TABLE ADHTMLH  ADD H_DADDMSGTEXT NVARCHAR(100)
-    // ALTER TABLE ADHTMLH  ADD H_DADDANY BIT
-    // ALTER TABLE ADHTMLH  ADD H_DADDPNEXT BIT
-    // ALTER TABLE ADHTMLH  ADD H_ADDPNEXT BIT
-
-    // CASE WHEN EntityProfile IS NULL THEN 'False' ELSE 'True' END
     var queryText = `SELECT 
       H_INACTIVE AS applySig,
       CASE WHEN H_OADDSUB IS NULL OR H_OADDSUB = 0 THEN CAST(0 as bit) ELSE CAST(1 as bit) END AS addSig_Status,
@@ -461,15 +358,6 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
               ,'${item.ugrp}')`;
            })};
     EXEC USP_INSERT_ADHTMLC '${req.body.prid.replace(/_/g, " ")}';`;
-
-    // (<PRID, varchar(16),>
-    // ,<U_CD, nvarchar(200),>
-    // ,<U_RTYPE, varchar(2),>
-    // ,<U_EMAIL, varchar(100),>
-    // ,<U_TYPE, varchar(1),>
-    // ,<U_GRP, varchar(1),>)
-
-    console.log(queryText);
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
