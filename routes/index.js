@@ -302,7 +302,7 @@ router.post("/updateSigRulesConditions", function (req, res, next) {
     var request = new sql.Request();
 
     const body = req.body;
-    let rid = body.prid.replace(/_/g, " ");
+    let rid = cryptoUtils.decrypt(body.prid);
 
     var queryText = `UPDATE ADHTMLH
       SET H_INACTIVE = ${body.applySig ? 1 : 0},
@@ -330,16 +330,15 @@ router.post("/updateSigRulesConditions", function (req, res, next) {
 });
 
 router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
-  console.log("Body", req.body);
+  let rid = cryptoUtils.decrypt(req.body.prid);
   // connect to your database
   sql.connect(config, function (err) {
     if (err) console.log(err);
 
     // create Request object
     var request = new sql.Request();
-
     var queryText = `
-    DELETE FROM ADHTMLU WHERE PRID = '${req.body.prid.replace(/_/g, " ")}';`;
+    DELETE FROM ADHTMLU WHERE PRID = '${rid}';`;
     if (req.body.items.length)
       queryText += `INSERT INTO [dbo].[ADHTMLU]
            ([PRID]
@@ -350,14 +349,14 @@ router.post("/updateCurrentSignatureUsrGrp", function (req, res, next) {
            ,[U_GRP])
      VALUES
            ${req.body.items.map((item) => {
-             return `('${req.body.prid.replace(/_/g, " ")}'
+             return `('${rid}'
               ,'${item.ucd}'
               ,'${item.utype + item.ugrp}'
               ,'${item.uemail}'
               ,'${item.utype}'
               ,'${item.ugrp}')`;
            })};
-    EXEC USP_INSERT_ADHTMLC '${req.body.prid.replace(/_/g, " ")}';`;
+    EXEC USP_INSERT_ADHTMLC '${rid}';`;
 
     // query to the database and get the records
     request.query(queryText, function (err, recordset) {
