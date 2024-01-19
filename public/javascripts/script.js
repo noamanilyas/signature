@@ -684,7 +684,14 @@ $(document).ready(function () {
       tolerance: "pointer",
       drop: function (event, ui) {
         edited = true;
-        // let canvas = $(this);
+        if (ui.draggable.closest(".tableDrop").length > 0) {
+          ui.draggable.parent().droppable({
+            classes: {
+              "ui-droppable-hover": "ui-mouse-enter",
+            },
+          });
+          ui.draggable.parent().html(" &nbsp; ");
+        }
 
         const item = ui.draggable;
 
@@ -692,9 +699,6 @@ $(document).ready(function () {
       },
     });
     $("#drop").droppable({
-      // accept: function (item) {
-      // 	return $(this).data('color') == item.data('color');
-      // },
       classes: {
         "ui-droppable-hover": "ui-state-hover",
       },
@@ -714,7 +718,6 @@ $(document).ready(function () {
 
           $canvas.append(draggedItem);
           // $canvas.droppable("disable");
-          $("#drop").droppable("destroy");
           // $canvas.droppable("option", "disabled", true);
           // $canvas.css({ "min-width": "0px" });
           $canvasElement.css({
@@ -725,6 +728,10 @@ $(document).ready(function () {
               $canvas.animate(pos, 200, "linear");
             },
           });
+          converToTableFunc();
+        } else {
+          // Handle deletion of element inside #drop
+          removeAnyElement(ui.draggable);
           converToTableFunc();
         }
       },

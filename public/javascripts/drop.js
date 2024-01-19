@@ -259,7 +259,7 @@ function addDropEvent(el, greedy) {
         console.log($canvas);
         $canvas.html("");
         $canvas.append(draggedItem);
-        $canvas.droppable("destroy");
+        // $canvas.droppable("destroy");
         // $canvas.droppable("disable");
       }
 
@@ -443,7 +443,7 @@ function getNewContainer(cell = false) {
                     <div class="ph-table-cell north ns drop s"></div>
                   </div>
                   <div class="ph-table-row">
-                    <div class="ph-table-cell data" style="padding-left: 5px;padding-right: 5px;"></div>
+                    <div class="ph-table-cell data" style="padding: 5px"></div>
                   </div>
                   <div class="ph-table-row">
                     <div class="ph-table-cell south ns drop s"></div>
