@@ -443,7 +443,7 @@ function getNewContainer(cell = false) {
                     <div class="ph-table-cell north ns drop s"></div>
                   </div>
                   <div class="ph-table-row">
-                    <div class="ph-table-cell data" style="padding: 5px"></div>
+                    <div class="ph-table-cell data" style="padding: 3px"></div>
                   </div>
                   <div class="ph-table-row">
                     <div class="ph-table-cell south ns drop s"></div>
