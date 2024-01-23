@@ -225,9 +225,10 @@ p {
 .editor-td,
 .editor-th {
   border-collapse: separate;
-  border: 1px dotted blue;
+  border: 1px solid;
   text-align: left;
   padding: 4px;
+  border-color: rgba(0, 128, 0, 0.5);
 }
 
 .editor-tr {

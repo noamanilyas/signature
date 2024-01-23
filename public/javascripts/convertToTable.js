@@ -251,12 +251,11 @@ function getSubItemsForgroup2(item) {
       const thisItem = groupChildren.eq(index);
       // $.each(group, async function (index, value) {
       let td = $("<td>");
-      // if (thisItem.hasClass("tableItem")) {
-      //   console.log("Table found in group 2", thisItem.attr("id"));
-      //   let table = await getSubItemsForTableItem(thisItem);
-      //   td.append(table);
-      // } else
-      if (thisItem.hasClass("dataItem")) {
+      if (thisItem.hasClass("tableItem")) {
+        // console.log("Table found in group 2", thisItem.attr("id"));
+        let table = await getSubItemsForTableItem(thisItem);
+        td.append(table);
+      } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
         dataItem = addHyperLinkToImage(dataItem);
         dataItem = addPaddingToImage(td, dataItem);
