@@ -196,3 +196,10 @@ button:hover {
 .emailinput {
   margin-bottom: 1rem;
 }
+
+#drop {
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  border-color: rgba(0, 0, 128, 0.5);
+}
