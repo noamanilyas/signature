@@ -124,6 +124,10 @@ function getSubItemsForTableItem(item) {
         applyCSS(td, thisItem);
         applyCSS(td, cssItem);
 
+        if (cssItem.attr("width-stretch") == "100%") {
+          table.css("width", "100%");
+        }
+
         const actualItem = thisItem.children().children().children();
         // console.log("actualItem", actualItem);
 

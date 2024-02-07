@@ -178,8 +178,7 @@ $("#fieldsModelSave").click(function (e) {
   }
 
   // check how many fields needed
-  // let fieldRows = $(".field-table > tbody > tr");
-  let container = getNewContainerWE();
+  let container = btnVarDynamic;
   let containerML = getNewContainerNS();
   $(".field-table > tbody > tr").each(function (index) {
     if (multiline) {
@@ -190,8 +189,7 @@ $("#fieldsModelSave").click(function (e) {
     if (fieldText.val().length) {
       let dItem = initDraggedItem(
         $(
-          `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
-          font-family: Calibri, Arial, sans-serif;>${fieldText.val()}</span>`
+          `<span category="textField" style="font-size: 14px; white-space: nowrap; font-family: Calibri, Arial, sans-serif;">${fieldText.val()}</span>`
         ),
         true
       );
@@ -204,13 +202,7 @@ $("#fieldsModelSave").click(function (e) {
     const icon = $(this).find(".dropdown li.selected.active");
     if (icon.length) {
       let dItem = initDraggedItem(
-        $(
-          `<img
-      class="icon-list drag"
-      item="btnIcon"
-      src="${icon.find("img").attr("src")}"
-    />`
-        ),
+        $(`<img class="icon-list drag" item="btnIcon" src="${icon.find("img").attr("src")}"/>`),
         true
       );
       if (!multiline && fieldText.val().length) {
@@ -223,23 +215,22 @@ $("#fieldsModelSave").click(function (e) {
     if (fieldName && fieldName !== "Choose...") {
       let dItem = initDraggedItem(
         $(
-          `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
-          font-family: Calibri, Arial, sans-serif;>{${fieldName}}</span>`
+          `<span category="textField" style="font-size: 14px; white-space: nowrap; font-family: Calibri, Arial, sans-serif;">{${fieldName}}</span>`
         ),
         true
       );
       if (!multiline && icon.length) {
         dItem.find("div.we.west").remove();
       }
-      container.find("div.data2:first").append(dItem);
+
+      container.find("div.data > span").html(`{${fieldName}}`);
     }
 
     const fieldSeperator = $(this).find(".fieldSeperator");
     if (fieldSeperator.val() && !fieldSeperator.attr("disabled")) {
       let dItem = initDraggedItem(
         $(
-          `<span category="textField" style="font-size: 14px; white-space: nowrap;" 
-          font-family: Calibri, Arial, sans-serif;>${fieldSeperator.val()}</span>`
+          `<span category="textField" style="font-size: 14px; white-space: nowrap; font-family: Calibri, Arial, sans-serif;">${fieldSeperator.val()}</span>`
         ),
         true
       );
@@ -264,9 +255,6 @@ $("#fieldsModelSave").click(function (e) {
   $(".toBeReplacedByActual").removeClass("toBeReplacedByActual");
   // converToTableFunc();
   resetForm();
-  // initDraggedItem(draggedItem)
-
-  // remove class .toBeReplacedByActual
 });
 function resetForm() {
   $(".field-table > tbody > tr").remove();
