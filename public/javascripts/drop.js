@@ -1,6 +1,5 @@
 let edited = false;
 var userData = false;
-var btnVarDynamic = "";
 function addDropEvent(el, greedy) {
   el.removeClass("ui-droppable");
   // console.log(el.closest("drag"));
@@ -423,7 +422,7 @@ function initDraggedItem(draggedItem, cell = false) {
     let item = $(itemIds["btnText"]);
     item.attr("id", UUID);
     dataDiv.append(item);
-    btnVarDynamic = container;
+    container.addClass("toBeReplacedByActual");
     return container;
     // First check if single line or multi line
   }

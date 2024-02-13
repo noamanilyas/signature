@@ -774,7 +774,7 @@ $(document).ready(function () {
     let paneldiv1 = document.querySelector(".panelPreview");
 
     if (paneldiv) {
-      paneldiv.style.width = "fit-content";
+      paneldiv.style.width = "92vw";
       $("#arrowIcon i").css("transform", "rotate(180deg)");
     } else {
       paneldiv1.style.width = "350px";
