@@ -633,7 +633,7 @@ $(document).ready(function () {
           });
           // console.log("rawResponse", rawResponse);
           const content = await rawResponse.json();
-          applyRegexReplacementToTable($(".panelPreview2 > table.mainTable"), userData);
+          // applyRegexReplacementToTable($(".panelPreview2 > table.mainTable"), userData);
           Swal.fire({
             // position: "top-end",
             icon: "success",
