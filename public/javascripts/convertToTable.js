@@ -1,7 +1,7 @@
 async function converToTableFunc() {
   const mainItems = $("#drop > .drag.vertical");
   let tbody = $("<tbody>");
-  let table = $("<table style='font-size: 0px; width:100%;' cellspacing='0' cellpadding='0'>");
+  let table = $("<table style='font-size: 0px; width:75%;' cellspacing='0' cellpadding='0'>");
   table.addClass("mainTable");
   // $.each(mainItems, async function (index, value) {
   for (let i = 0; i < mainItems.length; i++) {
@@ -125,7 +125,7 @@ function getSubItemsForTableItem(item) {
         applyCSS(td, cssItem);
 
         if (cssItem.attr("width-stretch") == "100%") {
-          table.css("width", "75%");
+          table.css("width", "100%");
         }
 
         const actualItem = thisItem.children().children().children();
@@ -246,7 +246,7 @@ function getSubItemsForgroup2(item) {
     let tbody = $("<tbody>");
     let table = $(
       `<table style='font-size: 0px;${
-        group.attr("width-stretch") == "100%" ? "width: 75%" : ""
+        group.attr("width-stretch") == "100%" ? "width: 100%" : ""
       }' cellspacing='0' cellpadding='0'>`
     );
 
@@ -271,7 +271,7 @@ function getSubItemsForgroup2(item) {
          */
         // console.log(dataItem.attr("width-stretch"));
         if (dataItem.attr("width-stretch") == "100%") {
-          table.css("width", "75%");
+          table.css("width", "100%");
         }
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
