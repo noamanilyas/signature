@@ -1,5 +1,5 @@
 var a = {
-  textField: ["text", "background", "visibility", "alignment", "border", "padding"],
+  textField: ["text", "background", "visibility", "alignment", "border", "padding", "size"],
   // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   table: ["tableProps", "background", "alignment", "border", "padding", "size"],
   group: ["background", "visibility", "alignment", "border", "padding", "size"],
