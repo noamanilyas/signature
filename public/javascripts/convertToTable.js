@@ -18,11 +18,15 @@ async function converToTableFunc() {
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
-        dataItem = addHyperLinkToImage(dataItem);
-        dataItem = addPaddingToImage(td, dataItem);
-        dataItem = await convertCustomFontToImage(dataItem);
-        applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
-        td.append(dataItem);
+        if (thisItem.find("span").attr("category") === "textField") {
+          textTable(dataItem, td, thisItem);
+        } else {
+          dataItem = addHyperLinkToImage(dataItem);
+          dataItem = addPaddingToImage(td, dataItem);
+          dataItem = await convertCustomFontToImage(dataItem);
+          applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
+          td.append(dataItem);
+        }
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
         applyCSS(td, thisItem.find(".data2:first"), ["align"]);
@@ -261,17 +265,21 @@ function getSubItemsForgroup2(item) {
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
-        dataItem = addHyperLinkToImage(dataItem);
-        dataItem = addPaddingToImage(td, dataItem);
-        dataItem = await convertCustomFontToImage(dataItem);
-        applyCSS(td, thisItem.find(".data").children(), ["align"]);
-        td.append(dataItem);
-        /**
-         * If width on text item then stretch
-         */
-        // console.log(dataItem.attr("width-stretch"));
-        if (dataItem.attr("width-stretch") == "100%") {
-          table.css("width", "100%");
+        if (thisItem.find("span").attr("category") === "textField") {
+          textTable(dataItem, td, thisItem);
+        } else {
+          dataItem = addHyperLinkToImage(dataItem);
+          dataItem = addPaddingToImage(td, dataItem);
+          dataItem = await convertCustomFontToImage(dataItem);
+          applyCSS(td, thisItem.find(".data").children(), ["align"]);
+          td.append(dataItem);
+          /**
+           * If width on text item then stretch
+           */
+          // console.log(dataItem.attr("width-stretch"));
+          if (dataItem.attr("width-stretch") == "100%") {
+            table.css("width", "100%");
+          }
         }
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
@@ -322,11 +330,15 @@ function getSubItemsForgroup3(item) {
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
-        dataItem = addHyperLinkToImage(dataItem);
-        dataItem = addPaddingToImage(td, dataItem);
-        dataItem = await convertCustomFontToImage(dataItem);
-        applyCSS(td, thisItem.find(".data").children(), ["align"]);
-        td.append(dataItem);
+        if (thisItem.find("span").attr("category") === "textField") {
+          textTable(dataItem, td, thisItem);
+        } else {
+          dataItem = addHyperLinkToImage(dataItem);
+          dataItem = addPaddingToImage(td, dataItem);
+          dataItem = await convertCustomFontToImage(dataItem);
+          applyCSS(td, thisItem.find(".data").children(), ["align"]);
+          td.append(dataItem);
+        }
       } else if (thisItem.hasClass("group2")) {
         let table = await getSubItemsForgroup2(thisItem);
         applyCSS(td, thisItem.find(".data2:first"), ["align"]);
@@ -347,6 +359,23 @@ function getSubItemsForgroup3(item) {
     resolve(table1);
     // return table1;
   });
+}
+
+function textTable(dataItem, td, thisItem) {
+  let textTable = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+  let textTbody = $("<tbody>");
+  let textTr = $("<tr style='font-size: 0px'>");
+  let td1 = $("<td>");
+  td1.append(dataItem);
+  textTr.append(td1);
+  textTbody.append(textTr);
+  textTable.append(textTbody);
+  td.append(textTable);
+  let width = thisItem.find("span").css("width");
+  let height = thisItem.find("span").css("height");
+  console.log("width", width, "height", height);
+  if (width) textTable.css("width", width);
+  if (height) textTable.css("height", height);
 }
 
 function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
