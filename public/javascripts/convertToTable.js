@@ -362,7 +362,7 @@ function getSubItemsForgroup3(item) {
 }
 
 function textTable(dataItem, td, thisItem) {
-  let textTable = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
+  let textTable = $("<table style='font-size: 0px; white-space:nowrap;' cellspacing='0' cellpadding='0'>");
   let textTbody = $("<tbody>");
   let textTr = $("<tr style='font-size: 0px'>");
   let td1 = $("<td>");
@@ -371,11 +371,19 @@ function textTable(dataItem, td, thisItem) {
   textTbody.append(textTr);
   textTable.append(textTbody);
   td.append(textTable);
-  let width = thisItem.find("span").css("width");
-  let height = thisItem.find("span").css("height");
-  console.log("width", width, "height", height);
-  if (width) textTable.css("width", width);
-  if (height) textTable.css("height", height);
+  let spanStyle = thisItem.find("span").parent(".data").attr("style");
+  if (spanStyle) {
+    let cssProperties = spanStyle
+      .split(";")
+      .map((property) => property.split(":").map((part) => part.trim()))
+      .reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {});
+
+    // Apply the extracted CSS properties to textTable
+    textTable.css(cssProperties);
+  }
 }
 
 function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
