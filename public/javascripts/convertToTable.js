@@ -142,13 +142,15 @@ function getSubItemsForTableItem(item) {
           td.append(table);
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
-          // console.log("dataItem", dataItem);
-          dataItem = addHyperLinkToImage(dataItem);
-          dataItem = addPaddingToImage(td, dataItem);
-          dataItem = await convertCustomFontToImage(dataItem);
-          applyCSS(td, actualItem.find(".data").children().eq(0), ["align"]);
-
-          td.append(dataItem);
+          if (thisItem.find("span").attr("category") === "textField") {
+            textTable(dataItem, td, thisItem);
+          } else {
+            dataItem = addHyperLinkToImage(dataItem);
+            dataItem = addPaddingToImage(td, dataItem);
+            dataItem = await convertCustomFontToImage(dataItem);
+            applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
+            td.append(dataItem);
+          }
         } else if (actualItem.hasClass("group2")) {
           let table = await getSubItemsForgroup2(actualItem);
           applyCSS(td, actualItem.find(".data2:first"), ["align"]);
@@ -366,12 +368,15 @@ function textTable(dataItem, td, thisItem) {
   let textTbody = $("<tbody>");
   let textTr = $("<tr style='font-size: 0px'>");
   let td1 = $("<td>");
-  td1.append(dataItem);
+  let dataItemHTML = dataItem.prop("outerHTML").replace(/display\s*:\s*block\s*;?/g, "");
+  td1.append(dataItemHTML);
   textTr.append(td1);
   textTbody.append(textTr);
   textTable.append(textTbody);
+  applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
   td.append(textTable);
-  let spanStyle = thisItem.find("span").parent(".data").attr("style");
+  let spanStyle = thisItem.find("span").attr("style");
+  spanStyle = spanStyle.replace(/display\s*:\s*block\s*;?/g, "");
   if (spanStyle) {
     let cssProperties = spanStyle
       .split(";")
