@@ -49,6 +49,9 @@ function fillAndFormatAlign(id, item) {
       $(`#${inputElem}`).addClass("active");
     }
     setTimeout(function () {
+      if ($(`#${id}`).parent().closest(".tableDrop")) {
+        $(`#${id}`).parent().closest(".editor-td").css(cssProperty, cssPropertyVal);
+      }
       // console.log(document.querySelector(`#${id}`).getAttribute(cssProperty));
       converToTableFunc();
     }, 50);
@@ -77,31 +80,31 @@ const formattersAlign = [
     cssProperty: "width-stretch",
     cssPropertyVal: "100%",
   },
-  // {
-  //   inputElem: "align-text-left",
-  //   cssProperty: "text-align",
-  //   cssPropertyVal: "left",
-  // },
-  // {
-  //   inputElem: "align-text-right",
-  //   cssProperty: "text-align",
-  //   cssPropertyVal: "right",
-  // },
-  // {
-  //   inputElem: "align-text-center",
-  //   cssProperty: "text-align",
-  //   cssPropertyVal: "center",
-  // },
-  // {
-  //   inputElem: "align-text-justify",
-  //   cssProperty: "text-align",
-  //   cssPropertyVal: "justify",
-  // },
-  // {
-  //   inputElem: "align-text-inherit",
-  //   cssProperty: "text-align",
-  //   cssPropertyVal: "inherit",
-  // },
+  {
+    inputElem: "align-text-left",
+    cssProperty: "text-align",
+    cssPropertyVal: "left",
+  },
+  {
+    inputElem: "align-text-right",
+    cssProperty: "text-align",
+    cssPropertyVal: "right",
+  },
+  {
+    inputElem: "align-text-center",
+    cssProperty: "text-align",
+    cssPropertyVal: "center",
+  },
+  {
+    inputElem: "align-text-justify",
+    cssProperty: "text-align",
+    cssPropertyVal: "justify",
+  },
+  {
+    inputElem: "align-text-inherit",
+    cssProperty: "text-align",
+    cssPropertyVal: "inherit",
+  },
   {
     inputElem: "align-vert-top",
     cssProperty: "vertical-align",

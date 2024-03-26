@@ -12,9 +12,11 @@ async function converToTableFunc() {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        // console.log("Tacble found herereresssssssssssssss");
+        let dataItem = thisItem.find(".data").children().eq(0).clone();
+        // console.log("Tacble found herereresssssssssssssss", thisItem, "dataItem", dataItem);
         let table = await getSubItemsForTableItem(thisItem);
         // console.log("moved");
+        applyCSS(table, dataItem, ["align"]);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -107,8 +109,14 @@ function getSubItemsForTableItem(item) {
   return new Promise(async (resolve, reject) => {
     let tbl = $(item).find(".data:first").children();
     let tbody = $("<tbody>");
-    let table = $("<table>");
+    let table = $(`<table style='${tbl.attr("width-stretch") == "100%" ? "width: 100%" : ""}'>`);
     let tblTR = tbl.children().children();
+    if (tbl.length > 0) {
+      let spanStyle = tbl.attr("style");
+      if (spanStyle) {
+        table.attr("style", spanStyle);
+      }
+    }
     // console.log("tblTR", tblTR);
     // $.each(tblTR, async function (index, value) {
     for (let index = 0; index < tblTR.length; index++) {
@@ -139,6 +147,7 @@ function getSubItemsForTableItem(item) {
           // console.log("Table found in table", actualItem.attr("id"));
           let table = await getSubItemsForTableItem(actualItem);
           // console.log("table94", table);
+          applyCSS(td, cssItem, ["align"]);
           td.append(table);
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
@@ -264,6 +273,7 @@ function getSubItemsForgroup2(item) {
       if (thisItem.hasClass("tableItem")) {
         // console.log("Table found in group 2", thisItem.attr("id"));
         let table = await getSubItemsForTableItem(thisItem);
+        applyCSS(td, thisItem, ["align"]);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -329,6 +339,7 @@ function getSubItemsForgroup3(item) {
         // console.log("Table found in group 3", thisItem.attr("id"));
         let table = await getSubItemsForTableItem(thisItem);
         // console.log("Table found in group 3 - recieved", table);
+        applyCSS(td, thisItem, ["align"]);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -369,6 +380,7 @@ function textTable(dataItem, td, thisItem) {
   let textTr = $("<tr style='font-size: 0px'>");
   let td1 = $("<td>");
   let dataItemHTML = dataItem.prop("outerHTML").replace(/display\s*:\s*block\s*;?/g, "");
+  applyCSS(td1, thisItem.find(".data").children().eq(0));
   td1.append(dataItemHTML);
   textTr.append(td1);
   textTbody.append(textTr);
