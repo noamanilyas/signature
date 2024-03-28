@@ -12,11 +12,10 @@ async function converToTableFunc() {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        let dataItem = thisItem.find(".data").children().eq(0).clone();
-        // console.log("Tacble found herereresssssssssssssss", thisItem, "dataItem", dataItem);
+        // let dataItem = thisItem.find(".data").children().eq(0).clone();
         let table = await getSubItemsForTableItem(thisItem);
         // console.log("moved");
-        applyCSS(table, dataItem, ["align"]);
+        // applyCSS(td, dataItem, ["align"]);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();

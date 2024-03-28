@@ -394,7 +394,6 @@ function initDraggedItem(draggedItem, cell = false) {
       let UUID3 = `item-${Date.now()}`;
       let table1 = item;
       table1.attr("id", "editorTable-" + UUID3);
-      console.log("dragged item", table1);
       container.addClass("tableItem");
     } else {
       item.attr("id", UUID);
