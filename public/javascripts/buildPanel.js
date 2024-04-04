@@ -23,19 +23,19 @@ const itemIds = {
         src=""
       />`,
   // change in tableprops also
-  btnTable: `<table class="editor-table">
+  btnTable: `<table class="editor-table" category="group">
 
     <tr class="editor-tr">
       <td class="editor-td">
         <div class="ph-table wh100">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+          <div class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
       </td>
       <td class="editor-td">
         <div class="ph-table wh100">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+          <div class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
@@ -44,14 +44,14 @@ const itemIds = {
      <tr class="editor-tr">
       <td class="editor-td">
         <div class="ph-table wh100">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+          <div class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>
       </td>
       <td class="editor-td">
         <div class="ph-table wh100">
-          <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+          <div class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
             &nbsp;
           </div>
         </div>

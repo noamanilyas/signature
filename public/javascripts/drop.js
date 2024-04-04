@@ -391,7 +391,9 @@ function initDraggedItem(draggedItem, cell = false) {
         addModalClick($(this));
         addMouseOverEvents($(this));
       });
-
+      let UUID3 = `item-${Date.now()}`;
+      let table1 = item;
+      table1.attr("id", "editorTable-" + UUID3);
       container.addClass("tableItem");
     } else {
       item.attr("id", UUID);
@@ -442,7 +444,7 @@ function getNewContainer(cell = false) {
                     <div class="ph-table-cell north ns drop s"></div>
                   </div>
                   <div class="ph-table-row">
-                    <div class="ph-table-cell data" style="padding: 3px"></div>
+                    <div class="ph-table-cell data" style="padding: 5px"></div>
                   </div>
                   <div class="ph-table-row">
                     <div class="ph-table-cell south ns drop s"></div>

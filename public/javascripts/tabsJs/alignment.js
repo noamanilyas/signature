@@ -49,6 +49,9 @@ function fillAndFormatAlign(id, item) {
       $(`#${inputElem}`).addClass("active");
     }
     setTimeout(function () {
+      if ($(`#${id}`).parent().closest(".tableDrop")) {
+        $(`#${id}`).parent().closest(".editor-td").css(cssProperty, cssPropertyVal);
+      }
       // console.log(document.querySelector(`#${id}`).getAttribute(cssProperty));
       converToTableFunc();
     }, 50);
