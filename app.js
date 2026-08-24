@@ -6,7 +6,9 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 // var mysql = require('mysql');
 
-var routes = require("./routes/index");
+require("dotenv").config();
+
+var routes = require("./mock/routes");
 // var users = require("./routes/users");
 
 var app = express();
@@ -101,26 +103,6 @@ if (app.get("env") === "development") {
     });
   });
 }
-
-var portNumber = process.env.port || process.env.PORT || 8000;
-
-/*
-app.listen(8000, "0.0.0.0", function () {
-  // print a message when the server starts listening
-  console.log("Server starting on 8000");
-});
-*/
-
-/*
-app.listen(portNumber, () => {
-	console.log(`Example app listening at http://localhost:${portNumber}`);
-});
-*/
-
-app.listen(portNumber, "0.0.0.0", function () {
-  // print a message when the server starts listening
-  console.log("Server starting on ", portNumber);
-});
 
 // production error handler
 // no stacktraces leaked to user

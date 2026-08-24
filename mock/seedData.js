@@ -1,0 +1,95 @@
+const COMPANY_ID = "000044";
+
+function getDefaultStore() {
+  return {
+    nextSigNum: 3,
+    companies: [
+      {
+        C_CD: 44,
+        C_FNAME: "John",
+        C_LNAME: "Doe",
+        C_NAME: "Acme Corp",
+        C_TEL: "+1 555-0100",
+        C_ADD1: "123 Main St",
+        C_TOWN: "Springfield",
+        C_STATE: "IL",
+        C_ZIP: "62701",
+        C_USRCD: "john.doe@acme.com",
+        C_MOBILEKEY: "+1 555-0101",
+      },
+    ],
+    signatures: [
+      {
+        RID: "R1",
+        H_CCD: "001",
+        H_CD: 1,
+        H_DSC: "Default Signature",
+        H_RTextHTML: "<div><strong>John Doe</strong><br/>Acme Corp<br/>john.doe@acme.com</div>",
+        H_HTMLTEXT: "<table><tr><td><strong>John Doe</strong><br/>Acme Corp<br/>john.doe@acme.com</td></tr></table>",
+        H_CONO: COMPANY_ID,
+        H_IMAGE: "",
+        H_ATTACH: null,
+        H_NEW: 1,
+        H_SRL: 1,
+        H_INACTIVE: 0,
+        H_OADDSUB: 0,
+        H_OADDSUBTEXT: "",
+        H_OADDSUBREM: 0,
+        H_DADDMSG: 0,
+        H_DADDMSGTEXT: "",
+        H_DADDANY: 0,
+        H_DADDPNEXT: 0,
+        H_ADDPNEXT: 0,
+      },
+      {
+        RID: "R2",
+        H_CCD: "001",
+        H_CD: 2,
+        H_DSC: "Sales Team",
+        H_RTextHTML: "<div><strong>Sales Team</strong><br/>Acme Corp</div>",
+        H_HTMLTEXT: "<table><tr><td><strong>Sales Team</strong><br/>Acme Corp</td></tr></table>",
+        H_CONO: COMPANY_ID,
+        H_IMAGE: "",
+        H_ATTACH: null,
+        H_NEW: 1,
+        H_SRL: 2,
+        H_INACTIVE: 0,
+        H_OADDSUB: 0,
+        H_OADDSUBTEXT: "",
+        H_OADDSUBREM: 0,
+        H_DADDMSG: 0,
+        H_DADDMSGTEXT: "",
+        H_DADDANY: 0,
+        H_DADDPNEXT: 0,
+        H_ADDPNEXT: 0,
+      },
+    ],
+    images: [],
+    signatureUsers: [],
+    groups: [
+      { RID: "G1", G_DSC: "Sales", G_EMAIL: "sales@acme.com", G_CONO: COMPANY_ID },
+      { RID: "G2", G_DSC: "Support", G_EMAIL: "support@acme.com", G_CONO: COMPANY_ID },
+    ],
+    users: [
+      { RID: "U1", U_DSC: "John Doe", U_EMAIL: "john.doe@acme.com", U_CONO: COMPANY_ID },
+      { RID: "U2", U_DSC: "Jane Smith", U_EMAIL: "jane.smith@acme.com", U_CONO: COMPANY_ID },
+      { RID: "U3", U_DSC: "Bob Wilson", U_EMAIL: "bob.wilson@acme.com", U_CONO: COMPANY_ID },
+    ],
+    customFields: [
+      { G_DSC: "Personal", K_ALIAS: "First Name", G_CD: "001" },
+      { G_DSC: "Personal", K_ALIAS: "Last Name", G_CD: "001" },
+      { G_DSC: "Company", K_ALIAS: "Job Title", G_CD: "002" },
+      { G_DSC: "Company", K_ALIAS: "Company Name", G_CD: "002" },
+    ],
+    userDetails: {
+      "john.doe@acme.com": {
+        "First Name": "John",
+        "Last Name": "Doe",
+        "Job Title": "CEO",
+        "Company Name": "Acme Corp",
+      },
+    },
+  };
+}
+
+module.exports = { getDefaultStore };
