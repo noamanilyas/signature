@@ -1,7 +1,1 @@
-// Development
-const SERVER_URL = "http://localhost:4783";
-// const IMG_SERVER_URL='localhost:8887';
-
-// Production
-// const SERVER_URL = "https://uaedesign.greensignature.net";
-// const IMG_SERVER_URL='https://40.123.196.171:8887';
+const SERVER_URL = window.location.origin;
