@@ -12,10 +12,10 @@ async function converToTableFunc() {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        // let dataItem = thisItem.find(".data").children().eq(0).clone();
+        let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
-        // console.log("moved");
-        // applyCSS(td, dataItem, ["align"]);
+        const textAlign = applyAlignToCell(td, editorTable);
+        applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -143,10 +143,10 @@ function getSubItemsForTableItem(item) {
         // console.log("actualItem", actualItem);
 
         if (actualItem.hasClass("tableItem")) {
-          // console.log("Table found in table", actualItem.attr("id"));
+          let editorTable = actualItem.find(".data:first").children().eq(0);
           let table = await getSubItemsForTableItem(actualItem);
-          // console.log("table94", table);
-          applyCSS(td, cssItem, ["align"]);
+          const textAlign = applyAlignToCell(td, editorTable);
+          applyTableBlockAlign(table, textAlign);
           td.append(table);
         } else if (actualItem.hasClass("dataItem")) {
           let dataItem = actualItem.find(".data").children().eq(0).clone();
@@ -270,9 +270,10 @@ function getSubItemsForgroup2(item) {
       // $.each(group, async function (index, value) {
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        // console.log("Table found in group 2", thisItem.attr("id"));
+        let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
-        applyCSS(td, thisItem, ["align"]);
+        const textAlign = applyAlignToCell(td, editorTable);
+        applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -335,10 +336,10 @@ function getSubItemsForgroup3(item) {
       let tr = $("<tr style='font-size: 0px'>");
       let td = $("<td>");
       if (thisItem.hasClass("tableItem")) {
-        // console.log("Table found in group 3", thisItem.attr("id"));
+        let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
-        // console.log("Table found in group 3 - recieved", table);
-        applyCSS(td, thisItem, ["align"]);
+        const textAlign = applyAlignToCell(td, editorTable);
+        applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
         let dataItem = thisItem.find(".data").children().eq(0).clone();
@@ -399,6 +400,26 @@ function textTable(dataItem, td, thisItem) {
 
     // Apply the extracted CSS properties to textTable
     textTable.css(cssProperties);
+  }
+}
+
+function applyAlignToCell(td, source) {
+  applyCSS(td, source, ["align"]);
+  const textAlign = source.attr("text-align");
+  if (textAlign) {
+    td.attr("align", textAlign);
+  }
+  return textAlign;
+}
+
+function applyTableBlockAlign($table, textAlign) {
+  if (!textAlign || textAlign === "stretch") return;
+  if (textAlign === "center" || textAlign === "-webkit-center") {
+    $table.css({ "margin-left": "auto", "margin-right": "auto", display: "table" });
+  } else if (textAlign === "right" || textAlign === "-webkit-right") {
+    $table.css({ "margin-left": "auto", "margin-right": "0", display: "table" });
+  } else if (textAlign === "left") {
+    $table.css({ "margin-left": "0", "margin-right": "auto", display: "table" });
   }
 }
 

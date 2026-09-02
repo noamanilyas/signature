@@ -529,6 +529,9 @@ router.get("/loginuser", (req, res) => {
         return res.status(500).send("Internal Server Error");
       }
       const userData = recordset.recordset[0];
+      if (!userData) {
+        return res.json({});
+      }
       const filteredUserData = {
         First_Name: userData.C_FNAME,
         Last_Name: userData.C_LNAME,

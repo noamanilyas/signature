@@ -214,6 +214,11 @@ p {
 
 /* Tables */
 
+/* Give table blocks full row width so horizontal text-align can move the table */
+.tableItem > .ph-table {
+  width: 100%;
+}
+
 .editor-table {
   font-family: arial, sans-serif;
   border-collapse: collapse;

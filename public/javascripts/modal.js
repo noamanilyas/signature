@@ -1,7 +1,7 @@
 var a = {
   textField: ["text", "background", "visibility", "alignment", "border", "padding", "size"],
   // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
-  table: ["tableProps", "background", "border", "padding", "size"],
+  table: ["tableProps", "background", "alignment", "border", "padding", "size"],
   group: ["background", "visibility", "alignment", "border", "padding", "size"],
   // group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
   socialIcon: [
@@ -90,10 +90,16 @@ function renderModel(e) {
     renderBackgroundTab(id);
     // Render SizeJS
     renderSizeTab(id);
-    // Render AlignmentJS for groups
-    if (category === "group") renderAlignmentTabGroup(id);
-    // Render AlignmentJS
-    else renderAlignmentTab(id);
+    // Table cells open as category=table; align the whole editor-table (same as group)
+    if (category === "table") {
+      const tableId = $(`#${id}`).closest("table.editor-table").attr("id");
+      if (tableId) renderAlignmentTabGroup(tableId);
+      else renderAlignmentTab(id);
+    } else if (category === "group") {
+      renderAlignmentTabGroup(id);
+    } else {
+      renderAlignmentTab(id);
+    }
     // Render BorderJS
     renderBorderTab(id);
     // Render PaddingJS
