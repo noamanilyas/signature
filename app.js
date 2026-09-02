@@ -8,7 +8,7 @@ var bodyParser = require("body-parser");
 
 require("dotenv").config();
 
-var routes = require("./mock/routes");
+var routes = require("./routes/index");
 // var users = require("./routes/users");
 
 var app = express();

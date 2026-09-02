@@ -19,7 +19,9 @@ var config = {
   connectionTimeout: 60000,
   requestTimeout: 60000,
   options: {
-    enableArithAbort: true, // or false
+    enableArithAbort: true,
+    encrypt: false,
+    trustServerCertificate: true,
   },
 };
 

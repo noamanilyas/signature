@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Green Signature</title>
 
     <script src="./libs/jquery.min.js"></script>
@@ -39,43 +40,41 @@
       <a class="navbar-brand" href="#">
         <img src="/images/logo.png" height="45" alt="" />
       </a>
-      <!-- <button type="button" class="n-item btn btn-success">New Signature</button> -->
-      <a href="editor.html" id="newSigBtn" class="n-item btn btn-success">New Signature</a>
-      <!-- <button type="button" class="n-item btn btn-danger">Reorder</button> -->
-      <a href="reorder.html" id="reorderBtn" class="n-item btn btn-danger">Reorder</a>
-      <!-- <a href="editor.html" class="n-item btn btn-info editor-btn">Editor</a> -->
-      <a href="template.html?companyId=pMr0lShPukk=" id="templateBtn" class="n-item btn btn-success">Template</a>
-      <!-- <a href="editor.html" class="n-item btn btn-info editor-btn">Editor</a> -->
-      <button id="openPopupBtn" type="button" class="n-item btn btn-warning">Import</button>
-      <div id="uploadPopup" class="modal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Upload File</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopupBtn">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form id="fileUploadForm" enctype="multipart/form-data">
-                <div class="form-group">
-                  <label for="fileInput">Choose file to upload</label>
-                  <input type="file" class="form-control-file" id="fileInput" accept=".GSign" required />
-                </div>
-                <div class="form-group">
-                  <label for="signatureName">Signature Name:</label>
-                  <input type="text" class="form-control" id="signatureName" name="signatureName" required />
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-              </form>
-            </div>
+      <div class="navbar-toolbar">
+        <a href="editor.html" id="newSigBtn" class="n-item btn btn-success">New Signature</a>
+        <a href="reorder.html" id="reorderBtn" class="n-item btn btn-danger">Reorder</a>
+        <a href="template.html?companyId=pMr0lShPukk=" id="templateBtn" class="n-item btn btn-success">Template</a>
+        <button id="openPopupBtn" type="button" class="n-item btn btn-warning">Import</button>
+        <a href="https://uaeportal.greensignature.net/HomeNew" id="exitDesignerBtn" class="n-item btn btn-danger btnexit"
+          >Exit Designer</a
+        >
+      </div>
+    </nav>
+    <div id="uploadPopup" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload File</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closePopupBtn">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="fileUploadForm" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="fileInput">Choose file to upload</label>
+                <input type="file" class="form-control-file" id="fileInput" accept=".GSign" required />
+              </div>
+              <div class="form-group">
+                <label for="signatureName">Signature Name:</label>
+                <input type="text" class="form-control" id="signatureName" name="signatureName" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
           </div>
         </div>
       </div>
-      <a href="https://uaeportal.greensignature.net/HomeNew" id="reorderBtn " class="n-item btn btn-danger btnexit"
-        >Exit Designer</a
-      >
-    </nav>
+    </div>
     <div id="overlay" class="overlay"></div>
     <div class="sig-list" id="list_sig">
       <!-- <div class="container bcontent">

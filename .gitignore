@@ -72,6 +72,9 @@ typings/
 .env
 .env.test
 
+# Local MCP config (contains API keys)
+.cursor/mcp.json
+
 # Local mock database
 mock/data/mock-db.json
 
