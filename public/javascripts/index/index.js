@@ -19,6 +19,20 @@ $(document).ready(function () {
   $("#templateBtn").attr("href", `${templateHref}&cid=${companyId}`);
 
   /**
+   * Show the company name below the logo and at the top of the signature list
+   */
+  if (companyId) {
+    $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
+      if (data && data.Company) {
+        $("#navCompanyName").text(data.Company);
+        $("#listCompanyName").text(data.Company);
+      }
+    }).fail(function (error) {
+      console.error("Error fetching company name:", error);
+    });
+  }
+
+  /**
    * Get signature list
    */
   (async () => {
