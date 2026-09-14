@@ -363,6 +363,41 @@ function initDraggedItem(draggedItem, cell = false) {
     addModalClick(clonedItem.find(".data"));
     clonedItem = addEventsToContainer3(clonedItem);
     return clonedItem;
+  } else if (draggedItem.hasClass("tableItem")) {
+    // clone() drops all jQuery UI/event bindings, so the table, its cells and
+    // anything already placed inside those cells must be fully re-bound here,
+    // otherwise the table loses its "tableItem" class (breaks the preview
+    // conversion) and its cells stop accepting drops/clicks.
+    let clonedItem = draggedItem.clone();
+    removeExitingItem(draggedItem.attr("id"));
+    clonedItem.find(".ns, .we").each(function () {
+      addDropEvent($(this), true);
+    });
+    clonedItem.find(".data, .data2, .data3").each(function () {
+      addMouseOverEvents($(this));
+      addModalClick($(this));
+    });
+    clonedItem.find("div.editor-td-div").each(function () {
+      addDropEvent($(this), true);
+      addModalClick($(this));
+      addMouseOverEvents($(this));
+    });
+    clonedItem
+      .add(clonedItem.find(".drag.vertical"))
+      .draggable({
+        cancel: false,
+        helper: function (e) {
+          return $(this).clone();
+        },
+        cursor: "move",
+        start: function (event, ui) {
+          $(this).draggable("instance").offset.click = {
+            left: 0,
+            top: 0,
+          };
+        },
+      });
+    return clonedItem;
   } else if (draggedItem.attr("id")) {
     // removeItemWithParent(draggedItem.attr("id"));
     removeExitingItem(draggedItem.attr("id"));
