@@ -241,6 +241,9 @@ $(document).ready(function () {
         $("#searchEmail").prop("placeholder", data.E_Mail);
         userData = data;
         document.getElementById("searchDropdownButton").innerText = userData.E_Mail || userData.U_EMAIL;
+        if (data.Company) {
+          $("#navCompanyName").text(data.Company);
+        }
         converToTableFunc();
       }).fail(function (error) {
         console.error("Error:", error);

@@ -50,14 +50,11 @@ let companyId = url.searchParams.get("companyId");
 
 const replaceImagePaths = (signature, imageData) => {
   return new Promise((resolve, reject) => {
-    signature.HTML = signature.HTML.replace(/src="[^"]*"/gm, function (match, i) {
-      return match.toLowerCase();
-    });
-
     imageData.forEach(function (item, index) {
-      const imagePath = item.ImgPath.toLowerCase();
+      const imagePath = item.ImgPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const imagePathRegex = new RegExp(imagePath, "i");
       // console.log("base64", `data:image/png;base64,${item.ImgBase64}`);
-      signature.HTML = signature.HTML.replace(imagePath, `data:image/png;base64,${item.ImgBase64}`);
+      signature.HTML = signature.HTML.replace(imagePathRegex, `data:image/png;base64,${item.ImgBase64}`);
     });
 
     resolve({ html: signature.HTML });
