@@ -221,6 +221,7 @@ $(document).ready(function () {
         // Make all containers draggable
         setTimeout(function () {
           $(".drag.vertical").draggable({
+            appendTo: "body", // keep the drag-ghost helper out of #drop; see rebindClonedSubtree in drop.js
             cancel: false,
             helper: function (e) {
               return $(this).clone();
@@ -410,6 +411,7 @@ $(document).ready(function () {
     // sync changes in initDraggedItem
     let container = getNewContainer();
     container.draggable({
+      appendTo: "body", // keep the drag-ghost helper out of #drop; see rebindClonedSubtree in drop.js
       cancel: false,
       helper: function (e) {
         return $(this).clone();
@@ -672,6 +674,7 @@ $(document).ready(function () {
     // });
 
     $(".drag").draggable({
+      appendTo: "body", // keep the drag-ghost helper out of #drop; see rebindClonedSubtree in drop.js
       cancel: false,
       helper: function (e) {
         return $(this).clone();

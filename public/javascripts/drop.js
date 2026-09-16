@@ -301,14 +301,12 @@ function removeExitingItem(itemId) {
   let siblings = oldItem.parent().children();
   const oldItemParent = oldItem.parent();
 
-  if (siblings.length === 2 && (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))) {
+  if (siblings.length >= 2 && (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))) {
     /**
-     * If no items in data 2 or data 3 then remove the data 2 or data ss3
-     */
-    oldItemParent.closest("div.drag.vertical").remove();
-  } else if (siblings.length > 2 && (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))) {
-    /**
-     * If still 2 or more items in data 2 or data 3 then add we or ns
+     * Remove just this item and leave its sibling(s) in place. Removing the
+     * whole data2/data3 wrapper here (as this used to do when exactly 2
+     * siblings existed) would also destroy the other sibling, since this
+     * item is only being relocated elsewhere on the canvas, not deleted.
      */
     oldItem.remove();
     setTimeout(function () {
@@ -344,10 +342,54 @@ function removeExitingItem(itemId) {
   }
 }
 
+// clone() drops all jQuery UI/event bindings. Whenever an existing group2,
+// group3, or table item is picked up and re-dropped elsewhere (see the
+// branches below), everything nested inside it - leaf items, nested
+// opposite-type groups, table cells - needs these rebound, or that nested
+// content stops accepting drops/clicks and can no longer be dragged on its
+// own.
+function rebindClonedSubtree(clonedItem) {
+  clonedItem.find(".ns, .we").each(function () {
+    addDropEvent($(this), true);
+  });
+  clonedItem.find(".data, .data2, .data3").each(function () {
+    addMouseOverEvents($(this));
+    addModalClick($(this));
+  });
+  clonedItem.find("div.editor-td-div").each(function () {
+    addDropEvent($(this), true);
+    addModalClick($(this));
+    addMouseOverEvents($(this));
+  });
+  clonedItem
+    .add(clonedItem.find(".drag.vertical"))
+    .draggable({
+      // Keep the drag-ghost helper out of the real DOM tree it's dragged
+      // within. jQuery UI's default appendTo:"parent" inserts the helper as
+      // an actual sibling of the dragged item for the life of the drag, and
+      // drop handlers run their prev()/next() neighbor lookups (see
+      // reconcileNorthSouth) *before* jQuery UI removes that helper - so a
+      // last-child drag would see its own drag-ghost as a phantom neighbor.
+      appendTo: "body",
+      cancel: false,
+      helper: function (e) {
+        return $(this).clone();
+      },
+      cursor: "move",
+      start: function (event, ui) {
+        $(this).draggable("instance").offset.click = {
+          left: 0,
+          top: 0,
+        };
+      },
+    });
+}
+
 function initDraggedItem(draggedItem, cell = false) {
   // sync changes in setTableSubItems
   let container = getNewContainer(cell);
   container.draggable({
+    appendTo: "body", // keep the drag-ghost helper out of #drop; see rebindClonedSubtree
     cancel: false,
     helper: function (e) {
       return $(this).clone();
@@ -369,17 +411,15 @@ function initDraggedItem(draggedItem, cell = false) {
     let clonedItem = draggedItem.clone();
     removeExitingItem(draggedItem.attr("id"));
     addMissingNorthSouth(clonedItem);
-    addMouseOverEvents(clonedItem.find(".data"));
-    addModalClick(clonedItem.find(".data"));
     clonedItem = addEventsToContainer2(clonedItem);
+    rebindClonedSubtree(clonedItem);
     return clonedItem;
   } else if (draggedItem.hasClass("group3")) {
     let clonedItem = draggedItem.clone();
     removeExitingItem(draggedItem.attr("id"));
     addMissingNorthSouth(clonedItem);
-    addMouseOverEvents(clonedItem.find(".data"));
-    addModalClick(clonedItem.find(".data"));
     clonedItem = addEventsToContainer3(clonedItem);
+    rebindClonedSubtree(clonedItem);
     return clonedItem;
   } else if (draggedItem.hasClass("tableItem")) {
     // clone() drops all jQuery UI/event bindings, so the table, its cells and
@@ -388,33 +428,7 @@ function initDraggedItem(draggedItem, cell = false) {
     // conversion) and its cells stop accepting drops/clicks.
     let clonedItem = draggedItem.clone();
     removeExitingItem(draggedItem.attr("id"));
-    clonedItem.find(".ns, .we").each(function () {
-      addDropEvent($(this), true);
-    });
-    clonedItem.find(".data, .data2, .data3").each(function () {
-      addMouseOverEvents($(this));
-      addModalClick($(this));
-    });
-    clonedItem.find("div.editor-td-div").each(function () {
-      addDropEvent($(this), true);
-      addModalClick($(this));
-      addMouseOverEvents($(this));
-    });
-    clonedItem
-      .add(clonedItem.find(".drag.vertical"))
-      .draggable({
-        cancel: false,
-        helper: function (e) {
-          return $(this).clone();
-        },
-        cursor: "move",
-        start: function (event, ui) {
-          $(this).draggable("instance").offset.click = {
-            left: 0,
-            top: 0,
-          };
-        },
-      });
+    rebindClonedSubtree(clonedItem);
     return clonedItem;
   } else if (draggedItem.attr("id")) {
     // removeItemWithParent(draggedItem.attr("id"));
@@ -689,6 +703,7 @@ function addEventsToContainer2(container) {
   addMouseOverEvents(container.find(".data2"));
   addModalClick(container.find(".data2"));
   container.draggable({
+    appendTo: "body", // keep the drag-ghost helper out of #drop; see rebindClonedSubtree
     cancel: false,
     helper: function (e) {
       return $(this).clone();
@@ -714,6 +729,7 @@ function addEventsToContainer3(container) {
   addMouseOverEvents(container.find(".data3"));
   addModalClick(container.find(".data3"));
   container.draggable({
+    appendTo: "body", // keep the drag-ghost helper out of #drop; see rebindClonedSubtree
     cancel: false,
     helper: function (e) {
       return $(this).clone();

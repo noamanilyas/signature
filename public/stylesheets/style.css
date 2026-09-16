@@ -233,7 +233,7 @@ p {
   border: 1px solid;
   text-align: left;
   padding: 4px;
-  border-color: rgba(0, 128, 0, 0.5);
+  border-color: teal;
 }
 
 .editor-tr {
