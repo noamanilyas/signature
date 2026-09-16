@@ -523,6 +523,13 @@ function addMissingNorthSouth(existingItem, north = true, south = true) {
   // let existingItemNorth = existingItem.find("div.noso:first > div > div.north");
   // let existingItemSouth = existingItem.find("div.noso:first > div > div.south");
   // console.log(lastChild);
+  // Fix: these used to be an if/else-if pair that returned after adding just
+  // one side. An item that was sandwiched (e.g. a neighbor was added to its
+  // north AND another to its south, consuming both) had both sides missing,
+  // but the early return meant only south ever got restored, leaving north
+  // missing (e.g. right after wrapping such an item into a new east/west
+  // group, where it needs both of its own north/south back). Both checks now
+  // run independently so either or both sides can be restored in one call.
   if (!lastChild.length && south) {
     let n = $(`<div class="ph-table-row">
 													<div class="ph-table-cell south ns drop s"></div>
@@ -531,8 +538,8 @@ function addMissingNorthSouth(existingItem, north = true, south = true) {
     //Drop events
     addDropEvent(n.find("div"), true);
     // addMouseEvents(n.find("div"), null);
-    return existingItem;
-  } else if (!firstChild.length && north) {
+  }
+  if (!firstChild.length && north) {
     let n = $(`<div class="ph-table-row">
 													<div class="ph-table-cell north ns drop s"></div>
 													</div>`);
@@ -540,10 +547,8 @@ function addMissingNorthSouth(existingItem, north = true, south = true) {
     //Drop events
     addDropEvent(n.find("div"), true);
     // addMouseEvents(n.find("div"), null);
-    return existingItem;
-  } else {
-    return existingItem;
   }
+  return existingItem;
 }
 
 function addMissingEastWest(existingItem, west = true, east = true) {
