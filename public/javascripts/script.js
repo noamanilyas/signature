@@ -150,7 +150,9 @@ $(document).ready(function () {
         addMouseOverEvents(HTMLObj.find(".data2"));
         addMouseOverEvents(HTMLObj.find(".data3"));
 
-        $("#drop").droppable("destroy");
+        if ($("#drop").droppable("instance")) {
+          $("#drop").droppable("destroy");
+        }
         // $("#drop").droppable("option", "disabled", true);
 
         HTMLObj.find("img").each(function () {
@@ -235,6 +237,11 @@ $(document).ready(function () {
       }, 500);
     } else {
       $("#drop").append($('<div id="customeFontDiv" style="display: none"></div>'));
+      // Fresh, empty canvas: allow a direct drop anywhere on #drop just this
+      // once. droppableDrop() destroys itself as soon as that first item
+      // lands, after which placement must go through that item's own
+      // north/south/east/west drop zones (see drop.js).
+      droppableDrop();
     }
     function getloginuser() {
       $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
@@ -700,44 +707,11 @@ $(document).ready(function () {
         removeAnyElement(item);
       },
     });
-    $("#drop").droppable({
-      classes: {
-        "ui-droppable-hover": "ui-state-hover",
-      },
-      bubbles: false,
-      greedy: true,
-      tolerance: "pointer",
-      drop: function (event, ui) {
-        edited = true;
-        // console.log("I am i #drop");
-        var $canvas = $(this);
-        if (!ui.draggable.hasClass("canvas-element")) {
-          var $canvasElement = ui.draggable.clone();
-          $canvasElement.addClass("canvas-element");
-
-          let draggedItem = $canvasElement;
-          draggedItem = initDraggedItem(draggedItem);
-
-          $canvas.append(draggedItem);
-          // $canvas.droppable("disable");
-          // $canvas.droppable("option", "disabled", true);
-          // $canvas.css({ "min-width": "0px" });
-          $canvasElement.css({
-            my: "center",
-            at: "center",
-            of: $canvas,
-            using: function (pos) {
-              $canvas.animate(pos, 200, "linear");
-            },
-          });
-          converToTableFunc();
-        } else {
-          // Handle deletion of element inside #drop
-          removeAnyElement(ui.draggable);
-          converToTableFunc();
-        }
-      },
-    });
+    // #drop's own droppable (direct-drop-anywhere, only while empty) is
+    // armed by droppableDrop() instead of here, so there is a single place
+    // that decides when a bare drop onto #drop is allowed. See the call to
+    // droppableDrop() above (fresh canvas) and in fieldModel.js (re-armed
+    // once the last item is removed).
   }, 500);
 
   function removeItemWithParent(itemId) {

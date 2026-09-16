@@ -53,9 +53,7 @@ $("#fieldsModel").on("hidden.bs.modal", function () {
   if (!saveFieldModal) {
     // $(".toBeReplacedByActual").remove();
     removeAnyElement($(".toBeReplacedByActual").eq(0));
-    console.log($("#drop").children().length);
-    if ($("#drop").children().length === 0) {
-      // console.log("step 1.5");
+    if (isDropEmpty()) {
       droppableDrop();
     }
   }
@@ -320,14 +318,14 @@ function removeAnyElement(item) {
       }
     }
 
-    if ($("#drop").children().length === 0 && parentId === "drop") {
+    if (isDropEmpty() && parentId === "drop") {
       droppableDrop();
     } else if (
       oldItemParent.children().length === 0 &&
       (oldItemParent.hasClass("data2") || oldItemParent.hasClass("data3"))
     ) {
       oldItemParent.closest("div.drag.vertical").remove();
-      if ($("#drop").children().length === 0) {
+      if (isDropEmpty()) {
         droppableDrop();
       }
     }

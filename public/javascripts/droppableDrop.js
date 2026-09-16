@@ -1,3 +1,13 @@
+// #drop only accepts a direct drop while it has no items yet (see the
+// drop handler below, which destroys this droppable the moment an item
+// lands). Once an item exists, further placement must go through that
+// item's own north/south/east/west drop zones (see drop.js). customeFontDiv
+// is a permanent hidden child of #drop, so children().length is not a
+// reliable "is #drop empty" check.
+function isDropEmpty() {
+  return $("#drop > .drag.vertical").length === 0;
+}
+
 function droppableDrop() {
   $("#drop").droppable({
     // accept: function (item) {
