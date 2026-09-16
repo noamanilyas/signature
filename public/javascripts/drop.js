@@ -334,18 +334,13 @@ function removeExitingItem(itemId) {
       }
     }, 50);
   } else {
-    // Plain root/table-cell sibling: removing it vacates the north/south
-    // side of its neighbors, which was consumed when it was first placed
-    // there. Restore it so that side is droppable again.
+    // Plain root/table-cell sibling: removing it makes its neighbors
+    // directly adjacent, so the gap between them must end up with exactly
+    // one drop zone (see reconcileNorthSouth).
     const prevSibling = oldItem.prev("div.drag.vertical");
     const nextSibling = oldItem.next("div.drag.vertical");
     oldItem.remove();
-    if (prevSibling.length) {
-      addMissingNorthSouth(prevSibling);
-    }
-    if (nextSibling.length) {
-      addMissingNorthSouth(nextSibling);
-    }
+    reconcileNorthSouth(prevSibling, nextSibling);
   }
 }
 
@@ -561,6 +556,35 @@ function addMissingNorthSouth(existingItem, north = true, south = true) {
     // addMouseEvents(n.find("div"), null);
   }
   return existingItem;
+}
+
+// When an item is removed from #drop (or another plain vertical stack) its
+// former prev/next siblings become directly adjacent. Each gap between two
+// siblings is meant to have exactly one drop zone, owned by whichever side
+// kept it when the items were originally placed. Depending on which side
+// that was, removing the item in between can leave either sibling pair with
+// TWO drop zones for the same gap (if the removed item held neither, e.g. it
+// was sandwiched) or ZERO (if the removed item held the one connector for a
+// gap, e.g. it used to be an end item). This reconciles that gap down to
+// exactly one drop zone.
+function reconcileNorthSouth(prevSibling, nextSibling) {
+  const hasPrev = prevSibling && prevSibling.length;
+  const hasNext = nextSibling && nextSibling.length;
+  if (hasPrev && hasNext) {
+    const prevSouth = prevSibling.find("div.noso:first > div > div.south");
+    const nextNorth = nextSibling.find("div.noso:first > div > div.north");
+    if (prevSouth.length && nextNorth.length) {
+      // Duplicate: both sides still carry a zone for what is now one gap.
+      nextNorth.parent().remove();
+    } else if (!prevSouth.length && !nextNorth.length) {
+      // Neither survived: the removed item held the only connector.
+      addMissingNorthSouth(prevSibling, false, true);
+    }
+  } else if (hasPrev) {
+    addMissingNorthSouth(prevSibling, false, true);
+  } else if (hasNext) {
+    addMissingNorthSouth(nextSibling, true, false);
+  }
 }
 
 function addMissingEastWest(existingItem, west = true, east = true) {

@@ -282,6 +282,8 @@ function removeAnyElement(item) {
   let itemId = item.attr("id");
   let parentId = item.parent().attr("id");
   const oldItemParent = item.parent();
+  const prevSibling = item.prev("div.drag.vertical");
+  const nextSibling = item.next("div.drag.vertical");
 
   $("#" + itemId)
     .closest("div.drag.vertical")
@@ -310,7 +312,11 @@ function removeAnyElement(item) {
         addMissingNorthSouth(child1st, true, false);
         addMissingNorthSouth(childlast, false, true);
       } else if (parentId === "drop") {
-        addMissingNorthSouth(childlast, false, true);
+        // The removed item's former neighbors are now directly adjacent, so
+        // the gap between them must end up with exactly one drop zone (see
+        // reconcileNorthSouth) rather than always just patching childlast,
+        // which only happens to be the right sibling when exactly 2 remain.
+        reconcileNorthSouth(prevSibling, nextSibling);
       }
     }
 
