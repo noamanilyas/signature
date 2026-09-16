@@ -251,7 +251,10 @@ function getSubItemsForgroup2(item) {
     let tdHorizontalAlignment = group.attr("text-align") ? `align="${group.attr("text-align")}"` : "";
     let tr1 = $(`<tr style='font-size: 0px' ${tdHorizontalAlignment}>`);
     let td1 = $(`<td>`);
-    applyCSS(td1, $(item).find(".data2:first"), ["border", "padding"]);
+    // Fix: include "size" so a width/height set on the group in the editor
+    // (see size.js) is no longer dropped when the group is rebuilt as a
+    // table for the preview.
+    applyCSS(td1, $(item).find(".data2:first"), ["border", "padding", "size"]);
 
     tr1.append(td1);
     tbody1.append(tr1);
@@ -322,7 +325,10 @@ function getSubItemsForgroup3(item) {
     let table1 = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
     let tr1 = $("<tr style='font-size: 0px'>");
     let td1 = $("<td>");
-    applyCSS(td1, $(item).find(".data3:first"), ["border", "padding"]);
+    // Fix: include "size" so a width/height set on the group in the editor
+    // (see size.js) is no longer dropped when the group is rebuilt as a
+    // table for the preview.
+    applyCSS(td1, $(item).find(".data3:first"), ["border", "padding", "size"]);
 
     tr1.append(td1);
     tbody1.append(tr1);
@@ -423,6 +429,12 @@ function applyTableBlockAlign($table, textAlign) {
   }
 }
 
+// Real HTML/CSS width & height attribute names carried over by applyCSS
+// when "size" is requested. Kept as an explicit whitelist (rather than an
+// indexOf("width")/indexOf("height") substring match) so it doesn't also
+// pick up the unrelated "width-stretch" attribute used elsewhere.
+const SIZE_ATTRIBS = ["width", "height", "min-width", "max-width", "min-height", "max-height"];
+
 function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
   //Test
   const elemAttributes = getAttributes(applyFrom);
@@ -437,6 +449,8 @@ function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
     } else if (attrib.indexOf("padding") !== -1 && type.indexOf("padding") !== -1) {
       applyTo.css(attrib, elemAttributes[attrib]);
     } else if (attrib.indexOf("background") !== -1) {
+      applyTo.css(attrib, elemAttributes[attrib]);
+    } else if (SIZE_ATTRIBS.indexOf(attrib) !== -1 && type.indexOf("size") !== -1) {
       applyTo.css(attrib, elemAttributes[attrib]);
     }
   }

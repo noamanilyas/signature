@@ -87,6 +87,17 @@ function fillAndAddSizeEvent(id, config) {
           $el.attr(oppositeProperty, oppositeNumericVal);
           $(`#${oppositeInputElem}`).val(oppositeNumericVal);
         }
+      } else {
+        // Fix: group2/group3 containers aren't cloned into the preview -
+        // convertToTableFunc() rebuilds them as a fresh <table>, copying
+        // over only attributes (via applyCSS/getAttributes), not the inline
+        // style set by $el.css() above. Border/padding/alignment tabs all
+        // mirror their css onto an attribute of the same name so that copy
+        // step can see them; do the same here so width/height (and their
+        // min/max companions) make it into the preview too.
+        Object.keys(obj).forEach(function (prop) {
+          $el.attr(prop, obj[prop]);
+        });
       }
     } else {
       obj[cssProperty] = "";
@@ -96,6 +107,10 @@ function fillAndAddSizeEvent(id, config) {
       $el.css(obj);
       if (isImg) {
         $el.removeAttr(cssProperty);
+      } else {
+        Object.keys(obj).forEach(function (prop) {
+          $el.removeAttr(prop);
+        });
       }
     }
 
