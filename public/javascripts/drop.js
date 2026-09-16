@@ -322,7 +322,18 @@ function removeExitingItem(itemId) {
       }
     }, 50);
   } else {
+    // Plain root/table-cell sibling: removing it vacates the north/south
+    // side of its neighbors, which was consumed when it was first placed
+    // there. Restore it so that side is droppable again.
+    const prevSibling = oldItem.prev("div.drag.vertical");
+    const nextSibling = oldItem.next("div.drag.vertical");
     oldItem.remove();
+    if (prevSibling.length) {
+      addMissingNorthSouth(prevSibling);
+    }
+    if (nextSibling.length) {
+      addMissingNorthSouth(nextSibling);
+    }
   }
 }
 
