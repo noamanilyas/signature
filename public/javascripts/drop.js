@@ -160,7 +160,13 @@ function addDropEvent(el, greedy) {
           // console.log("Parent item count", existingItem.parent().children().length);
 
           if (!itemEdited) {
-            if (existingItemNorth.length && !existingItemSouth.length) {
+            if (!existingItemNorth.length && !existingItemSouth.length) {
+              // Sandwiched: a neighbor already occupies both the north and
+              // south of the existing item, so the new group inherits its
+              // position and needs neither drop zone of its own either.
+              container.find("div.south").parent().remove();
+              container.find("div.north").parent().remove();
+            } else if (existingItemNorth.length && !existingItemSouth.length) {
               container.find("div.south").parent().remove();
             } else if (existingItemSouth.length && !existingItemNorth.length) {
               container.find("div.north").parent().remove();
@@ -218,7 +224,13 @@ function addDropEvent(el, greedy) {
           let existingItemEast = existingItem.find("div.eowo:first > div.east");
           let existingItemWest = existingItem.find("div.eowo:first > div.west");
           if (!itemEdited) {
-            if (existingItemEast.length && !existingItemWest.length) {
+            if (!existingItemEast.length && !existingItemWest.length) {
+              // Sandwiched: a neighbor already occupies both the east and
+              // west of the existing item, so the new group inherits its
+              // position and needs neither drop zone of its own either.
+              container.find("div.west").remove();
+              container.find("div.east").remove();
+            } else if (existingItemEast.length && !existingItemWest.length) {
               container.find("div.west").remove();
             } else if (existingItemWest.length && !existingItemEast.length) {
               container.find("div.east").remove();
