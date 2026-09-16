@@ -34,7 +34,7 @@ function createOneCol(index) {
   // col += `</tr>`;
   let oneCol = $(col);
   let tdDiv = oneCol.find("div.editor-td-div");
-  let UUID2 = `item-${Date.now() + index + Date.now()}`;
+  let UUID2 = `item-${Date.now() + index + Date.now()}-${nextIdSuffix()}`;
   tdDiv.attr("id", "editorTD-" + UUID2);
   addDropEvent(tdDiv, true);
   addModalClick(tdDiv);

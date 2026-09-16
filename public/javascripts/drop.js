@@ -1,5 +1,18 @@
 let edited = false;
 var userData = false;
+
+// Date.now() alone is millisecond-resolution, so two ids minted within the
+// same drop (e.g. a new item's own id and a wrapping group container's id,
+// which are generated back-to-back in the same synchronous handler) can
+// collide. jQuery's #id lookups (removeExitingItem, edits, ...) then resolve
+// to the wrong element - e.g. deleting an entire group instead of the single
+// leaf item that was actually being moved. Appending a monotonic counter
+// guarantees uniqueness regardless of timing.
+let __idSuffixCounter = 0;
+function nextIdSuffix() {
+  __idSuffixCounter += 1;
+  return __idSuffixCounter;
+}
 function addDropEvent(el, greedy) {
   el.removeClass("ui-droppable");
   // console.log(el.closest("drag"));
@@ -442,7 +455,7 @@ function initDraggedItem(draggedItem, cell = false) {
     return container;
   }
 
-  let UUID = `item-${Date.now()}`;
+  let UUID = `item-${Date.now()}-${nextIdSuffix()}`;
   container.attr("id", "container-" + UUID);
   let dataDiv = container.find(".data");
 
@@ -452,7 +465,7 @@ function initDraggedItem(draggedItem, cell = false) {
     if (draggedItem.attr("item") === "btnTable") {
       let tds = item.find("div.editor-td-div");
       tds.each(function (index) {
-        let UUID2 = `item-${Date.now() + index}`;
+        let UUID2 = `item-${Date.now() + index}-${nextIdSuffix()}`;
         $(this).attr("id", "editorTD-" + UUID2);
         addDropEvent($(this), true);
         addModalClick($(this));
@@ -716,7 +729,7 @@ function addEventsToContainer2(container) {
       };
     },
   });
-  let UUID = `item-${Date.now()}`;
+  let UUID = `item-${Date.now()}-${nextIdSuffix()}`;
   container.attr("id", "container-" + UUID);
   container.find(".data2").attr("id", "container-group-" + UUID);
   return container;
@@ -742,7 +755,7 @@ function addEventsToContainer3(container) {
       };
     },
   });
-  let UUID = `item-${Date.now()}`;
+  let UUID = `item-${Date.now()}-${nextIdSuffix()}`;
   container.attr("id", "container-" + UUID);
   container.find(".data3").attr("id", "container-group-" + UUID);
 

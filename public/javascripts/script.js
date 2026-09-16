@@ -425,7 +425,7 @@ $(document).ready(function () {
       },
     });
 
-    let UUID = `item-${Date.now()}`;
+    let UUID = `item-${Date.now()}-${nextIdSuffix()}`;
     container.attr("id", "container-" + UUID);
     let dataDiv = container.find(".data");
     container.addClass("tableItem");
@@ -479,7 +479,7 @@ $(document).ready(function () {
         // console.log("yyyyyyyyyyyyyy", style);
         // console.log("dddddddddddddd", trTDs.eq(index)[0].style);
         // console.log("dddddddddddddd", trTDs.eq(index)[0].style.length);
-        let UUID2 = `item-${Date.now() + index + Date.now()}`;
+        let UUID2 = `item-${Date.now() + index + Date.now()}-${nextIdSuffix()}`;
         let tdDiv = newTD.find("div.editor-td-div");
         tdDiv.attr("id", "editorTD-" + UUID2);
         addDropEvent(tdDiv, true);
