@@ -362,17 +362,29 @@ function removeExitingItem(itemId) {
 // content stops accepting drops/clicks and can no longer be dragged on its
 // own.
 function rebindClonedSubtree(clonedItem) {
-  clonedItem.find(".ns, .we").each(function () {
-    addDropEvent($(this), true);
+  // jQuery UI's droppable greedy check (see _drop in jquery-ui.js) walks a
+  // droppable's *current* descendants at drop time to decide whether to
+  // defer to a nested greedy droppable. It relies on registration order:
+  // an ancestor (e.g. a table cell) must be re-registered via .droppable()
+  // before its descendants (e.g. that cell's item's own north/south/east/
+  // west strips), or the ancestor's drop handler can end up running *after*
+  // the descendant's - by which point the descendant's own handler has
+  // already mutated/removed itself from the DOM, so the ancestor no longer
+  // sees it as a live greedy child and wrongly fires too (e.g. replacing a
+  // table cell's content right after a "beside" drop had just added to it).
+  // A single combined selector keeps results in document order (ancestors
+  // before descendants), matching how these elements were bound originally.
+  clonedItem.find(".ns, .we, div.editor-td-div").each(function () {
+    let el = $(this);
+    addDropEvent(el, true);
+    if (el.hasClass("editor-td-div")) {
+      addModalClick(el);
+      addMouseOverEvents(el);
+    }
   });
   clonedItem.find(".data, .data2, .data3").each(function () {
     addMouseOverEvents($(this));
     addModalClick($(this));
-  });
-  clonedItem.find("div.editor-td-div").each(function () {
-    addDropEvent($(this), true);
-    addModalClick($(this));
-    addMouseOverEvents($(this));
   });
   clonedItem
     .add(clonedItem.find(".drag.vertical"))

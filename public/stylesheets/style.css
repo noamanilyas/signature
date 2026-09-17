@@ -7,6 +7,14 @@
   z-index: 100;
   /* padding:10px;  */
 }
+/* Canvas item containers (text, image, table cells, groups) get their
+   default background from .drag above, but that class is shared with the
+   sidebar palette buttons/icons. Scope this override to .drag.vertical,
+   which only the dropped canvas containers carry, so items are transparent
+   by default until the user picks a background via the Background tab. */
+.drag.vertical {
+  background-color: transparent;
+}
 /* .ns {
         border-width: 1px;
         border-style: solid;
@@ -214,10 +222,14 @@ p {
 
 /* Tables */
 
-/* Give table blocks full row width so horizontal text-align can move the table */
-.tableItem > .ph-table {
-  width: 100%;
-}
+/* Note: previously forced to width:100% here "so horizontal text-align can
+   move the table" (see alignment.spec.ts). That stretched this whole
+   west/data/east row to the full canvas width, pushing the east/west drop
+   zones far from the (much narrower) visible table - making it look like
+   dropping anything beside a table doesn't work, since the actual target
+   was way off at the canvas edge. Left at its natural shrink-to-fit width
+   so the drop zones hug the table like they do for every other item type.
+*/
 
 .editor-table {
   font-family: arial, sans-serif;
