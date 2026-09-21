@@ -2,9 +2,53 @@
 <html lang="en">
   <head>
     <title>Signature Designer</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+  </head>
+  <body>
+    <!--
+      Self-contained preloader: no dependency on jQuery/Bootstrap/SweetAlert2,
+      so it paints immediately on click/navigation, before the scripts below
+      (which currently block body parsing) have even started loading.
+      Removed by script.js once SweetAlert2's own "Loading Signature" dialog
+      is ready to take over.
+    -->
+    <div id="initial-preloader">
+      <style>
+        #initial-preloader {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          background-color: #61a733;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        #initial-preloader .spinner {
+          width: 42px;
+          height: 42px;
+          border: 4px solid rgba(255, 255, 255, 0.35);
+          border-top-color: #ffffff;
+          border-radius: 50%;
+          animation: initial-preloader-spin 0.8s linear infinite;
+        }
+        #initial-preloader .label {
+          color: #ffffff;
+          font-size: 16px;
+        }
+        @keyframes initial-preloader-spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+      <div class="spinner"></div>
+      <div class="label">Loading Signature</div>
+    </div>
 
     <script src="./libs/jquery.min.js"></script>
-    <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="stylesheet" href="./libs/jquery-te-1.4.0.css" />
     <script type="text/javascript" src="./libs/jquery-te-1.4.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -53,8 +97,7 @@
     <!-- <link rel="stylesheet" href="@sweetalert2/theme-borderless/borderless.css" /> -->
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  </head>
-  <body>
+
     <!-- <center> -->
     <div>
       <nav class="navbar navbar-dark bg-dark nav-right">

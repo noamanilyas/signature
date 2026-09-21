@@ -46,8 +46,20 @@ function fillAndAddEventBorder(id, inputElem, cssProperty, valAppend) {
     let obj = {};
     let value = this.value.indexOf(valAppend) === -1 ? this.value + valAppend : this.value;
     obj[cssProperty] = value;
-    $(`#${id}`).css(obj);
-    $(`#${id}`).attr(cssProperty, value);
+    const $target = $(`#${id}`);
+    // A text item's border reaches the exported preview via the attribute
+    // below alone - convertToTable.js's textTable()/applyCSS() read this
+    // attribute (not inline style) and paint the border on the preview's
+    // wrapping <td>, not the live span. So for text items, skip the live
+    // .css() call: the border then only appears in the Preview panel
+    // instead of also rendering on the canvas while editing. Every other
+    // category (image, icon, table cell, group) still needs the live
+    // .css() here, since their preview output is built by cloning this
+    // element's actual inline style.
+    if ($target.attr("category") !== "textField") {
+      $target.css(obj);
+    }
+    $target.attr(cssProperty, value);
     converToTableFunc();
   });
 }

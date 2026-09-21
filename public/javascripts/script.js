@@ -58,6 +58,8 @@ $(document).ready(function () {
 
   // End --- Preview Drag
 
+  document.getElementById("initial-preloader")?.remove();
+
   Swal.fire({
     // position: "top-end",
     onBeforeOpen: () => {

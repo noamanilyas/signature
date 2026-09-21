@@ -380,11 +380,34 @@ function getSubItemsForgroup3(item) {
   });
 }
 
+// Border/padding are applied to td1 (below) so they render as one clean
+// rectangle around the text. Leaving them on the text's own inline element
+// too is redundant, and actively harmful once that text wraps onto more
+// than one line (e.g. a manual line break): a border on inline content
+// that spans multiple lines paints once per line box rather than as a
+// single outline, which shows up as a stray extra border segment.
+function stripBoxModelStyle($el) {
+  const style = $el.attr("style");
+  if (style) {
+    const kept = style
+      .split(";")
+      .map((rule) => rule.trim())
+      .filter((rule) => rule && rule.indexOf("border") !== 0 && rule.indexOf("padding") !== 0);
+    $el.attr("style", kept.join("; "));
+  }
+  $.each(Array.from($el[0]?.attributes || []), function (_index, attribute) {
+    if (attribute.name.indexOf("border") === 0 || attribute.name.indexOf("padding") === 0) {
+      $el.removeAttr(attribute.name);
+    }
+  });
+}
+
 function textTable(dataItem, td, thisItem) {
   let textTable = $("<table style='font-size: 0px; white-space:nowrap;' cellspacing='0' cellpadding='0'>");
   let textTbody = $("<tbody>");
   let textTr = $("<tr style='font-size: 0px'>");
   let td1 = $("<td>");
+  stripBoxModelStyle(dataItem);
   let dataItemHTML = dataItem.prop("outerHTML").replace(/display\s*:\s*block\s*;?/g, "");
   applyCSS(td1, thisItem.find(".data").children().eq(0));
   td1.append(dataItemHTML);
@@ -400,11 +423,17 @@ function textTable(dataItem, td, thisItem) {
       .split(";")
       .map((property) => property.split(":").map((part) => part.trim()))
       .reduce((acc, [key, value]) => {
-        acc[key] = value;
+        // border/padding already went onto td1 (and align onto the outer td)
+        // via applyCSS above - copying them here too would additionally paint
+        // them onto the wrapping <table>, making the text's own border look
+        // like it belongs to a surrounding table.
+        if (key && key.indexOf("border") === -1 && key.indexOf("padding") === -1) {
+          acc[key] = value;
+        }
         return acc;
       }, {});
 
-    // Apply the extracted CSS properties to textTable
+    // Apply the remaining CSS properties (font, alignment, etc.) to textTable
     textTable.css(cssProperties);
   }
 }
