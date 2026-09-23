@@ -82,17 +82,16 @@ test("repro: border set on a text item inside a horizontal group must not land o
   console.log("PREVIEW HTML:\n", previewHTML);
 
   // The generated preview wraps the bordered text in its own small <table>
-  // purely for email-client layout. That wrapper <table> tag itself must
-  // stay borderless - only the <td> that tightly hugs the text may carry
-  // the border (the span itself no longer needs its own copy: a border on
-  // inline content that wraps across multiple lines paints once per line
-  // box instead of a single rectangle, so it's kept off the span and left
-  // solely on the block-level td - see text-border-multiline.spec.ts).
+  // purely for email-client layout. Border and padding both land on the
+  // <td> that tightly hugs the text - they have to share one box or the
+  // box model breaks (padding outside the border, or a border inflated by
+  // the span's padding). That wrapper <table> tag itself must stay
+  // borderless.
   const borderedTd = page.locator(".panelPreview td[style*='border-width: 7px']").first();
   await expect(borderedTd).toHaveCount(1);
   const wrapperTable = borderedTd.locator("xpath=ancestor::table[1]");
   const wrapperTableStyle = await wrapperTable.evaluate((el) => (el as HTMLElement).getAttribute("style"));
   console.log("wrapper <table> style:", wrapperTableStyle);
-  expect(wrapperTableStyle).not.toContain("border-width: 7px");
-  expect(wrapperTableStyle).not.toContain("dashed");
+  expect(wrapperTableStyle ?? "").not.toContain("border-width: 7px");
+  expect(wrapperTableStyle ?? "").not.toContain("dashed");
 });

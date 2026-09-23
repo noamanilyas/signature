@@ -380,12 +380,24 @@ function getSubItemsForgroup3(item) {
   });
 }
 
-// Border/padding are applied to td1 (below) so they render as one clean
-// rectangle around the text. Leaving them on the text's own inline element
-// too is redundant, and actively harmful once that text wraps onto more
-// than one line (e.g. a manual line break): a border on inline content
-// that spans multiple lines paints once per line box rather than as a
-// single outline, which shows up as a stray extra border segment.
+// Border and padding both go on td1 (below), never split across td1 and
+// the span: the box model only works when they share a box. Border on the
+// span + padding on td1 puts the padding outside the border, so the border
+// stays glued to the text; border on td1 + padding on the span inflates
+// the span and so stretches the border. td1 is the box they share because
+// it hugs the text (it sits inside textTable, its own shrink-wrapping
+// inner <table>, so it stays one line tall rather than stretching to the
+// row height - see e2e text-border-right-in-group.spec.ts), it renders a
+// single rectangle around multi-line text where an inline span would paint
+// one border per line box, and Outlook's Word engine drops border/padding
+// on inline(-block) spans but honours it on a <td>.
+//
+// The span is still forced to display:inline-block (rather than the
+// editor's display:block) so its own box wraps all of its content: text
+// plus any <div>s jqte inserts per line (see tabsJs/text.js). As a plain
+// inline box it would be split into a separate box per line, and
+// non-inherited properties like overflow:hidden would then only apply to
+// the first line.
 function stripBoxModelStyle($el) {
   const style = $el.attr("style");
   if (style) {
@@ -407,14 +419,18 @@ function textTable(dataItem, td, thisItem) {
   let textTbody = $("<tbody>");
   let textTr = $("<tr style='font-size: 0px'>");
   let td1 = $("<td>");
+  const sourceSpan = thisItem.find(".data").children().eq(0);
+  // border.js/padding.js store these as attributes, not inline style, so
+  // applyCSS reads them off the live span and paints them onto td1.
   stripBoxModelStyle(dataItem);
-  let dataItemHTML = dataItem.prop("outerHTML").replace(/display\s*:\s*block\s*;?/g, "");
-  applyCSS(td1, thisItem.find(".data").children().eq(0));
+  dataItem.css("display", "inline-block");
+  let dataItemHTML = dataItem.prop("outerHTML");
+  applyCSS(td1, sourceSpan, ["align", "border", "padding"]);
   td1.append(dataItemHTML);
   textTr.append(td1);
   textTbody.append(textTr);
   textTable.append(textTbody);
-  applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
+  applyCSS(td, sourceSpan, ["align"]);
   td.append(textTable);
   let spanStyle = thisItem.find("span").attr("style");
   spanStyle = spanStyle.replace(/display\s*:\s*block\s*;?/g, "");
@@ -423,10 +439,10 @@ function textTable(dataItem, td, thisItem) {
       .split(";")
       .map((property) => property.split(":").map((part) => part.trim()))
       .reduce((acc, [key, value]) => {
-        // border/padding already went onto td1 (and align onto the outer td)
-        // via applyCSS above - copying them here too would additionally paint
-        // them onto the wrapping <table>, making the text's own border look
-        // like it belongs to a surrounding table.
+        // border/padding already went onto td1 (and align onto the outer
+        // td) via applyCSS above - copying them here too would
+        // additionally paint them onto the wrapping <table>, making the
+        // text's own border look like it belongs to a surrounding table.
         if (key && key.indexOf("border") === -1 && key.indexOf("padding") === -1) {
           acc[key] = value;
         }

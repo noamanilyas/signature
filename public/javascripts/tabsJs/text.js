@@ -60,13 +60,32 @@ setTimeout(function () {
       setTimeout(function () {
         if ($(".jqte_editor").text().indexOf("**Text Place Holder**") === -1) {
           // console.log("jqte changed", `#${getCurrentActiveId()}`);
-          $(`#${getCurrentActiveId()}`).html($(".jqte_editor").html());
+          $(`#${getCurrentActiveId()}`).html(inlineSafeLineBreaks($(".jqte_editor").html()));
           converToTableFunc();
         }
       }, 200);
     },
   });
 }, 1000);
+
+// jQuery TE's editor is a contenteditable div, and (like the browser's
+// default paragraph separator) wraps every new line in its own <div>. The
+// text field itself is a <span>, and a <div> nested in an inline element
+// forces the browser to split that span into a separate box per line when
+// rendering - so convert each line's wrapping <div> into a <br> instead,
+// keeping the span's content purely inline.
+function inlineSafeLineBreaks(html) {
+  const container = document.createElement("div");
+  container.innerHTML = html;
+  const lineDivs = container.querySelectorAll(":scope > div");
+  lineDivs.forEach(function (div) {
+    div.replaceWith(document.createElement("br"), ...Array.from(div.childNodes));
+  });
+  if (container.firstChild && container.firstChild.nodeName === "BR") {
+    container.firstChild.remove();
+  }
+  return container.innerHTML;
+}
 
 function renderTextTab(id) {
   currentActiveId = id;

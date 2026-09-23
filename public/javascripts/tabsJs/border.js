@@ -50,7 +50,8 @@ function fillAndAddEventBorder(id, inputElem, cssProperty, valAppend) {
     // A text item's border reaches the exported preview via the attribute
     // below alone - convertToTable.js's textTable()/applyCSS() read this
     // attribute (not inline style) and paint the border on the preview's
-    // wrapping <td>, not the live span. So for text items, skip the live
+    // wrapping <td>, alongside the padding, so the two share one box and
+    // the padding sits inside the border. So for text items, skip the live
     // .css() call: the border then only appears in the Preview panel
     // instead of also rendering on the canvas while editing. Every other
     // category (image, icon, table cell, group) still needs the live

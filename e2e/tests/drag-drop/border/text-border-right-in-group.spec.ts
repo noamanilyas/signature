@@ -58,10 +58,24 @@ test("repro: border-right on a grouped text item must not stretch to the row hei
   const previewHTML = await previewTable.evaluate((el) => el.outerHTML);
   console.log("PREVIEW HTML:\n", previewHTML);
 
-  // The td1 that hugs the bordered text should be roughly one line tall,
-  // not stretched to the height of the tallest sibling (e.g. an image ~64px).
+  // The bordered cell should be roughly one line tall, not stretched to
+  // the height of the tallest sibling (e.g. an image ~64px).
   const borderedTd = page.locator(".panelPreview td[style*='border-right']").first();
   const box = await borderedTd.boundingBox();
-  console.log("bordered td box:", box);
+  const imageBox = await page.locator(".panelPreview img").first().boundingBox();
+  console.log("bordered td box:", box, "tallest sibling (image) box:", imageBox);
+
+  // td1 sits inside its own shrink-wrapping inner <table>, so it stays one
+  // line tall rather than being stretched to the row height by the image.
+  expect(box!.height).toBeLessThan(imageBox!.height);
+
+  // Border and padding must share one box (td1), so that padding-right
+  // pushes the border line AWAY from the text rather than leaving it stuck
+  // against it. Splitting them - border on the span, padding on td1 - puts
+  // the padding outside the border and glues the line to the text.
+  const spanBox = (await borderedTd.locator("span[category='textField']").first().boundingBox())!;
+  const gapTextToBorder = box!.x + box!.width - (spanBox.x + spanBox.width);
+  console.log("gap between text and border line:", gapTextToBorder);
+  expect(gapTextToBorder).toBeGreaterThanOrEqual(20);
   await page.screenshot({ path: testInfo.outputPath("preview-cropped.png"), clip: previewBox! });
 });
