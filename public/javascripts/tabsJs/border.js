@@ -41,6 +41,9 @@ function fillAndAddEventBorder(id, inputElem, cssProperty, valAppend) {
     }
     $(`#${inputElem}`).val(element);
   }
+  if (isColorField(inputElem)) {
+    setupColorField(inputElem, element);
+  }
   // Add event listeners
   $(`#${inputElem}`).on("change", function () {
     let obj = {};

@@ -336,6 +336,9 @@ function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
   if (element) {
     $(`#${inputElem}`).val(element);
   }
+  if (isColorField(inputElem)) {
+    setupColorField(inputElem, element);
+  }
   // Add event listeners
   $(`#${inputElem}`).on("change", function () {
     let obj = {};

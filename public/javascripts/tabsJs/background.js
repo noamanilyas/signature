@@ -32,6 +32,8 @@ function renderBackgroundTab(id) {
     converToTableFunc();
   });
 
+  setupColorField(inputElem, inputValSet == true || inputValSet == "true" ? element : "");
+
   // check existing image
 
   // Image upload
@@ -50,7 +52,7 @@ function renderBackgroundTab(id) {
     // Add file name to image attr
     $(`#${id}`).parent().attr("filename", file.name);
 
-    $(`#${inputElem}`).val("");
+    setupColorField(inputElem, "");
 
     var reader = new FileReader();
 
@@ -74,7 +76,7 @@ function renderBackgroundTab(id) {
       $(`#${id}`).attr("background", "");
       $(`#${id}`).parent().attr("backGValSet", false);
       $(`#${id}`).attr("link", false);
-      $(`#${inputElem}`).val("");
+      setupColorField(inputElem, "");
       $(`#${id}`).attr("src", defaultSRC);
     }
     converToTableFunc();
