@@ -93,6 +93,10 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="./stylesheets/style.css" />
     <link rel="stylesheet" href="./stylesheets/indexstyle.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400;0,700;1,400;1,700&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=Gelasio:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    />
 
     <!-- <link rel="stylesheet" href="@sweetalert2/theme-borderless/borderless.css" /> -->
 
@@ -166,8 +170,8 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="propertiesModelLabel">Properties</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Minimize">
+              <span aria-hidden="true">&minus;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -469,6 +473,10 @@
               </div>
             </section>
           </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-danger" id="propertiesModelDelete">Delete</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="propertiesModelOk">OK</button>
+          </div>
         </div>
       </div>
     </div>
@@ -714,6 +722,7 @@
     <!-- </center> -->
     <script type="text/javascript" src="./javascripts/api.js"></script>
     <script type="text/javascript" src="./libs/html2canvas.min.js"></script>
+    <script type="text/javascript" src="./javascripts/fontsConfig.js"></script>
     <script type="text/javascript" src="./javascripts/droppableDrop.js"></script>
     <script type="text/javascript" src="./javascripts/drop.js"></script>
     <script type="text/javascript" src="./javascripts/fetchHTML.js"></script>

@@ -190,12 +190,8 @@ $(document).ready(function () {
                   // Add to array
                   customeFontsArray.push(fontName);
 
-                  // Prepend font to the font list
-                  const fontList = document.querySelector("#text-fontFamily");
-                  fontList.insertBefore(
-                    $(`<option class="${fontId}" value="${fontName}">${fontName}</option>`)[0],
-                    fontList.children[1]
-                  );
+                  // Add font to the autocomplete suggestions
+                  addFontToAutocomplete(fontName);
 
                   // Append font to font list for deleteing
                   const fontDeleteList = document.querySelector("ul.customFontListShow");

@@ -542,6 +542,14 @@ async function convertCustomFontToImage(item) {
       // console.log(elemAttributes.style.indexOf(font));
     }
 
+    // Any font-family that isn't in the known email-safe set (Word-catalog
+    // picks, typed/pasted custom names) needs rasterizing too, since
+    // recipient email clients can't load it as a real web font.
+    const fontFamilyMatch = /font-family:\s*([^;]+)/i.exec(elemAttributes.style);
+    if (fontFamilyMatch && !isEmailSafeFontFamily(fontFamilyMatch[1])) {
+      customFontExists = true;
+    }
+
     // console.log(customFontExists);
     if (customFontExists) {
       const options = {

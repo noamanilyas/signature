@@ -201,6 +201,10 @@ function renderTextTab(id) {
     wrappers.forEach(function (value, key, myArray) {
       fillAndWrapping(id, value);
     });
+
+    // Must (re)init after resetTextTab's blanket .off(), which strips the
+    // autocomplete widget's internal event bindings along with everything else.
+    initFontFamilyAutocomplete();
   }, 100);
 
   // Clear format btn
@@ -408,13 +412,8 @@ function customFontEvents() {
             // Add to array
             customeFontsArray.push(fontName);
 
-            // Prepend font to the font list
-            const fontList = document.querySelector("#text-fontFamily");
-            fontList.prepend();
-            fontList.insertBefore(
-              $(`<option class="${fontId}" value="${fontName}">${fontName}</option>`)[0],
-              document.querySelector("#text-fontFamily").children[1]
-            );
+            // Add font to the autocomplete suggestions
+            addFontToAutocomplete(fontName);
 
             // Add font to html for future use
             const newDiv = document.createElement("div");

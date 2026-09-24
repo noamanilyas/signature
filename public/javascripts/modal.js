@@ -1,3 +1,8 @@
+// The draggable wrapper (".drag.vertical") for whichever item the
+// Properties popup is currently showing, set by renderModel() so the
+// popup's Delete button knows what to remove.
+var currentPropsItem = null;
+
 var a = {
   textField: ["text", "background", "visibility", "alignment", "border", "padding", "size"],
   // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
@@ -100,6 +105,11 @@ function renderModel(e) {
   // console.log("category", category);
   if (a[category]) {
     // console.log(e.target);
+    // Track the same top-level draggable wrapper that dragging to the
+    // "Delete Item" trash zone would grab, so the modal's Delete button can
+    // remove it via the existing removeAnyElement() flow (script.js /
+    // fieldModel.js) with no change to that logic.
+    currentPropsItem = $(`#${id}`).closest("div.drag.vertical");
     $("#propertiesModel").modal("show");
 
     // Fix: modal always showed the generic static "Properties" heading no
@@ -163,3 +173,11 @@ function addModalClick(item) {
     // }, 200);
   });
 }
+
+$("#propertiesModelDelete").click(function (e) {
+  if (currentPropsItem && currentPropsItem.length) {
+    removeAnyElement(currentPropsItem);
+    currentPropsItem = null;
+  }
+  $("#propertiesModel").modal("hide");
+});

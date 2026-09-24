@@ -1,3 +1,36 @@
+/* Font Family suggestion dropdown - self-contained, no external widget. */
+.font-family-combo {
+  position: relative;
+}
+.font-family-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  box-sizing: border-box;
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+  margin: 2px 0 0;
+  list-style: none;
+}
+.font-family-suggestions li {
+  padding: 6px 12px;
+  color: #212529;
+  cursor: pointer;
+}
+.font-family-suggestions li:hover,
+.font-family-suggestions li.active {
+  background: #007bff;
+  color: #fff;
+}
+
 .drag {
   /* width: 100px; */
   /* height: 50px; */
