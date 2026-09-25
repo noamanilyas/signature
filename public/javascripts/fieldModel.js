@@ -318,6 +318,18 @@ function removeAnyElement(item) {
       }
     }
 
+    // A table cell left with no children collapses to 0 height (the nested
+    // ph-table/table-cell layout createOneCol relies on doesn't honor
+    // cellWH's min-height once it has no content), which makes it
+    // impossible to drop into afterwards - the browser hit-tests the
+    // wrapping <td> instead of this now-zero-size div, which has no drop
+    // handler of its own. Restore the same non-breaking-space placeholder
+    // the delDrop-bar path (script.js) already uses so the cell keeps a
+    // droppable hit area.
+    if (oldItemParent.hasClass("tableDrop") && oldItemParent.children().length === 0) {
+      oldItemParent.html("&nbsp;");
+    }
+
     if (isDropEmpty() && parentId === "drop") {
       droppableDrop();
     } else if (
