@@ -108,10 +108,33 @@ function getSubItemsForTableItem(item) {
   return new Promise(async (resolve, reject) => {
     let tbl = $(item).find(".data:first").children();
     let tbody = $("<tbody>");
-    let table = $(`<table style='${tbl.attr("width-stretch") == "100%" ? "width: 100%" : ""}'>`);
     let tblTR = tbl.children().children();
+    // "Stretch" only has somewhere useful to put the extra width when a cell
+    // can actually reflow into it (text, or a nested table/group). A table of
+    // plain images has nothing to grow - width:100% on the table would still
+    // force the browser's auto-layout to split that width across the image
+    // columns anyway (invisible until a cell gets a background color, which
+    // is what makes it look like the image itself is "stretched"). So skip
+    // the stretch entirely when every cell is image-only, matching how the
+    // editor's own div-based table renders it (effectively unchanged). This
+    // also gates keepImageCellShrinkToFit below: giving an image cell an
+    // explicit (if tiny) percentage width is itself enough to make an
+    // otherwise-auto-width table fill its container, so that hint must stay
+    // off unless there's a flexible sibling cell it's actually protecting.
+    const allImageCells = tableHasOnlyImageCells(tblTR);
+    const stretch = tbl.attr("width-stretch") == "100%" && !allImageCells;
+    let table = $(`<table style='${stretch ? "width: 100%" : ""}'>`);
     if (tbl.length > 0) {
       let spanStyle = tbl.attr("style");
+      // applyEditorTableStretch() (alignmentGroups.js) sets width:100% as a
+      // live inline style on the .editor-table element itself, not just the
+      // width-stretch attribute checked above. Blindly copying that style
+      // string here would put width:100% right back once we've decided
+      // (see the stretch computation above) that this table shouldn't
+      // stretch, so strip any width out of the copy in that case.
+      if (spanStyle && !stretch) {
+        spanStyle = spanStyle.replace(/(?:^|;)\s*(?:min-|max-)?width\s*:[^;]*/gi, "");
+      }
       if (spanStyle) {
         table.attr("style", spanStyle);
       }
@@ -158,6 +181,9 @@ function getSubItemsForTableItem(item) {
             dataItem = await convertCustomFontToImage(dataItem);
             applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
             td.append(dataItem);
+            if (!allImageCells) {
+              keepImageCellShrinkToFit(td, dataItem);
+            }
           }
         } else if (actualItem.hasClass("group2")) {
           let table = await getSubItemsForgroup2(actualItem);
@@ -260,10 +286,17 @@ function getSubItemsForgroup2(item) {
     tbody1.append(tr1);
     table1.append(tbody1);
 
+    // Same reasoning as getSubItemsForTableItem's `stretch`/`allImageCells`:
+    // a row of nothing but images has no flexible cell for "Stretch" to grow
+    // into, and even just hinting an image <td> to shrink-to-fit (below) is
+    // itself enough to pull an otherwise-auto-width table to fill its
+    // container - so both must stay off when every item in the group is a
+    // plain image.
+    const allImageChildren = groupItemsAreAllImages(groupChildren);
     let tbody = $("<tbody>");
     let table = $(
       `<table style='font-size: 0px;${
-        group.attr("width-stretch") == "100%" ? "width: 100%" : ""
+        group.attr("width-stretch") == "100%" && !allImageChildren ? "width: 100%" : ""
       }' cellspacing='0' cellpadding='0'>`
     );
 
@@ -288,6 +321,9 @@ function getSubItemsForgroup2(item) {
           dataItem = await convertCustomFontToImage(dataItem);
           applyCSS(td, thisItem.find(".data").children(), ["align"]);
           td.append(dataItem);
+          if (!allImageChildren) {
+            keepImageCellShrinkToFit(td, dataItem);
+          }
           /**
            * If width on text item then stretch
            */
@@ -472,6 +508,54 @@ function applyTableBlockAlign($table, textAlign) {
   } else if (textAlign === "left") {
     $table.css({ "margin-left": "0", "margin-right": "auto", display: "table" });
   }
+}
+
+// A "Stretch"-aligned table (width-stretch="100%", see getSubItemsForTableItem
+// above) puts width:100% on the rebuilt <table>. Without a width hint on its
+// <td>s, the browser's table auto-layout then splits that 100% evenly across
+// every column - including ones that hold nothing but a small fixed-size
+// image - leaving each image sitting in a cell far wider than itself. That
+// extra space is invisible until the cell gets a background color, at which
+// point the image appears to be "stretched" way beyond the width it was
+// given. width:1% + white-space:nowrap is the standard email-safe way to
+// tell auto-layout "this column is exactly as wide as its content, don't
+// give it a share of the extra width" - the image's own (possibly explicit)
+// width still wins as the column's minimum content width.
+function keepImageCellShrinkToFit(td, dataItem) {
+  if (dataItem.is("img") || dataItem.find("img").length) {
+    td.css({ width: "1%", "white-space": "nowrap" });
+  }
+}
+
+// True only if every cell in every row is a plain image/icon dataItem (not
+// text, and not a nested table/group, which could itself contain text) -
+// see keepImageCellShrinkToFit's comment for why that matters for "Stretch".
+function tableHasOnlyImageCells(tblTR) {
+  for (let rowIndex = 0; rowIndex < tblTR.length; rowIndex++) {
+    const tds = tblTR.eq(rowIndex).children();
+    for (let tdIndex = 0; tdIndex < tds.length; tdIndex++) {
+      const thisItem = tds.eq(tdIndex);
+      const actualItem = thisItem.children().children().children();
+      const isImageOnly =
+        actualItem.hasClass("dataItem") && thisItem.find("span").attr("category") !== "textField";
+      if (!isImageOnly) return false;
+    }
+  }
+  return true;
+}
+
+// Same check as tableHasOnlyImageCells, for a getSubItemsForgroup2 row: its
+// items sit directly in groupChildren rather than nested under an
+// editor-td/ph-table-cell chain, so this reads thisItem's own class instead
+// of drilling into it.
+function groupItemsAreAllImages(groupChildren) {
+  for (let index = 0; index < groupChildren.length; index++) {
+    const thisItem = groupChildren.eq(index);
+    const isImageOnly =
+      thisItem.hasClass("dataItem") && thisItem.find("span").attr("category") !== "textField";
+    if (!isImageOnly) return false;
+  }
+  return true;
 }
 
 // Real HTML/CSS width & height attribute names carried over by applyCSS
