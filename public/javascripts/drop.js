@@ -379,8 +379,16 @@ function rebindClonedSubtree(clonedItem) {
     addDropEvent(el, true);
     if (el.hasClass("editor-td-div")) {
       addModalClick(el);
-      addMouseOverEvents(el);
     }
+  });
+  // Bind hover to the whole td.editor-td, not the inner editor-td-div: td's
+  // bounding box covers the div's too, so this alone highlights the entire
+  // cell (border + padding + content) on hover - binding both would show two
+  // nested highlight boxes instead of one. (Click still resolves correctly
+  // via renderModel's editor-td fallback since it bubbles up to the table's
+  // .data click handler.)
+  clonedItem.find("td.editor-td").each(function () {
+    addMouseOverEvents($(this));
   });
   clonedItem.find(".data, .data2, .data3").each(function () {
     addMouseOverEvents($(this));
@@ -481,7 +489,12 @@ function initDraggedItem(draggedItem, cell = false) {
         $(this).attr("id", "editorTD-" + UUID2);
         addDropEvent($(this), true);
         addModalClick($(this));
-        addMouseOverEvents($(this));
+        // Bind hover to the whole td.editor-td, not the inner div: td's
+        // bounding box covers the div's too, so this alone highlights the
+        // entire cell (border + padding + content) on hover. Binding both
+        // would show two nested highlight boxes instead of one (see
+        // rebindClonedSubtree below for the same fix on re-drag).
+        addMouseOverEvents($(this).closest("td.editor-td"));
       });
       let UUID3 = `item-${Date.now()}`;
       let table1 = item;

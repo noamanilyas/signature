@@ -482,7 +482,11 @@ $(document).ready(function () {
         tdDiv.attr("id", "editorTD-" + UUID2);
         addDropEvent(tdDiv, true);
         addModalClick(tdDiv);
-        addMouseOverEvents(tdDiv);
+        // Bind hover to the whole td.editor-td, not the inner div: td's
+        // bounding box covers the div's too, so this alone highlights the
+        // entire cell (border + padding + content) on hover. Binding both
+        // would show two nested highlight boxes instead of one.
+        addMouseOverEvents(newTD);
 
         newTD.find("div.editor-td-div").append(newItem);
         newTR.append(newTD);
