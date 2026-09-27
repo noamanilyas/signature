@@ -138,9 +138,22 @@ export async function moveCanvasItemToSide(
   await page.waitForTimeout(TABLE_CONVERSION_DELAY_MS);
 }
 
+/**
+ * Dragging to the trash bar (or clicking the Properties modal's Delete
+ * button) now opens a confirmation dialog with a preview instead of deleting
+ * immediately - see #deleteConfirmModel. Click its "Yes" button to proceed.
+ */
+export async function confirmDelete(page: Page) {
+  const confirmModal = page.locator("#deleteConfirmModel");
+  await confirmModal.waitFor({ state: "visible", timeout: 10_000 });
+  await page.locator("#deleteConfirmYes").click();
+  await confirmModal.waitFor({ state: "hidden", timeout: 10_000 });
+}
+
 export async function dropCanvasItemOnDeleteBar(page: Page, item: Locator) {
   const deleteBar = page.locator(".delDrop");
   await dragToTarget(page, item, deleteBar);
+  await confirmDelete(page);
   await page.waitForTimeout(TABLE_CONVERSION_DELAY_MS);
 }
 

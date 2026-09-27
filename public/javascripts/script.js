@@ -698,18 +698,22 @@ $(document).ready(function () {
       tolerance: "pointer",
       drop: function (event, ui) {
         edited = true;
-        if (ui.draggable.closest(".tableDrop").length > 0) {
-          ui.draggable.parent().droppable({
-            classes: {
-              "ui-droppable-hover": "ui-mouse-enter",
-            },
-          });
-          ui.draggable.parent().html(" &nbsp; ");
-        }
 
         const item = ui.draggable;
+        const isTableCellItem = item.closest(".tableDrop").length > 0;
 
-        removeAnyElement(item);
+        confirmDeleteElement(item, function () {
+          if (isTableCellItem) {
+            item.parent().droppable({
+              classes: {
+                "ui-droppable-hover": "ui-mouse-enter",
+              },
+            });
+            item.parent().html(" &nbsp; ");
+          }
+
+          removeAnyElement(item);
+        });
       },
     });
     // #drop's own droppable (direct-drop-anywhere, only while empty) is

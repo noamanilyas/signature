@@ -481,6 +481,33 @@
       </div>
     </div>
 
+    <div
+      class="modal fade"
+      id="deleteConfirmModel"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="deleteConfirmModelLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmModelLabel">Are you sure you want to delete?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="deleteConfirmPreview" class="delete-confirm-preview"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteConfirmCancel">Cancel</button>
+            <button type="button" class="btn btn-danger" id="deleteConfirmYes">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal" id="previewModel" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document" style="max-width: min-content">
         <div class="modal-content">

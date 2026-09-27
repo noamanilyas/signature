@@ -176,8 +176,13 @@ function addModalClick(item) {
 
 $("#propertiesModelDelete").click(function (e) {
   if (currentPropsItem && currentPropsItem.length) {
-    removeAnyElement(currentPropsItem);
+    const item = currentPropsItem;
     currentPropsItem = null;
+    // Wait for the Properties modal to finish hiding before opening the
+    // delete-confirmation modal, so Bootstrap doesn't stack two backdrops.
+    $("#propertiesModel").one("hidden.bs.modal", function () {
+      confirmDeleteElement(item);
+    });
   }
   $("#propertiesModel").modal("hide");
 });

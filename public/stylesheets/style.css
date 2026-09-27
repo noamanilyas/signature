@@ -216,6 +216,18 @@ p {
 .nav-link {
   padding: 2px !important;
 }
+.delete-confirm-preview {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-height: 400px;
+  overflow: auto;
+  padding: 10px;
+  /* Preview is a plain DOM clone with no drag/drop behavior wired up - lock
+     it down visually too so it doesn't look interactive. */
+  pointer-events: none;
+}
+
 .delDrop {
   position: fixed;
   width: 100%;

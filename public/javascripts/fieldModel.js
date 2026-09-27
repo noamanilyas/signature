@@ -347,3 +347,48 @@ function removeAnyElement(item) {
     }, 200);
   }, 50);
 }
+
+// Holds the callback that actually performs the deletion (removeAnyElement,
+// plus any pre-removal cleanup a caller needs, e.g. the table-cell nbsp
+// reset in script.js) until the user confirms in #deleteConfirmModel.
+var pendingDeleteAction = null;
+
+/**
+ * Shows a preview of `item` (and everything nested inside it - a table's
+ * cells, a group's children, etc., since the preview is just a clone of the
+ * real DOM subtree) in a confirmation dialog before deleting it.
+ *
+ * `performDelete`, if given, replaces the default "just call
+ * removeAnyElement(item)" action - used by the delDrop-bar flow, which also
+ * needs to reset a table cell's placeholder as part of the same action.
+ */
+function confirmDeleteElement(item, performDelete) {
+  pendingDeleteAction =
+    typeof performDelete === "function"
+      ? performDelete
+      : function () {
+          removeAnyElement(item);
+        };
+
+  const preview = item.clone();
+  // Drop-zone chrome (N/S/E/W strips) isn't part of what's being deleted -
+  // strip it so the preview only shows the actual content.
+  preview.find(".north, .south, .east, .west").remove();
+  preview.removeAttr("id");
+  preview.find("[id]").removeAttr("id");
+
+  $("#deleteConfirmPreview").empty().append(preview);
+  $("#deleteConfirmModel").modal("show");
+}
+
+$("#deleteConfirmYes").click(function () {
+  const action = pendingDeleteAction;
+  pendingDeleteAction = null;
+  $("#deleteConfirmModel").modal("hide");
+  if (action) action();
+});
+
+$("#deleteConfirmModel").on("hidden.bs.modal", function () {
+  $("#deleteConfirmPreview").empty();
+  pendingDeleteAction = null;
+});

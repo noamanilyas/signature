@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { tableCells } from "../../../helpers/build-signature";
-import { dropIntoTableCell, dropPanelItemInCanvas } from "../../../helpers/drag-drop";
+import { confirmDelete, dropIntoTableCell, dropPanelItemInCanvas } from "../../../helpers/drag-drop";
 import { openEditor } from "../../../helpers/editor";
 import { finishLayoutTest } from "../../../helpers/finish-test";
 import { MAIN_DROP_ZONE_SELECTOR } from "../../../helpers/constants";
@@ -22,6 +22,7 @@ test.describe("delete table cell item via Properties modal then drop", () => {
     await page.locator("#propertiesModel").waitFor({ state: "visible", timeout: 10_000 });
     await page.locator("#propertiesModelDelete").click();
     await page.locator("#propertiesModel").waitFor({ state: "hidden", timeout: 10_000 });
+    await confirmDelete(page);
 
     await expect(cell.locator(".drag.vertical")).toHaveCount(0);
 
