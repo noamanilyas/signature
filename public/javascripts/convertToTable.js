@@ -15,6 +15,16 @@ async function converToTableFunc() {
         let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
         const textAlign = applyAlignToCell(td, editorTable);
+        // The table's own border/padding/size/background (set via its
+        // "Group Properties", opened by clicking the table's own border
+        // rather than a cell) live as attributes on this <table> element -
+        // same as group2/group3's own wrapper below - and must be forwarded
+        // the same way, or they only ever show in the editor and never
+        // reach the Preview. Unlike textTable's outer td, `td` here IS the
+        // table's own dedicated box (there's no separate shrink-wrapped
+        // inner cell for a table the way there is for text), so background
+        // belongs on it directly.
+        applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
         applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
@@ -25,7 +35,10 @@ async function converToTableFunc() {
           dataItem = addHyperLinkToImage(dataItem);
           dataItem = addPaddingToImage(td, dataItem);
           dataItem = await convertCustomFontToImage(dataItem);
-          applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
+          // Unlike text (see textTable), an image has no separate
+          // shrink-wrapped inner cell - td is already the tight rendering
+          // box for it, so background belongs here too.
+          applyCSS(td, thisItem.find(".data").children().eq(0), ["align", "background"]);
           td.append(dataItem);
         }
       } else if (thisItem.hasClass("group2")) {
@@ -169,6 +182,7 @@ function getSubItemsForTableItem(item) {
           let editorTable = actualItem.find(".data:first").children().eq(0);
           let table = await getSubItemsForTableItem(actualItem);
           const textAlign = applyAlignToCell(td, editorTable);
+          applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
           applyTableBlockAlign(table, textAlign);
           td.append(table);
         } else if (actualItem.hasClass("dataItem")) {
@@ -179,7 +193,10 @@ function getSubItemsForTableItem(item) {
             dataItem = addHyperLinkToImage(dataItem);
             dataItem = addPaddingToImage(td, dataItem);
             dataItem = await convertCustomFontToImage(dataItem);
-            applyCSS(td, thisItem.find(".data").children().eq(0), ["align"]);
+            // Unlike text (see textTable), an image has no separate
+            // shrink-wrapped inner cell - td is already the tight rendering
+            // box for it, so background belongs here too.
+            applyCSS(td, thisItem.find(".data").children().eq(0), ["align", "background"]);
             td.append(dataItem);
             if (!allImageCells) {
               keepImageCellShrinkToFit(td, dataItem);
@@ -279,8 +296,9 @@ function getSubItemsForgroup2(item) {
     let td1 = $(`<td>`);
     // Fix: include "size" so a width/height set on the group in the editor
     // (see size.js) is no longer dropped when the group is rebuilt as a
-    // table for the preview.
-    applyCSS(td1, $(item).find(".data2:first"), ["border", "padding", "size"]);
+    // table for the preview. "background" is included too since td1 is the
+    // group's own dedicated box (unlike the outer per-item td below).
+    applyCSS(td1, $(item).find(".data2:first"), ["border", "padding", "size", "background"]);
 
     tr1.append(td1);
     tbody1.append(tr1);
@@ -309,6 +327,7 @@ function getSubItemsForgroup2(item) {
         let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
         const textAlign = applyAlignToCell(td, editorTable);
+        applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
         applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
@@ -319,7 +338,10 @@ function getSubItemsForgroup2(item) {
           dataItem = addHyperLinkToImage(dataItem);
           dataItem = addPaddingToImage(td, dataItem);
           dataItem = await convertCustomFontToImage(dataItem);
-          applyCSS(td, thisItem.find(".data").children(), ["align"]);
+          // Unlike text (see textTable), an image has no separate
+          // shrink-wrapped inner cell - td is already the tight rendering
+          // box for it, so background belongs here too.
+          applyCSS(td, thisItem.find(".data").children(), ["align", "background"]);
           td.append(dataItem);
           if (!allImageChildren) {
             keepImageCellShrinkToFit(td, dataItem);
@@ -363,8 +385,9 @@ function getSubItemsForgroup3(item) {
     let td1 = $("<td>");
     // Fix: include "size" so a width/height set on the group in the editor
     // (see size.js) is no longer dropped when the group is rebuilt as a
-    // table for the preview.
-    applyCSS(td1, $(item).find(".data3:first"), ["border", "padding", "size"]);
+    // table for the preview. "background" is included too since td1 is the
+    // group's own dedicated box (unlike the outer per-item td below).
+    applyCSS(td1, $(item).find(".data3:first"), ["border", "padding", "size", "background"]);
 
     tr1.append(td1);
     tbody1.append(tr1);
@@ -381,6 +404,7 @@ function getSubItemsForgroup3(item) {
         let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
         const textAlign = applyAlignToCell(td, editorTable);
+        applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
         applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
@@ -391,7 +415,10 @@ function getSubItemsForgroup3(item) {
           dataItem = addHyperLinkToImage(dataItem);
           dataItem = addPaddingToImage(td, dataItem);
           dataItem = await convertCustomFontToImage(dataItem);
-          applyCSS(td, thisItem.find(".data").children(), ["align"]);
+          // Unlike text (see textTable), an image has no separate
+          // shrink-wrapped inner cell - td is already the tight rendering
+          // box for it, so background belongs here too.
+          applyCSS(td, thisItem.find(".data").children(), ["align", "background"]);
           td.append(dataItem);
         }
       } else if (thisItem.hasClass("group2")) {
@@ -456,12 +483,17 @@ function textTable(dataItem, td, thisItem) {
   let textTr = $("<tr style='font-size: 0px'>");
   let td1 = $("<td>");
   const sourceSpan = thisItem.find(".data").children().eq(0);
-  // border.js/padding.js store these as attributes, not inline style, so
-  // applyCSS reads them off the live span and paints them onto td1.
+  // border.js/padding.js/background.js store these as attributes, not
+  // inline style, so applyCSS reads them off the live span and paints them
+  // onto td1 - the cell that's actually shrink-wrapped to the text (via
+  // white-space:nowrap below). `td`, appended below, is the outer mainTable
+  // row cell and can be much wider than the text itself, so it must NOT
+  // also get "background" here or the color bleeds across that whole width
+  // instead of staying limited to the text.
   stripBoxModelStyle(dataItem);
   dataItem.css("display", "inline-block");
   let dataItemHTML = dataItem.prop("outerHTML");
-  applyCSS(td1, sourceSpan, ["align", "border", "padding"]);
+  applyCSS(td1, sourceSpan, ["align", "border", "padding", "background"]);
   td1.append(dataItemHTML);
   textTr.append(td1);
   textTbody.append(textTr);
@@ -564,7 +596,7 @@ function groupItemsAreAllImages(groupChildren) {
 // pick up the unrelated "width-stretch" attribute used elsewhere.
 const SIZE_ATTRIBS = ["width", "height", "min-width", "max-width", "min-height", "max-height"];
 
-function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
+function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding", "background"]) {
   //Test
   const elemAttributes = getAttributes(applyFrom);
   // console.log("elemAttributes", elemAttributes);
@@ -577,7 +609,14 @@ function applyCSS(applyTo, applyFrom, type = ["border", "align", "padding"]) {
       applyTo.css(attrib, elemAttributes[attrib]);
     } else if (attrib.indexOf("padding") !== -1 && type.indexOf("padding") !== -1) {
       applyTo.css(attrib, elemAttributes[attrib]);
-    } else if (attrib.indexOf("background") !== -1) {
+    } else if (attrib.indexOf("background") !== -1 && type.indexOf("background") !== -1) {
+      // Background must only ever land on the cell that's actually
+      // shrink-wrapped to its content (e.g. textTable's own td1, a plain
+      // image's td). Callers that copy CSS onto an outer wrapper td (the
+      // mainTable row cell, or a table/group's own outer box) deliberately
+      // omit "background" from their `type` list, since that outer td can
+      // be much wider than the content (see textTable) - applying
+      // background there would paint way beyond the text/image itself.
       applyTo.css(attrib, elemAttributes[attrib]);
     } else if (SIZE_ATTRIBS.indexOf(attrib) !== -1 && type.indexOf("size") !== -1) {
       applyTo.css(attrib, elemAttributes[attrib]);
