@@ -1,7 +1,7 @@
 async function converToTableFunc() {
   const mainItems = $("#drop > .drag.vertical");
   let tbody = $("<tbody>");
-  let table = $("<table style='font-size: 0px; width:75%;' cellspacing='0' cellpadding='0'>");
+  let table = $("<table style='font-size: 0px;' cellspacing='0' cellpadding='0'>");
   table.addClass("mainTable");
   // $.each(mainItems, async function (index, value) {
   for (let i = 0; i < mainItems.length; i++) {
