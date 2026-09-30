@@ -169,7 +169,13 @@ function getSubItemsForTableItem(item) {
         // console.log("cssItem", cssItem);
         // console.log("$(this)", $(this));
         applyCSS(td, thisItem);
-        applyCSS(td, cssItem);
+        // "size" must be included here: a custom width/height set on a
+        // table cell in the editor (Size tab) is mirrored by size.js onto
+        // this cssItem element as both an inline style and an attribute.
+        // Without "size" it's read by getAttributes() but filtered out by
+        // applyCSS, so the cell renders correctly in the editor but falls
+        // back to auto-layout sizing in the Preview.
+        applyCSS(td, cssItem, ["border", "align", "padding", "background", "size"]);
 
         if (cssItem.attr("width-stretch") == "100%") {
           table.css("width", "100%");
@@ -554,7 +560,10 @@ function applyTableBlockAlign($table, textAlign) {
 // give it a share of the extra width" - the image's own (possibly explicit)
 // width still wins as the column's minimum content width.
 function keepImageCellShrinkToFit(td, dataItem) {
-  if (dataItem.is("img") || dataItem.find("img").length) {
+  // Skip when the cell already has an explicit width (carried over by the
+  // "size" fix in applyCSS above) - otherwise this would silently stomp a
+  // custom width the user set on an image cell back down to 1%.
+  if ((dataItem.is("img") || dataItem.find("img").length) && !td.css("width")) {
     td.css({ width: "1%", "white-space": "nowrap" });
   }
 }
