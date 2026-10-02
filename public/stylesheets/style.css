@@ -76,6 +76,11 @@ p {
   border-style: solid;
   border-color: green;
 }
+.dataTable {
+  border-width: 1px;
+  border-style: solid;
+  border-color: purple;
+}
 #drop {
   display: table;
   /* width: 550px;

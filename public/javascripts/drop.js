@@ -500,6 +500,11 @@ function initDraggedItem(draggedItem, cell = false) {
       let table1 = item;
       table1.attr("id", "editorTable-" + UUID3);
       container.addClass("tableItem");
+      // Table gets its own wrapper marker (parallel to group2's .data2 /
+      // group3's .data3) so clicking its own border/background - as opposed
+      // to a cell - resolves to "Table Properties" instead of falling back
+      // to the <table>'s category="group" attribute (see modal.js).
+      dataDiv.addClass("dataTable");
     } else {
       item.attr("id", UUID);
     }

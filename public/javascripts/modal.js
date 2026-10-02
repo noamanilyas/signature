@@ -7,6 +7,11 @@ var a = {
   textField: ["text", "background", "visibility", "alignment", "border", "padding", "size"],
   // table: ["tableProps", "text", "background", "visibility", "alignment", "border", "padding", "size"],
   table: ["tableProps", "background", "alignment", "border", "padding", "size"],
+  // Cells are a fixed slot in the table's grid, so alignment (which moves an
+  // item within free space) doesn't apply here the way it does for the table
+  // itself - omitted on purpose, unlike every other category. tableProps
+  // (row/col controls) lives on the table's own modal now, not the cell's.
+  cell: ["background", "border", "padding", "size"],
   group: ["background", "visibility", "alignment", "border", "padding", "size"],
   // group: ["text", "background", "visibility", "alignment", "border", "padding", "socialMediaIcon"],
   socialIcon: [
@@ -33,6 +38,7 @@ var a = {
 var categoryTitles = {
   textField: "Text Properties",
   table: "Table Properties",
+  cell: "Cell Properties",
   socialIcon: "Social Icon Properties",
   legalCompliance: "Legal Compliance Properties",
   image: "Image Properties",
@@ -84,9 +90,15 @@ function renderModel(e) {
   }
 
   if (!category) {
-    let checkParentCategory = $(e.target).closest(".data").children().eq(0)[0].getAttribute("category");
-    category = checkParentCategory;
-    id = $(e.target).closest(".data").children().eq(0)[0].getAttribute("id");
+    let closestData = $(e.target).closest(".data");
+    let firstChild = closestData.children().eq(0)[0];
+    // A table's own wrapper (.dataTable) holds the <table> itself, which
+    // carries category="group" so the alignment-group logic below can treat
+    // it like group2/group3 - but clicking the table's own border/background
+    // (as opposed to one of its cells, which has its own category="cell")
+    // should open "Table Properties", not fall through to "Group Properties".
+    category = closestData.hasClass("dataTable") ? "table" : firstChild.getAttribute("category");
+    id = firstChild.getAttribute("id");
   }
 
   // The most common way to open group properties is clicking directly on the
@@ -144,14 +156,13 @@ function renderModel(e) {
     renderBackgroundTab(id);
     // Render SizeJS
     renderSizeTab(id);
-    // Table cells open as category=table; align the whole editor-table (same as group)
-    if (category === "table") {
-      const tableId = $(`#${id}`).closest("table.editor-table").attr("id");
-      if (tableId) renderAlignmentTabGroup(tableId);
-      else renderAlignmentTab(id);
-    } else if (category === "group") {
+    // "table" always resolves to the <table>'s own id now (clicked directly
+    // on its .dataTable wrapper), so it can align the same way group2/group3
+    // do. "cell" has no alignment tab at all (see `a.cell` above), so it's
+    // skipped entirely rather than wiring up a hidden tab.
+    if (category === "table" || category === "group") {
       renderAlignmentTabGroup(id);
-    } else {
+    } else if (category !== "cell") {
       renderAlignmentTab(id);
     }
     // Render BorderJS

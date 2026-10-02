@@ -449,7 +449,7 @@ $(document).ready(function () {
         const newTD = $(`
           <td class="editor-td" ${addRowSpanVal}>
             <div class="ph-table wh100">
-              <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+              <div align="left" class="ph-table-cell tableDrop editor-td-div cellWH" category="cell">
                 
               </div>
             </div>

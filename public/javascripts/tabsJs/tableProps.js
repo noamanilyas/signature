@@ -25,7 +25,7 @@ function createOneCol(index) {
   let col = `
         <td class="editor-td">
           <div class="ph-table wh100">
-            <div class="ph-table-cell tableDrop editor-td-div cellWH" category="table">
+            <div class="ph-table-cell tableDrop editor-td-div cellWH" category="cell">
               &nbsp;
             </div>
           </div>
