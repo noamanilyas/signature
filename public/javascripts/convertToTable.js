@@ -146,7 +146,10 @@ function getSubItemsForTableItem(item) {
       // (see the stretch computation above) that this table shouldn't
       // stretch, so strip any width out of the copy in that case.
       if (spanStyle && !stretch) {
-        spanStyle = spanStyle.replace(/(?:^|;)\s*(?:min-|max-)?width\s*:[^;]*/gi, "");
+        // Only the stretch-injected percentage is stripped - an explicit
+        // pixel width set via the table's Size tab must survive, or the
+        // Preview's inner table collapses to its content width.
+        spanStyle = spanStyle.replace(/(?:^|;)\s*(?:min-|max-)?width\s*:\s*100%\s*(?:!important)?\s*(?=;|$)/gi, "");
       }
       if (spanStyle) {
         table.attr("style", spanStyle);
