@@ -24,7 +24,11 @@ async function converToTableFunc() {
         // table's own dedicated box (there's no separate shrink-wrapped
         // inner cell for a table the way there is for text), so background
         // belongs on it directly.
-        applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
+        // No "size": the table's width/height are already on the rebuilt inner
+        // <table> (copied from its style). Putting the same width on this
+        // wrapper td too, which also carries padding + border, made the td
+        // narrower than the table inside it, so the table overflowed it.
+        applyCSS(td, editorTable, ["border", "padding", "background"]);
         applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
@@ -191,7 +195,7 @@ function getSubItemsForTableItem(item) {
           let editorTable = actualItem.find(".data:first").children().eq(0);
           let table = await getSubItemsForTableItem(actualItem);
           const textAlign = applyAlignToCell(td, editorTable);
-          applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
+          applyCSS(td, editorTable, ["border", "padding", "background"]);
           applyTableBlockAlign(table, textAlign);
           td.append(table);
         } else if (actualItem.hasClass("dataItem")) {
@@ -336,7 +340,7 @@ function getSubItemsForgroup2(item) {
         let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
         const textAlign = applyAlignToCell(td, editorTable);
-        applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
+        applyCSS(td, editorTable, ["border", "padding", "background"]);
         applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
@@ -413,7 +417,7 @@ function getSubItemsForgroup3(item) {
         let editorTable = thisItem.find(".data").children().eq(0);
         let table = await getSubItemsForTableItem(thisItem);
         const textAlign = applyAlignToCell(td, editorTable);
-        applyCSS(td, editorTable, ["border", "padding", "size", "background"]);
+        applyCSS(td, editorTable, ["border", "padding", "background"]);
         applyTableBlockAlign(table, textAlign);
         td.append(table);
       } else if (thisItem.hasClass("dataItem")) {
