@@ -32,25 +32,48 @@
     ></script>
     <script type="text/javascript" src="./libs/html2canvas.min.js"></script>
     <!-- <script type="text/javascript" src="https://livejs.com/live.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="./stylesheets/indexstyle.css" />
+    <link rel="stylesheet" href="./stylesheets/gs-chrome.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="./javascripts/gs-chrome.js"></script>
   </head>
-  <body>
-    <nav class="navbar navbar-dark bg-dark nav-right">
-      <a class="navbar-brand" href="#">
-        <img src="/images/logo.png" height="45" alt="" />
-        <span class="navbar-company-name" id="navCompanyName"></span>
-      </a>
-      <div class="navbar-toolbar">
-        <a href="editor.html" id="newSigBtn" class="n-item btn btn-success">New Signature</a>
-        <a href="reorder.html" id="reorderBtn" class="n-item btn btn-danger">Reorder</a>
-        <a href="template.html?companyId=pMr0lShPukk=" id="templateBtn" class="n-item btn btn-success">Template</a>
-        <button id="openPopupBtn" type="button" class="n-item btn btn-warning">Import</button>
-        <a href="https://uaeportal.greensignature.net/HomeNew" id="exitDesignerBtn" class="n-item btn btn-danger btnexit"
-          >Exit Designer</a
-        >
+  <body class="listing-page">
+    <header class="gs-header is-list" data-gs-header data-page="list">
+      <img class="gs-logo" src="/images/logo.png" alt="Green Signature" />
+      <div class="gs-divider"></div>
+      <div class="gs-org">
+        <div class="gs-org-badge" data-gs-org-badge>GS</div>
+        <div class="gs-org-text">
+          <div class="gs-org-label">Organization</div>
+          <div class="gs-org-name" data-gs-org id="navCompanyName"></div>
+        </div>
       </div>
-    </nav>
+      <div class="gs-spacer"></div>
+      <a href="https://uaeportal.greensignature.net/HomeNew" id="exitDesignerBtn" class="gs-btn ghost"
+        ><i class="fa-solid fa-arrow-right-from-bracket"></i>Exit Designer</a
+      >
+      <div class="gs-divider"></div>
+      <div class="gs-account" title="">
+        <div class="gs-avatar" data-gs-avatar>?</div>
+        <div class="gs-email" data-gs-email></div>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+    </header>
+    <div class="gs-loader is-visible" id="gsLoader" role="status" aria-live="polite">
+      <div class="gs-loader-card">
+        <div class="gs-ring">
+          <svg width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="52" r="48" fill="none" stroke="oklch(93% 0.035 145)" stroke-width="4" /></svg>
+          <svg class="spin" width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="52" r="48" fill="none" stroke="oklch(55% 0.16 145)" stroke-width="4" stroke-linecap="round" stroke-dasharray="80 222" /></svg>
+          <div class="gs-ring-core"><img src="/images/favicon.png" alt="" /></div>
+        </div>
+        <div>
+          <div class="gs-loader-title"><span id="gsLoaderMsg">Signatures are loading</span><span class="d">.</span><span class="d">.</span><span class="d">.</span></div>
+          <div class="gs-loader-sub" id="gsLoaderSub">This usually takes a few seconds.</div>
+        </div>
+      </div>
+    </div>
     <div id="uploadPopup" class="modal">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -77,29 +100,27 @@
       </div>
     </div>
     <div id="overlay" class="overlay"></div>
-    <div class="sig-list" id="list_sig">
-      <h4 class="sig-list-company-name" id="listCompanyName"></h4>
-      <!-- <div class="container bcontent">
-        <div class="card">
-          <div class="row no-gutters">
-            <div class="col-sm-3">
-              <img
-                class="card-img card-img-main"
-                src="/images/cbbb34a2-1833-eb11-9fb4-0003ff9252c7.png"
-                alt="Microsoft Card"
-              />
-            </div>
-            <div class="col-sm-9">
-              <div class="card-body">
-                <h5 class="card-title">Microsoft</h5>
-                <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p>
-                <a href="editor.html" class="btn btn-success">Launch Editor</a>
-              </div>
-            </div>
+    <main class="listing">
+      <div class="listing-head">
+        <div class="listing-title">
+          <div class="listing-title-row">
+            <h1>Signatures</h1>
+            <span class="listing-count" id="sigCount"></span>
           </div>
         </div>
-      </div> -->
-    </div>
+        <div class="listing-actions">
+          <button id="openPopupBtn" type="button" class="n-item btn btn-light"><i class="fa-solid fa-file-import"></i>Import</button>
+          <a href="template.html?companyId=pMr0lShPukk=" id="templateBtn" class="n-item btn btn-light"><i class="fa-regular fa-clone"></i>Template</a>
+          <a href="reorder.html" id="reorderBtn" class="n-item btn btn-light"><i class="fa-solid fa-arrow-up-wide-short"></i>Reorder</a>
+          <a href="editor.html" id="newSigBtn" class="n-item btn btn-success"><i class="fa-solid fa-plus"></i>New Signature</a>
+        </div>
+      </div>
+      <div class="listing-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="sigSearch" placeholder="Search signatures" autocomplete="off" />
+      </div>
+      <div class="sig-list" id="list_sig"></div>
+    </main>
     <div id="ssDiv" style="background-color: white"></div>
 
     <div class="modal" id="usergroupsmodel2" tabindex="-1" role="dialog">

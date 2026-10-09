@@ -58,7 +58,6 @@ $(document).ready(function () {
 
   // End --- Preview Drag
 
-  document.getElementById("initial-preloader")?.remove();
 
   Swal.fire({
     // position: "top-end",
@@ -246,10 +245,8 @@ $(document).ready(function () {
       $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
         $("#searchEmail").prop("placeholder", data.E_Mail);
         userData = data;
-        document.getElementById("searchDropdownButton").innerText = userData.E_Mail || userData.U_EMAIL;
-        if (data.Company) {
-          $("#navCompanyName").text(data.Company);
-        }
+        GSHeader.setUser(userData.E_Mail || userData.U_EMAIL);
+        GSHeader.setOrg(data.Company);
         converToTableFunc();
       }).fail(function (error) {
         console.error("Error:", error);

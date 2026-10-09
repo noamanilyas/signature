@@ -24,13 +24,21 @@ $(document).ready(function () {
   if (companyId) {
     $.get(`${SERVER_URL}/loginuser?companyId=${companyId}`, function (data) {
       if (data && data.Company) {
-        $("#navCompanyName").text(data.Company);
-        $("#listCompanyName").text(data.Company);
+        GSHeader.setOrg(data.Company);
       }
+      GSHeader.setUser(data && (data.E_Mail || data.U_EMAIL));
     }).fail(function (error) {
       console.error("Error fetching company name:", error);
     });
   }
+
+  // Filter the listed signature cards by name
+  $("#sigSearch").on("input", function () {
+    const q = $(this).val().trim().toLowerCase();
+    $("#list_sig .bcontent").each(function () {
+      $(this).toggle(!q || $(this).find(".card-title").text().toLowerCase().includes(q));
+    });
+  });
 
   /**
    * Get signature list
@@ -83,6 +91,8 @@ $(document).ready(function () {
         console.log("clicked addRules");
         processAddRules(e);
       });
+      const n = $("#list_sig .bcontent").length;
+      $("#sigCount").text(`${n} signature${n === 1 ? "" : "s"}`);
       Swal.close();
     }, 3000);
     //   });
