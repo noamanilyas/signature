@@ -530,3 +530,14 @@ const getCurrRowColSpan = (cellId) => {
     colSpan: colSpan ? colSpan : 1,
   };
 };
+
+// Layout-only: the -/+ buttons around each table number input just step that
+// input (respecting its min/max) and fire the same "change" the input already
+// handles when typed into.
+$(document).on("click", "#table-form .tb-step button", function () {
+  const input = $(this).siblings("input")[0];
+  if (!input) return;
+  if (Number($(this).data("d")) > 0) input.stepUp();
+  else input.stepDown();
+  $(input).trigger("change");
+});
