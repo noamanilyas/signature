@@ -147,7 +147,22 @@
         </div>
         <div class="panelPreviewdiv">
           <div class="panelPreview">
-            <div aria-labelledby="searchDropdownButton">
+            <div class="pv-head">
+              <div class="pv-title">Preview</div>
+              <div class="pv-seg" id="pvDeviceSeg">
+                <button type="button" class="pv-seg-btn active" data-device="desktop" title="Desktop">
+                  <i class="fa-solid fa-desktop"></i>
+                </button>
+                <button type="button" class="pv-seg-btn" data-device="mobile" title="Mobile">
+                  <i class="fa-solid fa-mobile-alt"></i>
+                </button>
+              </div>
+              <div class="arrow-icon" id="arrowIcon" title="Expand / collapse preview">
+                <i class="fas fa-chevron-left" style="transform: rotate(0deg)"></i>
+              </div>
+            </div>
+            <div class="pv-search" aria-labelledby="searchDropdownButton">
+              <label class="pv-label" for="searchEmail">Preview as</label>
               <input
                 type="text"
                 autocomplete="off"
@@ -158,14 +173,26 @@
               />
               <div class="container mt-4" id="searchResults" style="position: absolute; margin-top: 0rem !important"></div>
             </div>
-            <div id="previewdrag"></div>
-            <div class="arrow-icon" id="arrowIcon">
-              <i class="fas fa-chevron-left" style="transform: rotate(0deg)"></i>
+            <div class="pv-stage">
+              <div class="pv-mail" id="pvMail">
+                <div class="pv-mail-head">
+                  <div class="pv-row"><span>From</span><span>sender@example.com</span></div>
+                  <div class="pv-row"><span>To</span><span>client@example.com</span></div>
+                  <div class="pv-subject">Project update</div>
+                </div>
+                <div class="pv-lines"><i></i><i></i><i></i></div>
+                <div class="pv-sig" id="previewMail"></div>
+              </div>
             </div>
+            <div id="previewdrag"></div>
           </div>
         </div>
       </div>
-      <div class="delDrop"><h4 align="center" class="title">Delete Item</h4></div>
+      <div class="delDrop">
+        <i class="fa-regular fa-trash-can"></i>
+        <span class="idle-text">Drop here to delete</span>
+        <span class="over-text">Release to delete</span>
+      </div>
     </div>
     <div class="modal" id="propertiesModel" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
