@@ -5,11 +5,12 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "dev": "concurrently -k -n server,browser -c blue,green \"nodemon ./bin/www\" \"browser-sync start --proxy localhost:4783 --port 3000 --files \\\"public/**/*\\\" --files \\\"views/**/*\\\" --no-open --no-ui --no-notify\"",
     "dev-start": "nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "compression": "^1.8.2",
     "cookie-parser": "~1.4.3",
     "core-js": "^2.4.0",
     "crypto": "^1.0.1",
@@ -31,5 +32,9 @@
     "systemjs": "0.19.27",
     "yarn": "^1.22.19",
     "zone.js": "^0.6.12"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "concurrently": "^10.0.6"
   }
 }

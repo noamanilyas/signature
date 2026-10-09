@@ -1,0 +1,5 @@
+{
+  "watch": ["app.js", "bin", "routes", "mock", "views"],
+  "ext": "js,json,jade",
+  "ignore": ["mock/data", "public", "e2e", "node_modules"]
+}
