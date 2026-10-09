@@ -653,6 +653,7 @@ $(document).ready(function () {
             timer: 1500,
           });
           edited = false;
+          GSHeader.markSaved();
           if (close) {
             window.location.href = `index.html?companyId=${companyId}`;
           }

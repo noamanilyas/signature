@@ -115,7 +115,6 @@
     if (status) {
       const nw = q("[data-gs-new]");
       if (nw) nw.hidden = !isCreate;
-      if (isCreate) setStatus("Not saved yet", true);
       const name = q("[data-gs-name]");
       if (name) name.addEventListener("input", markDirty);
       // The editor flips its global `edited` flag on every canvas change and
