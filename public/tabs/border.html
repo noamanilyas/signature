@@ -1,122 +1,125 @@
 <form id="border-form">
-  <label for="formGroupExampleInput">All</label>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <select class="form-control" id="border-type-all">
-          <option value="">Inherit</option>
-          <option value="solid">Solid</option>
-          <option value="dashed">Dashed</option>
-          <option value="dotted">Dotted</option>
-        </select>
-      </div>
+  <div class="form-group">
+    <div class="bd-label">Side</div>
+    <div class="bd-sides" id="border-sides">
+      <button type="button" class="bd-side active" data-side="all"><div class="bd-icon all"></div>All</button>
+      <button type="button" class="bd-side" data-side="top"><div class="bd-icon top"></div>Top</button>
+      <button type="button" class="bd-side" data-side="right"><div class="bd-icon right"></div>Right</button>
+      <button type="button" class="bd-side" data-side="bottom"><div class="bd-icon bottom"></div>Bottom</button>
+      <button type="button" class="bd-side" data-side="left"><div class="bd-icon left"></div>Left</button>
     </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="number" min="1" class="form-control" id="border-size-all" placeholder="Size" />
-      </div>
+  </div>
+  <div class="form-group">
+    <div class="bd-label">Style</div>
+    <div class="bd-seg" id="border-styles">
+      <button type="button" class="bd-style" data-style="">Inherit</button>
+      <button type="button" class="bd-style" data-style="solid">Solid</button>
+      <button type="button" class="bd-style" data-style="dashed">Dashed</button>
+      <button type="button" class="bd-style" data-style="dotted">Dotted</button>
     </div>
-    <div class="col">
-      <div class="form-group">
+  </div>
+  <div class="bd-pane active" data-side="all">
+    <!-- Style is picked with the buttons above; the select stays as the source of truth. -->
+    <select class="bd-style-select" id="border-type-all" aria-label="All border style" tabindex="-1">
+      <option value="">Inherit</option>
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
+    <div class="bd-row">
+      <div>
+        <div class="bd-label">Width</div>
+        <div class="bd-size">
+          <input type="number" min="1" class="form-control" id="border-size-all" placeholder="Size" aria-label="All border size" /><span>px</span>
+        </div>
+      </div>
+      <div>
+        <div class="bd-label">Color</div>
         <input type="color" class="form-control" id="border-color-all" placeholder="Color" />
       </div>
     </div>
   </div>
-  <!-- <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" checked type="checkbox" id="border-sameall-check" />
-      <label class="form-check-label" for="gridCheck">Same for all</label>
-    </div>
-  </div> -->
-  <label for="formGroupExampleInput">Left</label>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <select class="form-control" id="border-type-left">
-          <option value="">Inherit</option>
-          <option value="solid">Solid</option>
-          <option value="dashed">Dashed</option>
-          <option value="dotted">Dotted</option>
-        </select>
+  <div class="bd-pane" data-side="top">
+    <!-- Style is picked with the buttons above; the select stays as the source of truth. -->
+    <select class="bd-style-select" id="border-type-top" aria-label="Top border style" tabindex="-1">
+      <option value="">Inherit</option>
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
+    <div class="bd-row">
+      <div>
+        <div class="bd-label">Width</div>
+        <div class="bd-size">
+          <input type="number" min="1" class="form-control" id="border-size-top" placeholder="Size" aria-label="Top border size" /><span>px</span>
+        </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="number" min="1" class="form-control" id="border-size-left" placeholder="Size" />
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="color" class="form-control" id="border-color-left" placeholder="Color" />
-      </div>
-    </div>
-  </div>
-  <label for="formGroupExampleInput">Right</label>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <select class="form-control" id="border-type-right">
-          <option value="">Inherit</option>
-          <option value="solid">Solid</option>
-          <option value="dashed">Dashed</option>
-          <option value="dotted">Dotted</option>
-        </select>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="number" min="1" class="form-control" id="border-size-right" placeholder="Size" />
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="color" class="form-control" id="border-color-right" placeholder="Color" />
-      </div>
-    </div>
-  </div>
-  <label for="formGroupExampleInput">Top</label>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <select class="form-control" id="border-type-top">
-          <option value="">Inherit</option>
-          <option value="solid">Solid</option>
-          <option value="dashed">Dashed</option>
-          <option value="dotted">Dotted</option>
-        </select>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="number" min="1" class="form-control" id="border-size-top" placeholder="Size" />
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
+      <div>
+        <div class="bd-label">Color</div>
         <input type="color" class="form-control" id="border-color-top" placeholder="Color" />
       </div>
     </div>
   </div>
-  <label for="formGroupExampleInput">Bottom</label>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <select class="form-control" id="border-type-bottom">
-          <option value="">Inherit</option>
-          <option value="solid">Solid</option>
-          <option value="dashed">Dashed</option>
-          <option value="dotted">Dotted</option>
-        </select>
+  <div class="bd-pane" data-side="right">
+    <!-- Style is picked with the buttons above; the select stays as the source of truth. -->
+    <select class="bd-style-select" id="border-type-right" aria-label="Right border style" tabindex="-1">
+      <option value="">Inherit</option>
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
+    <div class="bd-row">
+      <div>
+        <div class="bd-label">Width</div>
+        <div class="bd-size">
+          <input type="number" min="1" class="form-control" id="border-size-right" placeholder="Size" aria-label="Right border size" /><span>px</span>
+        </div>
+      </div>
+      <div>
+        <div class="bd-label">Color</div>
+        <input type="color" class="form-control" id="border-color-right" placeholder="Color" />
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="number" min="1" class="form-control" id="border-size-bottom" placeholder="Size" />
+  </div>
+  <div class="bd-pane" data-side="bottom">
+    <!-- Style is picked with the buttons above; the select stays as the source of truth. -->
+    <select class="bd-style-select" id="border-type-bottom" aria-label="Bottom border style" tabindex="-1">
+      <option value="">Inherit</option>
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
+    <div class="bd-row">
+      <div>
+        <div class="bd-label">Width</div>
+        <div class="bd-size">
+          <input type="number" min="1" class="form-control" id="border-size-bottom" placeholder="Size" aria-label="Bottom border size" /><span>px</span>
+        </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
+      <div>
+        <div class="bd-label">Color</div>
         <input type="color" class="form-control" id="border-color-bottom" placeholder="Color" />
+      </div>
+    </div>
+  </div>
+  <div class="bd-pane" data-side="left">
+    <!-- Style is picked with the buttons above; the select stays as the source of truth. -->
+    <select class="bd-style-select" id="border-type-left" aria-label="Left border style" tabindex="-1">
+      <option value="">Inherit</option>
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
+    <div class="bd-row">
+      <div>
+        <div class="bd-label">Width</div>
+        <div class="bd-size">
+          <input type="number" min="1" class="form-control" id="border-size-left" placeholder="Size" aria-label="Left border size" /><span>px</span>
+        </div>
+      </div>
+      <div>
+        <div class="bd-label">Color</div>
+        <input type="color" class="form-control" id="border-color-left" placeholder="Color" />
       </div>
     </div>
   </div>
