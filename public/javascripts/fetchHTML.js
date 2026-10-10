@@ -19,6 +19,8 @@ fetch("./tabs/text.html")
   })
   .then((data) => {
     document.querySelector(".text").innerHTML = data;
+    // The editor needs its textarea, which only exists once this tab is loaded.
+    if (typeof initTextEditor === "function") initTextEditor();
   });
 fetch("./tabs/alignment.html")
   .then((response) => {

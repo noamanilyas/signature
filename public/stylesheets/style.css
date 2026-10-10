@@ -369,19 +369,6 @@ body {
   font-size: 13px;
 }
 
-.jqte_tool.jqte_tool_1 .jqte_tool_label {
-  position: relative;
-  display: block;
-  padding: 3px;
-  width: 70px;
-  height: 21px; /*change*/
-  overflow: hidden;
-}
-.jqte_tool_label {
-  padding-top: 1px !important; /*add*/
-  height: 25px !important; /*add*/
-}
-
 textarea.jqte-test,
 div.jqte-test,
 span.jqte-test {
@@ -2037,3 +2024,48 @@ body:has(.flex-container) .delDrop.delDropHover {
 .pv-seg-btn:focus {
   outline: none;
 }
+
+/* Selected state for button-group toggles (alignment, text wrap, formatting,
+   text direction). Bootstrap's default .active shade is barely distinguishable
+   from the idle one, so make the selection obvious. */
+.btn-group > .btn.btn-secondary,
+.btn-group > .btn.btn-secondary:focus {
+  background-color: #fff;
+  border-color: #6c757d;
+  color: #343a40;
+  box-shadow: none;
+}
+.btn-group > .btn.btn-secondary:hover {
+  background-color: #e9ecef;
+}
+.btn-group > .btn.btn-secondary.active,
+.btn-group > .btn.btn-secondary.active:hover,
+.btn-group > .btn.btn-secondary.active:focus,
+.btn-group > .btn.btn-secondary:not(:disabled):not(.disabled).active {
+  background-color: #1b2340;
+  border-color: #1b2340;
+  color: #fff;
+}
+
+/* TinyMCE's link dialog etc. render outside the Bootstrap modal */
+.tox-tinymce-aux { z-index: 2000 !important; }
+
+/* Compact the TinyMCE toolbar inside the properties popup */
+#propertiesModel .tox .tox-toolbar__group { padding: 0 4px; }
+#propertiesModel .tox .tox-tbtn { height: 26px; min-width: 26px; margin: 1px 0; font-size: 12px; }
+#propertiesModel .tox .tox-tbtn svg { transform: scale(0.75); }
+#propertiesModel .tox .tox-tbtn--select { padding: 0 4px; }
+#propertiesModel .tox .tox-tbtn__select-label { font-size: 12px; margin: 0 4px; }
+#propertiesModel .tox .tox-tbtn--bespoke { min-width: 0; }
+#propertiesModel .tox .tox-tbtn--select.tox-tbtn--bespoke { width: auto; }
+#propertiesModel .tox .tox-tbtn__select-chevron svg { transform: scale(0.6); }
+#propertiesModel .tox .tox-editor-header { position: static; z-index: auto; box-shadow: none; border-bottom: 1px solid #ddd; }
+#propertiesModel .tox .tox-toolbar-overlord,
+#propertiesModel .tox .tox-toolbar,
+#propertiesModel .tox .tox-toolbar__primary { height: auto; overflow: visible; }
+/* Keep the whole editor toolbar on a single line */
+#propertiesModel .tox .tox-toolbar__group { padding: 0 2px; margin: 0; }
+#propertiesModel .tox .tox-tbtn { min-width: 24px; margin: 1px 0; }
+#propertiesModel .tox .tox-tbtn--select { width: auto; }
+#propertiesModel .tox .tox-split-button__chevron { width: 14px; }
+#propertiesModel .tox .tox-toolbar__primary { padding: 0 4px; }

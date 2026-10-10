@@ -7,84 +7,131 @@ const customFontFileSelector = `#customFontFile`;
 $("#propertiesModel").on("hidden.bs.modal", function () {
   console.log("===========Model Closed===========");
   currentActiveId = "";
-  $("#text-text").jqteVal("**Text Place Holder**");
-  $("#text-text").jqteVal("**Text Place Holder**");
+  setEditorContent("");
 });
 
 function getCurrentActiveId() {
   return currentActiveId;
 }
 
-// Init JQTE
-//JQTE
-setTimeout(function () {
-  // console.log("Text", $("#text-text")[0]);
-  $("#text-text").jqte({
-    status: true,
-    // css: "jqte",
-    title: false,
-    // titletext: n,
-    button: "OK",
-    format: true,
-    // formats: r,
-    fsize: false,
-    // fsizes: i,
-    funit: "px",
-    color: false,
-    // linktypes: o,
-    b: true,
-    i: true,
-    u: true,
-    ol: false,
-    ul: false,
-    sub: false,
-    sup: false,
-    outdent: false,
-    indent: false,
-    left: true,
-    center: true,
-    right: true,
-    strike: false,
-    link: false,
-    unlink: false,
-    remove: false,
-    rule: false,
-    source: false,
-    placeholder: false,
-    br: false,
-    p: false,
-    // change: "",
-    // focus: "",
-    // blur: "",
-    change: function () {
-      setTimeout(function () {
-        if ($(".jqte_editor").text().indexOf("**Text Place Holder**") === -1) {
-          // console.log("jqte changed", `#${getCurrentActiveId()}`);
-          $(`#${getCurrentActiveId()}`).html(inlineSafeLineBreaks($(".jqte_editor").html()));
-          converToTableFunc();
-        }
-      }, 200);
+// ---- Rich text editor (TinyMCE) ----
+// The text field is an inline <span>, so the editor runs without a root block
+// (no <p>/<div> wrappers; Enter inserts <br>) to keep the span's content
+// purely inline.
+var textEditor = null;
+var editorLoading = false;
+var pendingEditorContent = null;
+
+// Element-level toggles shown in the editor toolbar (they apply to the whole
+// text element, unlike bold/italic/etc. which apply to the selection).
+const elementToggles = [
+  { name: "gsSmallCaps", text: "Tt", tip: "Small caps", prop: "font-variant", val: "small-caps", clears: ["text-transform"] },
+  { name: "gsUpper", text: "AB", tip: "Uppercase", prop: "text-transform", val: "uppercase", clears: ["font-variant"] },
+  { name: "gsLower", text: "ab", tip: "Lowercase", prop: "text-transform", val: "lowercase", clears: ["font-variant"] },
+  { name: "gsLtr", text: "LTR", tip: "Left to right", prop: "direction", val: "ltr", attr: "dir" },
+  { name: "gsRtl", text: "RTL", tip: "Right to left", prop: "direction", val: "rtl", attr: "dir" },
+];
+
+function currentTextEl() {
+  return currentActiveId ? document.getElementById(currentActiveId) : null;
+}
+
+function toggleElementStyle(t) {
+  const el = currentTextEl();
+  if (!el) return;
+  const on = el.style[t.prop] === t.val;
+  $(el).css(t.prop, on ? "" : t.val);
+  if (!on) (t.clears || []).forEach((c) => $(el).css(c, ""));
+  if (t.attr) {
+    if (on) $(el).removeAttr(t.attr);
+    else $(el).attr(t.attr, t.val);
+  }
+  converToTableFunc();
+}
+
+function initTextEditor() {
+  // Bootstrap's modal focus trap steals focus from TinyMCE's dialogs (e.g. the
+  // link dialog), which live outside the modal's DOM.
+  $(document).on("focusin", function (e) {
+    if ($(e.target).closest(".tox-tinymce-aux, .tox-dialog, .tox-menu").length) e.stopImmediatePropagation();
+  });
+
+  tinymce.init({
+    selector: "#text-text",
+    base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3",
+    suffix: ".min",
+    license_key: "gpl",
+    height: 260,
+    menubar: false,
+    statusbar: false,
+    branding: false,
+    promotion: false,
+    forced_root_block: false,
+    newline_behavior: "linebreak",
+    plugins: "link lists",
+    toolbar_mode: "wrap",
+    toolbar_sticky: false,
+    toolbar:
+      "bold italic underline strikethrough removeformat | " +
+      "forecolor backcolor | link unlink | bullist numlist | " +
+      "gsSmallCaps gsUpper gsLower gsLtr gsRtl",
+    font_size_formats: "8px 9px 10px 11px 12px 13px 14px 16px 18px 20px 24px 28px 32px 36px",
+    link_default_target: "_blank",
+    link_title: false,
+    target_list: false,
+    convert_urls: false,
+    setup: function (editor) {
+      textEditor = editor;
+      elementToggles.forEach(function (t) {
+        editor.ui.registry.addToggleButton(t.name, {
+          text: t.text,
+          tooltip: t.tip,
+          onAction: function () {
+            toggleElementStyle(t);
+            editor.dispatch("gsRefresh");
+          },
+          onSetup: function (api) {
+            const refresh = function () {
+              const el = currentTextEl();
+              api.setActive(!!el && el.style[t.prop] === t.val);
+            };
+            refresh();
+            editor.on("NodeChange gsRefresh", refresh);
+            return function () {
+              editor.off("NodeChange gsRefresh", refresh);
+            };
+          },
+        });
+      });
+      editor.on("init", function () {
+        if (pendingEditorContent !== null) setEditorContent(pendingEditorContent);
+      });
+      editor.on("input change keyup ExecCommand", syncEditorToElement);
     },
   });
-}, 1000);
+}
 
-// jQuery TE's editor is a contenteditable div, and (like the browser's
-// default paragraph separator) wraps every new line in its own <div>. The
-// text field itself is a <span>, and a <div> nested in an inline element
-// forces the browser to split that span into a separate box per line when
-// rendering - so convert each line's wrapping <div> into a <br> instead,
-// keeping the span's content purely inline.
-function inlineSafeLineBreaks(html) {
-  const container = document.createElement("div");
-  container.innerHTML = html;
-  const lineDivs = container.querySelectorAll(":scope > div");
-  lineDivs.forEach(function (div) {
-    div.replaceWith(document.createElement("br"), ...Array.from(div.childNodes));
-  });
-  if (container.firstChild && container.firstChild.nodeName === "BR") {
-    container.firstChild.remove();
+
+function setEditorContent(html) {
+  if (!textEditor || !textEditor.initialized) {
+    pendingEditorContent = html;
+    return;
   }
-  return container.innerHTML;
+  pendingEditorContent = null;
+  editorLoading = true;
+  try {
+    textEditor.setContent(html || "");
+    textEditor.undoManager.clear();
+    textEditor.dispatch("gsRefresh");
+  } finally {
+    editorLoading = false;
+  }
+}
+
+function syncEditorToElement() {
+  if (editorLoading || !currentActiveId || !textEditor) return;
+  $(`#${currentActiveId}`).html(textEditor.getContent());
+  converToTableFunc();
 }
 
 function renderTextTab(id) {
@@ -102,11 +149,6 @@ function renderTextTab(id) {
       valAppend: "px",
     },
     {
-      inputElem: "text-foreground-color",
-      cssProperty: "color",
-      valAppend: "",
-    },
-    {
       inputElem: "text-background-color",
       cssProperty: "background-color",
       valAppend: "",
@@ -117,51 +159,6 @@ function renderTextTab(id) {
       valAppend: "px",
     },
   ];
-  const formatters = [
-    {
-      inputElem: "text-format-B",
-      cssProperty: "font-weight",
-      cssPropertyVal: "bold",
-      valAppend: "",
-    },
-    {
-      inputElem: "text-format-I",
-      cssProperty: "font-style",
-      cssPropertyVal: "italic",
-      valAppend: "",
-    },
-    {
-      inputElem: "text-format-U",
-      cssProperty: "text-decoration",
-      cssPropertyVal: "underline",
-      valAppend: "",
-    },
-    {
-      inputElem: "text-format-SC",
-      cssProperty: "font-variant",
-      cssPropertyVal: "small-caps",
-      valAppend: "",
-    },
-    {
-      inputElem: "text-format-UC",
-      cssProperty: "text-transform",
-      cssPropertyVal: "uppercase",
-      valAppend: "",
-    },
-    {
-      inputElem: "text-format-LC",
-      cssProperty: "text-transform",
-      cssPropertyVal: "lowercase",
-      valAppend: "",
-    },
-    // {
-    //   inputElem: "text-format-CL",
-    //   cssProperty: "",
-    //   cssPropertyVal: "",
-    //   valAppend: "",
-    // },
-  ];
-
   const wrappers = [
     {
       inputElem: "text-wrap",
@@ -177,12 +174,12 @@ function renderTextTab(id) {
     },
   ];
 
-  resetTextTab(inputElemArr, formatters, wrappers);
+  resetTextTab(inputElemArr, wrappers);
 
   // Add current val JQTE
   const currentText = $(`#${getCurrentActiveId()}`).html();
   // Need Fix: Disables hover on all texts when click group
-  $("#text-text").jqteVal(currentText);
+  setEditorContent(currentText);
 
   // textTextValue(id);
   // $("#text-text").jqte();
@@ -194,13 +191,10 @@ function renderTextTab(id) {
       fillAndAddEvent(id, value.inputElem, value.cssProperty, value.valAppend);
     });
 
-    formatters.forEach(function (value, key, myArray) {
-      fillAndFormat(id, value);
-    });
-
     wrappers.forEach(function (value, key, myArray) {
       fillAndWrapping(id, value);
     });
+
 
     // Must (re)init after resetTextTab's blanket .off(), which strips the
     // autocomplete widget's internal event bindings along with everything else.
@@ -213,14 +207,6 @@ function renderTextTab(id) {
   // Add events on customFontInput
   customFontEvents();
 }
-
-// function clearFormatting(id) {
-//   $(`#${"text-format-CL"}`).on("click", function () {
-//     formatters.forEach(function (value, key, myArray) {
-//       removeCSSClass(value.cssProperty, id, value.inputElem);
-//     });
-//   });
-// }
 
 function fillAndWrapping(id, item) {
   let { inputElem, cssProperty, cssPropertyVal } = item;
@@ -253,69 +239,6 @@ function fillAndWrapping(id, item) {
       // console.log($(`#${id}`));
       $(`#${id}`).css(obj);
       $(`#${id}`).find("span").css(obj);
-      $(`#${inputElem}`).addClass("active");
-    }
-    converToTableFunc();
-  });
-}
-function textTextValue(id) {
-  // $("#text-text").off();
-  // console.log($(`#${id}`).text());
-  // console.log($("#text-text").val());
-  // $("#text-text").val("here");
-  // const currentText = $(`#${id}`).text();
-  // $("#text-text").val(currentText);
-  // $("#text-text").on("change", function () {
-  //   $(`#${id}`).text(this.value);
-  //   converToTableFunc();
-  // });
-  //JQTE
-  if ($(".jqte_editor").text().indexOf("**Text Place Holder**") !== -1) {
-    const currentText = $(`#${getCurrentActiveId()}`).html();
-    // $("#text-text").jqteVal("");
-    setTimeout(function () {
-      // console.log("current", currentText);
-      $("#text-text").jqteVal(currentText);
-      $("#text-text").jqteVal(currentText);
-      $("#text-text").jqteVal(currentText);
-    }, 100);
-  }
-}
-function fillAndFormat(id, item) {
-  let { inputElem, cssProperty, cssPropertyVal } = item;
-  // Get existing value
-  const element = document.querySelector(`#${id}`).style[cssProperty];
-  // console.log(element);
-  if (element && cssPropertyVal === element) {
-    $(`#${inputElem}`).addClass("active");
-  }
-  // Add event listeners
-  $(`#${inputElem}`).on("click", function () {
-    // If already exists then remove
-    const element = document.querySelector(`#${id}`).style[cssProperty];
-    // console.log(element);
-    if (element && cssPropertyVal === element) {
-      // let obj = {};
-      // obj[cssProperty] = "";
-      // $(`#${id}`).css(obj);
-      // $(`#${inputElem}`).removeClass("active");
-      removeCSSClass(cssProperty, id, inputElem);
-    } else {
-      // disable others cannot have small caps, lowercase and uppercase at a time
-      if (cssPropertyVal === "small-caps") {
-        removeCSSClass("text-transform", id, "text-format-UC");
-        removeCSSClass("text-transform", id, "text-format-LC");
-      } else if (cssPropertyVal === "uppercase") {
-        removeCSSClass("font-variant", id, "text-format-SC");
-        removeCSSClass("text-transform", id, "text-format-LC");
-      } else if (cssPropertyVal === "lowercase") {
-        removeCSSClass("font-variant", id, "text-format-SC");
-        removeCSSClass("text-transform", id, "text-format-UC");
-      }
-      // If not exists then add
-      let obj = {};
-      obj[cssProperty] = cssPropertyVal;
-      $(`#${id}`).css(obj);
       $(`#${inputElem}`).addClass("active");
     }
     converToTableFunc();
@@ -354,13 +277,9 @@ function fillAndAddEvent(id, inputElem, cssProperty, valAppend) {
   });
 }
 
-function resetTextTab(inputElemArr, formatters, wrappers) {
+function resetTextTab(inputElemArr, wrappers) {
   inputElemArr?.forEach(function (value, key, myArray) {
     $(`#${value.inputElem}`).off();
-  });
-  formatters?.forEach(function (value, key, myArray) {
-    $(`#${value.inputElem}`).off();
-    $(`#${value.inputElem}`).removeClass("active");
   });
   wrappers?.forEach(function (value, key, myArray) {
     $(`#${value.inputElem}`).off();
