@@ -26,38 +26,7 @@ function renderSizeTab(id) {
   inputElemArr.forEach(function (value, key, myArray) {
     fillAndAddSizeEvent(id, value);
   });
-  syncSizeUI();
 }
-
-// Layout-only helpers for the Size tab. Auto/Fixed isn't stored anywhere: a
-// side is "Fixed" while its input holds a value and "Auto" while it's empty,
-// which is exactly how the handlers below already treat it.
-function syncSizeUI() {
-  ["width", "height"].forEach(function (axis) {
-    const fixed = $(`#size-${axis}`).val().trim() !== "";
-    setSizeMode(axis, fixed);
-  });
-}
-
-function setSizeMode(axis, fixed) {
-  const $row = $(`#size-form .sz-row[data-axis="${axis}"]`);
-  $row.toggleClass("is-fixed", fixed);
-  $row.find(".sz-mode").each(function () {
-    $(this).toggleClass("active", ($(this).data("mode") === "fixed") === fixed);
-  });
-}
-
-$(document).on("click", "#size-form .sz-mode", function () {
-  const axis = $(this).closest(".sz-row").data("axis");
-  const $input = $(`#size-${axis}`);
-  if ($(this).data("mode") === "fixed") {
-    setSizeMode(axis, true);
-    $input.trigger("focus");
-  } else {
-    $input.val("").trigger("change");
-    setSizeMode(axis, false);
-  }
-});
 
 function fillAndAddSizeEvent(id, config) {
   const {
@@ -146,7 +115,6 @@ function fillAndAddSizeEvent(id, config) {
     }
 
     converToTableFunc();
-    syncSizeUI();
   });
 }
 

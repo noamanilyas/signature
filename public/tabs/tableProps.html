@@ -1,31 +1,23 @@
 <form id="table-form">
-  <div class="tb-label">Grid</div>
-  <div class="tb-grid">
-    <div class="tb-card with-icon">
-      <div class="tb-icon cols"><div></div><div></div><div></div></div>
-      <label class="tb-card-label" for="table-cols">Columns</label>
-      <div class="tb-step"><button type="button" data-d="-1" aria-label="Decrease">&minus;</button><input id="table-cols" type="number" min="1" class="form-control" placeholder="1" /><button type="button" data-d="1" aria-label="Increase">+</button></div>
-    </div>
-    <div class="tb-card with-icon">
-      <div class="tb-icon rows"><div></div><div></div><div></div></div>
-      <label class="tb-card-label" for="table-rows">Rows</label>
-      <div class="tb-step"><button type="button" data-d="-1" aria-label="Decrease">&minus;</button><input id="table-rows" type="number" min="1" class="form-control" placeholder="1" /><button type="button" data-d="1" aria-label="Increase">+</button></div>
-    </div>
+  <div class="form-group">
+    <label for="table-cols">Columns</label>
+    <input id="table-cols" type="number" min="1" class="form-control" placeholder="1" />
   </div>
-  <button type="button" id="btn-update-rows-cols" class="btn btn-success tb-update">Update</button>
-
-  <div class="tb-divider"></div>
-
-  <div class="tb-label">Cell span</div>
-  <div class="tb-grid">
-    <div class="tb-card no-icon">
-      <label class="tb-card-label" for="table-colSpan">Column span</label>
-      <div class="tb-step"><button type="button" data-d="-1" aria-label="Decrease">&minus;</button><input id="table-colSpan" type="number" min="1" class="form-control" placeholder="1" /><button type="button" data-d="1" aria-label="Increase">+</button></div>
-    </div>
-    <div class="tb-card no-icon">
-      <label class="tb-card-label" for="table-rowSpan">Row span</label>
-      <div class="tb-step"><button type="button" data-d="-1" aria-label="Decrease">&minus;</button><input id="table-rowSpan" type="number" min="1" class="form-control" placeholder="1" /><button type="button" data-d="1" aria-label="Increase">+</button></div>
-    </div>
+  <div class="form-group">
+    <label for="table-rows">Rows</label>
+    <input id="table-rows" type="number" min="1" class="form-control" placeholder="1" />
+  </div>
+  <div class="form-group">
+    <!-- <label for="table-rows">Rows</label> -->
+    <button id="btn-update-rows-cols" class="form-control btn btn-success" />Update</button>
+  </div>
+  <div class="form-group">
+    <label for="table-colSpan">Column Span</label>
+    <input id="table-colSpan" type="number" min="1" class="form-control" placeholder="1" />
+  </div>
+  <div class="form-group">
+    <label for="table-rowSpan">Row Span</label>
+    <input id="table-rowSpan" type="number" min="1" class="form-control" placeholder="1" />
   </div>
 
   <!-- <div class="form-group">
