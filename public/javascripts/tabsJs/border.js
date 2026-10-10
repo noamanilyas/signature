@@ -6,7 +6,6 @@ function renderBorderTab(id) {
     inputElemArrBorder.forEach(function (value, key, myArray) {
       fillAndAddEventBorder(id, value.inputElem, value.cssProperty, value.valAppend);
     });
-    resetBorderSide();
 
     // initSameAsAllBorder();
   }, 100);
@@ -152,42 +151,3 @@ const inputElemArrBorder = [
     valAppend: "",
   },
 ];
-
-// Presentation-only helpers for the Border tab's layout. The tab still holds
-// one style/size/color input set per side (see tabs/border.html); the code
-// above owns all the real behavior. This just shows one side's inputs at a
-// time and lets the Style buttons drive that side's <select>.
-function activeBorderSide() {
-  return $("#border-sides .bd-side.active").data("side") || "all";
-}
-
-function syncBorderUI() {
-  const side = activeBorderSide();
-  $("#border-sides .bd-side").each(function () {
-    $(this).toggleClass("active", $(this).data("side") === side);
-  });
-  $("#border-form .bd-pane").each(function () {
-    $(this).toggleClass("active", $(this).data("side") === side);
-  });
-  const current = $(`#border-type-${side}`).val() || "";
-  $("#border-styles .bd-style").each(function () {
-    $(this).toggleClass("active", String($(this).data("style")) === current);
-  });
-}
-
-function resetBorderSide() {
-  $("#border-sides .bd-side").removeClass("active");
-  $('#border-sides .bd-side[data-side="all"]').addClass("active");
-  syncBorderUI();
-}
-
-$(document).on("click", "#border-sides .bd-side", function () {
-  $("#border-sides .bd-side").removeClass("active");
-  $(this).addClass("active");
-  syncBorderUI();
-});
-
-$(document).on("click", "#border-styles .bd-style", function () {
-  $(`#border-type-${activeBorderSide()}`).val(String($(this).data("style"))).trigger("change");
-  syncBorderUI();
-});
