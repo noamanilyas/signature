@@ -118,7 +118,7 @@ const createSig = async (sigData, imageData) => {
                       <div class="card-body">
                         <h5 class="card-title">${signature.Name}</h5>
                         <!-- <p class="card-text">Suresh Dasari is a founder and technical lead developer in tutlane.</p> -->
-                        <a href="editor.html?id=${signature.Id}&companyId=${companyId}" class="btn btn-success" title="Edit" ${
+                        <a href="editor.html?id=${signature.Id}&companyId=${companyId}" class="btn btn-success" ${
           signature.rstart === false ? 'style="display:none;"' : ""
         }>Edit Signature</a>
                         <button id=${signature.Id.replace(
@@ -129,7 +129,7 @@ const createSig = async (sigData, imageData) => {
                           / /g,
                           "_"
                         )} class="btn btn-success addRules groupD" >Rules/Conditions</button>
-                        <button id="delete-${signature.Id.replace(/ /g, "_")}" class="n-item btn btn-danger" title="Delete">Delete</button>
+                        <button id="delete-${signature.Id.replace(/ /g, "_")}" class="n-item btn btn-danger">Delete</button>
 
                         <button  onClick="exportSignature('${signature.Id}')" class="btn btn-warning export" ${
           signature.rstart === false ? 'style="display:none;"' : ""
