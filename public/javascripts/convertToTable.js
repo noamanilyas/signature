@@ -63,7 +63,7 @@ async function converToTableFunc() {
   table.append(tbody);
   // table.appendTo(".panelPreview2", ".panelPreview");
   $(".mainTable").remove();
-  $("#previewMail").append(table.clone());
+  $(".panelPreview").append(table.clone());
   $(".panelPreview2").append(table.clone());
   // }, 100);
   // }

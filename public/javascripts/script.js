@@ -753,12 +753,6 @@ $(document).ready(function () {
       childLeft.remove();
     }
   }
-  // Preview device toggle (desktop / mobile width of the mail card)
-  $("#pvDeviceSeg").on("click", ".pv-seg-btn", function () {
-    $("#pvDeviceSeg .pv-seg-btn").removeClass("active");
-    $(this).addClass("active");
-    $("#pvMail").toggleClass("pv-mobile", $(this).data("device") === "mobile");
-  });
   $("#arrowIcon").click(function () {
     $(".panelPreview").toggleClass("expanded");
     let paneldiv = document.querySelector(".panelPreview.expanded");
