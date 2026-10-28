@@ -647,6 +647,9 @@ $(document).ready(function () {
           });
           // console.log("rawResponse", rawResponse);
           const content = await rawResponse.json();
+          if (!rawResponse.ok || (content && content.success === false)) {
+            throw new Error((content && content.error) || "Save failed");
+          }
           // applyRegexReplacementToTable($(".panelPreview2 > table.mainTable"), userData);
           Swal.fire({
             // position: "top-end",
@@ -661,6 +664,11 @@ $(document).ready(function () {
           }
         } catch (e) {
           console.log(e);
+          Swal.fire({
+            icon: "error",
+            title: "Failed to save signature",
+            text: "Your changes were not saved. Please try again.",
+          });
         }
       })();
     }, 1000);

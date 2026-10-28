@@ -54,6 +54,11 @@ router.post("/saveHTML", function (req, res, next) {
         .then(function () {
           // create Request object
           var request = pool.request();
+          request.input("name", sql.NVarChar(sql.MAX), dbData.name);
+          request.input("html", sql.NVarChar(sql.MAX), dbData.html);
+          request.input("signatureHTML", sql.NVarChar(sql.MAX), dbData.signatureHTML);
+          request.input("compNo", sql.NVarChar(sql.MAX), cryptoUtils.decrypt(dbData.compNo));
+          request.input("imgData", sql.NVarChar(sql.MAX), dbData.imgData);
           var queryText = `
         BEGIN
         DECLARE @variable nvarchar(4);
@@ -74,21 +79,24 @@ router.post("/saveHTML", function (req, res, next) {
           (@rid
           ,'001'
           ,@variable
-          ,'${dbData.name}'
-          ,'${dbData.html}'
-          ,'${dbData.signatureHTML}'
-          ,'${cryptoUtils.decrypt(dbData.compNo)}'
-          ,'${dbData.imgData}'
+          ,@name
+          ,@html
+          ,@signatureHTML
+          ,@compNo
+          ,@imgData
           ,1);
           END;`;
           request.query(queryText, function (err, recordset) {
-            if (err) console.log(err);
+            if (err) {
+              console.log(err);
+              return res.status(500).send({ success: false, error: err.message });
+            }
             res.send(recordset);
           });
         })
         .catch(function (err) {
           console.log(err);
-          res.send({ success: false, error: err });
+          res.status(500).send({ success: false, error: err.message });
         });
     });
 });
@@ -133,26 +141,33 @@ router.post("/updateHTML", function (req, res, next) {
         .then(function () {
           // create Request object
           var request = pool.request();
+          request.input("signatureHTML", sql.NVarChar(sql.MAX), dbData.signatureHTML);
+          request.input("html", sql.NVarChar(sql.MAX), dbData.html);
+          request.input("name", sql.NVarChar(sql.MAX), dbData.name);
+          request.input("imgData", sql.NVarChar(sql.MAX), dbData.imgData);
+          request.input("rid", sql.NVarChar(50), cryptoUtils.decrypt(dbData.id));
+          request.input("encId", sql.NVarChar(sql.MAX), dbData.id);
 
           var queryText = `UPDATE [dbo].[ADHTMLH]
-            SET [H_HTMLTEXT] = '${dbData.signatureHTML}'
-                ,[H_RTextHTML] = '${dbData.html}'
-                ,[H_DSC] = '${dbData.name}'
-                ,[H_IMAGE] = '${dbData.imgData}'
-          WHERE [dbo].[ADHTMLH].[RID] = '${cryptoUtils.decrypt(dbData.id)}';
-          EXEC USP_DELETE_ADEMAILSIGN '${dbData.id}';`;
+            SET [H_HTMLTEXT] = @signatureHTML
+                ,[H_RTextHTML] = @html
+                ,[H_DSC] = @name
+                ,[H_IMAGE] = @imgData
+                ,[H_UPDATE_WEB] = 1
+          WHERE [dbo].[ADHTMLH].[RID] = @rid;
+          EXEC USP_DELETE_ADEMAILSIGN @encId;`;
 
-          // query to the database and get the records
           request.query(queryText, function (err, recordset) {
-            if (err) console.log(err);
-
-            // send records as a response
+            if (err) {
+              console.log(err);
+              return res.status(500).send({ success: false, error: err.message });
+            }
             res.send(recordset);
           });
         })
         .catch(function (err) {
           console.log(err);
-          res.send({ success: false, error: err });
+          res.status(500).send({ success: false, error: err.message });
         });
     });
 });
